@@ -3,46 +3,61 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Spotflow | November 2025 Insights</title>
+  <title>Spotflow | Transaction Insights</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <header class="hero">
     <div class="hero__inner">
-      <div class="logo-wrapper">
-        <img src="assets/logo.svg" alt="Spotflow logo" class="logo" />
-      </div>
+      <img src="assets/logo.svg" alt="Spotflow logo" class="logo" />
       <div class="hero__copy">
         <p class="eyebrow">Spotflow Transactions</p>
-        <h1>November 2025 performance hub</h1>
-        <p class="subtitle">Explore every daily deep-dive from November 25th through month-end plus the full-month roll-up. Designed for a dark workspace and ready for Vercel deployment.</p>
+        <h1>Performance hub</h1>
+        <p class="subtitle">Browse the curated dashboards organised by month. Jump into the November roll-up or drill into each daily export. December will light up as soon as data lands.</p>
       </div>
     </div>
   </header>
 
   <main class="content">
     <section class="card">
-      <h2>Monthly summary</h2>
-      <p>Jump straight into the November wrap-up with aggregate metrics, regional cut, provider performance and the full failure atlas.</p>
-      <a class="button" href="reports/november-2025-monthly-report.html">View monthly report</a>
-    </section>
+      <h2>Months</h2>
+      <div class="month-grid">
+        <article class="month-card">
+          <header>
+            <h3>November 2025</h3>
+            <p>Complete coverage from Nov 25 – Nov 30 plus the full-month summary.</p>
+          </header>
+          <div class="month-actions">
+            <a class="button" href="reports/november-2025-monthly-report.html">View monthly report</a>
+            <details class="day-list" open>
+              <summary>Daily dashboards</summary>
+              <nav>
+                <a href="reports/nov-25-report.html">Nov 25 — 2025</a>
+                <a href="reports/nov-26-report.html">Nov 26 — 2025</a>
+                <a href="reports/nov-27-report.html">Nov 27 — 2025</a>
+                <a href="reports/nov-28-report.html">Nov 28 — 2025</a>
+                <a href="reports/nov-29-report.html">Nov 29 — 2025</a>
+                <a href="reports/nov-30-report.html">Nov 30 — 2025</a>
+              </nav>
+            </details>
+          </div>
+        </article>
 
-    <section class="card">
-      <h2>Daily reports</h2>
-      <p>Each dashboard mirrors the CLI analysis: aggregate overview, region/provider breakdowns and charts.</p>
-      <nav class="daily-links">
-        <a href="reports/nov-25-report.html">Nov 25 – 2025</a>
-        <a href="reports/nov-26-report.html">Nov 26 – 2025</a>
-        <a href="reports/nov-27-report.html">Nov 27 – 2025</a>
-        <a href="reports/nov-28-report.html">Nov 28 – 2025</a>
-        <a href="reports/nov-29-report.html">Nov 29 – 2025</a>
-        <a href="reports/nov-30-report.html">Nov 30 – 2025</a>
-      </nav>
+        <article class="month-card month-card--soon">
+          <header>
+            <h3>December 2025</h3>
+            <p>Daily insights will appear here as soon as December exports are processed.</p>
+          </header>
+          <div class="month-actions">
+            <span class="badge">Coming soon</span>
+          </div>
+        </article>
+      </div>
     </section>
-
-    <footer class="footer">
-      <p>&copy; 2025 Spotflow. Built for analytics teams shipping on Vercel.</p>
-    </footer>
   </main>
+
+  <footer class="footer">
+    <p>&copy; 2025 Spotflow. Built for analytics teams shipping on Vercel.</p>
+  </footer>
 </body>
 </html>
