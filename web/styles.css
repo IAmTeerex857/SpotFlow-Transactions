@@ -203,3 +203,14 @@ body {
     text-align: left;
   }
 }
+
+.button--ghost {
+  background: rgba(148, 163, 184, 0.2);
+  color: var(--muted);
+  cursor: default;
+}
+
+.button--ghost:hover {
+  transform: none;
+  box-shadow: none;
+}
