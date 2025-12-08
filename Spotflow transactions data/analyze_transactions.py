@@ -136,7 +136,11 @@ def extract_transactions(row: List[str], default_dt: str) -> Iterable[Tuple[str,
         region = row[provider_idx + 1].strip()
 
         idx = provider_idx + 2
+        customer_parts: List[str] = []
         while idx < n and row[idx].strip().lower() not in STATUSES:
+            token = row[idx].strip()
+            if token:
+                customer_parts.append(token)
             idx += 1
         if idx >= n:
             i = provider_idx + 1
@@ -157,6 +161,15 @@ def extract_transactions(row: List[str], default_dt: str) -> Iterable[Tuple[str,
 
         message_parts: List[str] = []
         payment_date = ""
+        customer = ""
+        for token in customer_parts:
+            if "@" in token:
+                customer = token
+                break
+        if not customer and customer_parts:
+            customer = customer_parts[0]
+        customer = customer.strip().strip('"')
+
         while idx < n:
             raw = row[idx]
             stripped = raw.strip()
@@ -208,12 +221,12 @@ def extract_transactions(row: List[str], default_dt: str) -> Iterable[Tuple[str,
             message = message[1:-1]
         payment_date = payment_date or default_dt
 
-        yield provider, region, status, channel, message, payment_date
+        yield provider, region, status, channel, message, payment_date, customer
         i = idx
 
 
-def parse_csv(path: Path) -> Tuple[List[Tuple[str, str, str, str, str, datetime]], Dict[str, RegionSummary]]:
-    transactions: List[Tuple[str, str, str, str, str, datetime]] = []
+def parse_csv(path: Path) -> Tuple[List[Tuple[str, str, str, str, str, datetime, str]], Dict[str, RegionSummary]]:
+    transactions: List[Tuple[str, str, str, str, str, datetime, str]] = []
     summaries: Dict[str, RegionSummary] = defaultdict(RegionSummary)
     aggregate = summaries["Aggregate"]
 
@@ -231,7 +244,7 @@ def parse_csv(path: Path) -> Tuple[List[Tuple[str, str, str, str, str, datetime]
         for row in reader:
             if not row:
                 continue
-            for provider, region, status, channel, message, payment_date in extract_transactions(row, default_dt):
+            for provider, region, status, channel, message, payment_date, customer in extract_transactions(row, default_dt):
                 if region not in REGION_SET and region != "Aggregate":
                     continue
                 if status not in STATUSES:
@@ -248,7 +261,7 @@ def parse_csv(path: Path) -> Tuple[List[Tuple[str, str, str, str, str, datetime]
                         continue
 
                 norm_message = _normalise_message(message)
-                key = (provider, region, status, channel, norm_message, dt)
+                key = (provider, region, status, channel, norm_message, dt, customer)
                 transactions.append(key)
 
                 target = summaries[region]

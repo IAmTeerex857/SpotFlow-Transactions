@@ -5,7 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
-from collections import Counter
+from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Iterable, List, Tuple
 
@@ -180,6 +180,161 @@ def render_report(csv_path: Path, output_path: Path, report_title: str, logo_inl
         "failed": [summaries[region].status_counts.get("failed", 0) for region, _, _ in region_failure_summary],
     }
 
+    raw_990_count = csv_path.read_text(encoding="utf-8").count("990,NGN")
+
+    customer_attempts = defaultdict(list)
+    for provider, region, status, channel, norm_message, dt, customer in transactions:
+        key = (customer or "").strip().lower() or "<unknown>"
+        customer_attempts[key].append(
+            {
+                "provider": provider,
+                "region": region,
+                "status": status,
+                "dt": dt,
+            }
+        )
+
+    retry_customers = []
+    attempt_distribution = Counter()
+    final_status_counter = Counter()
+    provider_presence = Counter()
+    region_presence = Counter()
+    retry_gaps: List[float] = []
+    succeeded_after_retry = 0
+    unresolved_after_retry = 0
+    mid_success_not_final = 0
+    longest_attempt: Tuple[int, bool, str] | None = None
+
+    for attempts_list in customer_attempts.values():
+        if len(attempts_list) <= 1:
+            continue
+        attempts_list.sort(key=lambda item: (item["dt"] is None, item["dt"]))
+        statuses = [item["status"] for item in attempts_list]
+        providers = {item["provider"] for item in attempts_list}
+        regions = {item["region"] for item in attempts_list}
+        attempt_count = len(attempts_list)
+        final_status = statuses[-1]
+        ever_success = any(status == "successful" for status in statuses)
+
+        attempt_distribution[attempt_count] += 1
+        final_status_counter[final_status] += 1
+        for provider in providers:
+            provider_presence[provider] += 1
+        for region in regions:
+            region_presence[region] += 1
+
+        if ever_success:
+            succeeded_after_retry += 1
+            if final_status != "successful":
+                mid_success_not_final += 1
+        else:
+            unresolved_after_retry += 1
+
+        for current, nxt in zip(attempts_list, attempts_list[1:]):
+            if current["dt"] and nxt["dt"]:
+                retry_gaps.append((nxt["dt"] - current["dt"]).total_seconds())
+
+        if longest_attempt is None or attempt_count > longest_attempt[0]:
+            longest_attempt = (attempt_count, ever_success, final_status)
+
+        retry_customers.append(attempt_count)
+
+    total_retry_customers = len(retry_customers)
+
+    def _format_customer_count(count: int) -> str:
+        return f"{count} customer" if count == 1 else f"{count} customers"
+
+    attempt_distribution_lines = [
+        f"{attempts} attempts — {_format_customer_count(count)}" for attempts, count in sorted(attempt_distribution.items())
+    ]
+    final_status_lines = [f"{status.title()} — {count}" for status, count in final_status_counter.most_common()]
+    provider_lines = [
+        f"{provider.replace('_', ' ').title()} — {_format_customer_count(count)}"
+        for provider, count in provider_presence.most_common()
+    ]
+    region_lines = [
+        f"{region} — {_format_customer_count(count)}" for region, count in region_presence.most_common()
+    ]
+
+    summary_lines = []
+    if total_retry_customers:
+        summary_lines.extend(
+            [
+                f"Customers who retried — {total_retry_customers}",
+                f"Ever completed after retry — {succeeded_after_retry}",
+                f"Still unresolved after retries — {unresolved_after_retry}",
+            ]
+        )
+        if mid_success_not_final:
+            summary_lines.append(
+                f"Succeeded mid-sequence but ended with non-success status — {mid_success_not_final}"
+            )
+    summary_lines.append(f"Transactions at 990 NGN (including fragmented rows) — {raw_990_count}")
+
+    timing_lines: List[str] = []
+    if retry_gaps:
+        avg_gap_hours = sum(retry_gaps) / len(retry_gaps) / 3600
+        median_sorted = sorted(retry_gaps)
+        mid = len(median_sorted) // 2
+        if len(median_sorted) % 2:
+            median_gap_seconds = median_sorted[mid]
+        else:
+            median_gap_seconds = (median_sorted[mid - 1] + median_sorted[mid]) / 2
+        timing_lines.append(
+            f"Average gap between attempts — {avg_gap_hours:.2f} hours (~{avg_gap_hours * 60:.0f} minutes)"
+        )
+        timing_lines.append(
+            f"Median gap between attempts — {median_gap_seconds / 3600:.2f} hours (~{median_gap_seconds / 60:.0f} minutes)"
+        )
+    if longest_attempt:
+        attempts, ever_success, final_status = longest_attempt
+        if ever_success and final_status != "successful":
+            longest_text = (
+                f"A customer attempted {attempts} times, succeeded once midstream, "
+                f"but the latest attempt ended in {final_status}."
+            )
+        elif ever_success:
+            longest_text = f"A customer attempted {attempts} times before ending on a successful outcome."
+        else:
+            longest_text = f"A customer attempted {attempts} times without a success; final status was {final_status}."
+        timing_lines.append(longest_text)
+    if not timing_lines:
+        timing_lines.append("Timestamp data was insufficient to analyse retrial timing.")
+
+    further_insights_html = ""
+    if summary_lines or attempt_distribution_lines or provider_lines or region_lines or timing_lines:
+        further_insights_html = f"""
+    <section>
+      <div class='section-header'>
+        <div class='title-with-total'><h2>Further insights</h2><span class='badge'>Customer retry behaviour</span></div>
+      </div>
+      <div class='panel-grid two'>
+        <div class='metric-card'>
+          <h3>Customer retry outcomes</h3>
+          {_list_html(summary_lines)}
+          <h3>Final attempt statuses</h3>
+          {_list_html(final_status_lines)}
+        </div>
+        <div class='metric-card'>
+          <h3>Retry depth</h3>
+          {_list_html(attempt_distribution_lines)}
+          <h3>Timing signals</h3>
+          {_list_html(timing_lines)}
+        </div>
+      </div>
+      <div class='panel-grid two'>
+        <div class='metric-card'>
+          <h3>Providers involved</h3>
+          {_list_html(provider_lines)}
+        </div>
+        <div class='metric-card'>
+          <h3>Regions involved</h3>
+          {_list_html(region_lines)}
+        </div>
+      </div>
+    </section>
+"""
+
     logo_markup = logo_inline or ""
 
     html = f"""<!DOCTYPE html>
@@ -287,6 +442,7 @@ def render_report(csv_path: Path, output_path: Path, report_title: str, logo_inl
       </div>
     </section>
     {''.join(region_sections)}
+    {further_insights_html}
     <section>
       <div class='section-header'>
         <div class='title-with-total'><h2>Highest failure causes by region</h2><span class='badge'>Focused on customer pain</span></div>
