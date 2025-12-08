@@ -124,8 +124,8 @@ def _find_next_provider_index(row: List[str], start: int) -> Optional[int]:
     return None
 
 
-def extract_transactions(row: List[str], default_dt: str) -> Iterable[Tuple[str, str, str, str, str, str]]:
-    """Yield (provider, region, status, channel, message, payment_date)."""
+def extract_transactions(row: List[str], default_dt: str) -> Iterable[Tuple[str, str, str, str, str, str, str]]:
+    """Yield (provider, region, status, channel, message, payment_date, customer)."""
     n = len(row)
     i = 0
     while i < n:
