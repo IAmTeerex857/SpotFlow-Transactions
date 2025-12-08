@@ -70,6 +70,13 @@ def _normalise_message(message: str) -> str:
 
     first_line = first_line.replace("\xa0", " ")
     first_line = re.sub(r"\s+", " ", first_line).strip()
+
+    # Handle cases where malformed CSV rows append additional fragments such as
+    # `",has insufficient funds...` to an otherwise valid message.
+    stray_split = re.split(r'"\s*,', first_line, maxsplit=1)
+    if len(stray_split) > 1 and stray_split[0].strip():
+        first_line = stray_split[0].strip()
+
     first_line = re.sub(r'[\s,;:."-]+$', '', first_line).strip()
 
     if "_" in first_line:
