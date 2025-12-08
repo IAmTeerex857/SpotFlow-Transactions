@@ -269,7 +269,7 @@ def render_report(csv_path: Path, output_path: Path, report_title: str, logo_inl
             summary_lines.append(
                 f"Succeeded mid-sequence but ended with non-success status — {mid_success_not_final}"
             )
-    summary_lines.append(f"Transactions at 990 NGN (including fragmented rows) — {raw_990_count}")
+    summary_lines.append(f"Transactions at 990 NGN — {raw_990_count}")
 
     timing_lines: List[str] = []
     if retry_gaps:
