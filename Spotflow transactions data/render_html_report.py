@@ -188,6 +188,7 @@ def render_report(csv_path: Path, output_path: Path, report_title: str, logo_inl
         customer_attempts[key].append(
             {
                 "provider": provider,
+                "channel": channel,
                 "region": region,
                 "status": status,
                 "dt": dt,
@@ -204,6 +205,8 @@ def render_report(csv_path: Path, output_path: Path, report_title: str, logo_inl
     unresolved_after_retry = 0
     mid_success_not_final = 0
     longest_attempt: Tuple[int, bool, str] | None = None
+
+    depth_transitions: Dict[int, Counter] = defaultdict(Counter)
 
     for attempts_list in customer_attempts.values():
         if len(attempts_list) <= 1:
@@ -238,14 +241,39 @@ def render_report(csv_path: Path, output_path: Path, report_title: str, logo_inl
             longest_attempt = (attempt_count, ever_success, final_status)
 
         retry_customers.append(attempt_count)
+        first = attempts_list[0]
+        last = attempts_list[-1]
+        depth_transitions[attempt_count][
+            (
+                (first["provider"], first["channel"], first["status"]),
+                (last["provider"], last["channel"], last["status"]),
+            )
+        ] += 1
 
     total_retry_customers = len(retry_customers)
 
     def _format_customer_count(count: int) -> str:
         return f"{count} customer" if count == 1 else f"{count} customers"
 
+    def _format_transition(provider: str, channel: str, status: str) -> str:
+        provider_text = provider.replace("_", " ") if provider else "unknown"
+        channel_text = channel.replace("_", " ") if channel else "unknown"
+        status_text = status.title() if status else "Unknown"
+        return f"{provider_text} / {channel_text} ({status_text})"
+
     attempt_distribution_lines = [
-        f"{attempts} attempts — {_format_customer_count(count)}" for attempts, count in sorted(attempt_distribution.items())
+        f"{attempts} attempts — {_format_customer_count(count)}"
+        + (
+            "<ul class='mini-list'>"
+            + "".join(
+                f"<li>{_format_transition(fp, fc, fs)} → {_format_transition(lp, lc, ls)} — {_format_customer_count(tcount)}</li>"
+                for ((fp, fc, fs), (lp, lc, ls)), tcount in depth_transitions[attempts].most_common(3)
+            )
+            + "</ul>"
+            if depth_transitions.get(attempts)
+            else ""
+        )
+        for attempts, count in sorted(attempt_distribution.items())
     ]
     final_status_lines = [f"{status.title()} — {count}" for status, count in final_status_counter.most_common()]
     provider_lines = [
