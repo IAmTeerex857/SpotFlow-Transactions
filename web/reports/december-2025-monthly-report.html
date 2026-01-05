@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='utf-8'>
+  <title>December 2025 Transaction Insights</title>
+  <script src='https://cdn.jsdelivr.net/npm/chart.js'></script>
+  <style>
+    :root { color-scheme: light; font-size: 16px; }
+    * { box-sizing: border-box; }
+    body { font-family: "Inter", "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif; margin: 0; background: #f4f6fb; color: #1f2937; line-height: 1.65; }
+    header { background: #0f172a; color: #f8fafc; padding: 3rem 0; margin-bottom: 2.4rem; position: relative; }
+    header .header-inner { width: min(1400px, 92vw); margin: 0 auto; padding: 0 1.5rem; text-align: center; position: relative; }
+    header .logo-wrapper { position: absolute; top: 1.3rem; left: 1.5rem; }
+    header svg { width: 170px; height: auto; }
+    header svg [fill] { fill: #f8fafc !important; }
+    header h1 { margin: 0; font-size: 2.8rem; letter-spacing: -0.02em; }
+    header p.coverage { margin: 0.9rem 0 0; font-size: 1.05rem; opacity: 0.92; }
+    main { width: min(1400px, 95vw); margin: 0 auto 3.5rem; display: grid; gap: 2rem; padding: 0 1rem; }
+    section { background: #fff; border-radius: 22px; padding: 2.2rem 2.6rem; box-shadow: 0 22px 40px rgba(15, 23, 42, 0.08); display: grid; gap: 1.6rem; }
+    .section-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: .8rem; margin-bottom: .3rem; }
+    .title-with-total { display: inline-flex; align-items: baseline; gap: .8rem; }
+    h2 { margin: 0; font-size: 1.5rem; color: #0f172a; text-transform: capitalize; }
+    h3 { margin: 1.2rem 0 .8rem; font-size: 1.05rem; color: #0f172a; }
+    h4 { margin: 0 0 .4rem; font-size: 1rem; color: #0f172a; text-transform: capitalize; }
+    h5.subtle-heading { margin: .6rem 0 .4rem; font-size: .9rem; font-weight: 600; color: #475569; letter-spacing: .06em; text-transform: none; }
+    .badge { background: #e0e7ff; color: #3730a3; padding: .35rem .9rem; border-radius: 999px; font-weight: 600; font-size: .82rem; }
+    .panel-grid.two { display: grid; gap: 1.6rem; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+    .metric-card { background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%); border-radius: 18px; padding: 1.4rem 1.6rem; box-shadow: inset 0 0 0 1px #e2e8f0; }
+    ul { list-style: disc; padding-left: 1.3rem; margin: 0 0 1.2rem; }
+    .data-list li, .stat-list li, .mini-list li, .table-list li { margin-bottom: .45rem; line-height: 1.55; word-break: break-word; }
+    .stat-list { margin-bottom: 1rem; }
+    .mini-list { list-style: disc inside; margin-bottom: 0; padding-left: 1rem; }
+    .table-container { overflow-x: auto; border-radius: 20px; border: 1px solid #dce3ef; background: #f8fafc; padding: 1rem 1.2rem; }
+    .table-container.extra-wide table { min-width: 1320px; }
+    table { width: 100%; border-collapse: collapse; min-width: 1100px; background: #fff; border-radius: 16px; overflow: hidden; }
+    th, td { padding: 1rem 1.15rem; border-bottom: 1px solid #e2e8f0; text-align: left; vertical-align: top; font-size: .95rem; }
+    th { background: #eef2ff; font-weight: 600; color: #0f172a; }
+    tbody tr:nth-child(even) { background: #f9fbff; }
+    .table-list { list-style: disc inside; margin: 0; padding-left: 1rem; }
+    details.details-panel { background: #f8fafc; border-radius: 18px; padding: 1rem 1.3rem; box-shadow: inset 0 0 0 1px #e2e8f0; }
+    details summary { cursor: pointer; font-weight: 600; font-size: 1.02rem; list-style: none; }
+    details summary::marker { display: none; }
+    details summary::after { content: '▾'; display: inline-block; margin-left: .6rem; transition: transform .2s ease; }
+    details[open] summary::after { transform: rotate(180deg); }
+    .details-grid { display: grid; gap: 1.2rem; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); margin-top: 1rem; }
+    .sub-card { background: #fff; border-radius: 16px; padding: 1.1rem 1.3rem; box-shadow: inset 0 0 0 1px #e2e8f0; }
+    .muted { color: #64748b; margin: 0 0 .8rem; }
+    .chart-wrapper { background: #fff; border-radius: 20px; padding: 1.8rem; box-shadow: inset 0 0 0 1px #e2e8f0; min-height: 380px; }
+    canvas { width: 100%; height: 100%; }
+    @media (max-width: 768px) {
+      header { padding: 2.4rem 0; }
+      header .logo-wrapper { position: static; margin-bottom: 1rem; }
+      header svg { width: 140px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class='header-inner'>
+      <div class='logo-wrapper'>
+        <svg width="118" height="24" viewBox="0 0 118 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_14870_10130)">
+<path d="M14.1144 0.024227C7.37476 -0.406742 1.10079 5.08202 0.116132 12.2811C-0.868529 19.4802 4.36342 24.706 11.7696 23.9363C19.1757 23.1665 25.4633 17.6587 25.7692 11.655C26.0751 5.65123 20.8596 0.44571 14.1144 0.024227ZM21.7623 11.7078L19.4406 14.0009C19.3168 14.1253 19.1645 14.2181 18.9967 14.2714C18.829 14.3247 18.6507 14.337 18.4771 14.3072C18.3035 14.2774 18.1398 14.2063 17.9999 14.1001C17.8599 13.994 17.7479 13.8558 17.6734 13.6973L14.0666 6.07677C13.3196 6.31259 13.1994 6.93736 13.6242 7.86435L17.2432 15.6692C17.4834 16.1373 17.5785 16.6655 17.5164 17.1871C17.4481 17.6086 17.2282 18.0802 16.7857 18.1642C15.4446 18.4854 14.1021 18.789 12.7597 19.1129C12.7091 19.1305 12.6409 19.1305 12.5903 19.1468C12.1137 19.2647 11.6221 19.3487 11.129 19.4328C10.6866 19.5181 10.2796 19.5181 9.93953 19.1807L4.09711 13.3599C3.99553 13.2592 3.91495 13.1396 3.85996 13.008C3.80498 12.8764 3.77668 12.7353 3.77668 12.5928C3.77668 12.4503 3.80498 12.3092 3.85996 12.1776C3.91495 12.046 3.99553 11.9264 4.09711 11.8257L6.8599 9.08001C6.9852 8.95485 7.13958 8.86219 7.30945 8.81018C7.47933 8.75816 7.65948 8.74839 7.83406 8.78173C8.00863 8.81507 8.17227 8.89048 8.31056 9.00134C8.44885 9.1122 8.55756 9.25511 8.6271 9.41746C8.6271 9.41746 12.6873 18.5044 12.6873 18.5383C13.5204 18.2008 13.6733 17.5097 13.1803 16.4485C13.1803 16.4485 9.35638 8.13675 9.34136 8.11913C9.17065 7.71256 8.98355 7.25991 9.06822 6.80454C9.1007 6.56727 9.22153 6.35067 9.40691 6.19739C9.53137 6.10339 9.6781 6.04272 9.833 6.02121C10.4202 5.91821 11.0239 5.88568 11.618 5.83283C11.9034 5.80572 12.1875 5.77455 12.4729 5.73932C12.9987 5.67291 13.5081 5.62141 14.0352 5.55365C14.4941 5.5035 14.9912 5.40186 15.4624 5.41812C15.853 5.452 16.1589 5.75558 16.4306 5.99139C16.7707 6.29497 17.1449 6.56466 17.5013 6.85062C18.4191 7.55942 19.3355 8.26686 20.2532 8.99192C20.7285 9.34564 21.1873 9.71697 21.664 10.0883C21.7853 10.1832 21.8851 10.3025 21.9566 10.4384C22.0281 10.5743 22.0697 10.7237 22.0787 10.8767C22.0878 11.0298 22.064 11.183 22.009 11.3263C21.954 11.4695 21.869 11.5996 21.7596 11.7078H21.7623Z" fill="#0D0716"/>
+</g>
+<path d="M36.3723 18.6406C35.226 18.6406 34.2348 18.4666 33.3987 18.1187C32.5626 17.7573 31.9085 17.2756 31.4365 16.6733L32.9537 15.3083C33.3852 15.7767 33.8774 16.138 34.4304 16.3923C34.9968 16.6466 35.6508 16.7737 36.3925 16.7737C37.0399 16.7737 37.5591 16.6666 37.9501 16.4525C38.3412 16.2384 38.5368 15.9105 38.5368 15.4689C38.5368 15.0942 38.4019 14.8399 38.1322 14.7061C37.876 14.5723 37.5321 14.4719 37.1005 14.405L35.4216 14.144C34.99 14.0771 34.5652 13.9834 34.1472 13.863C33.7426 13.7291 33.3785 13.5485 33.0548 13.321C32.7446 13.0935 32.4952 12.8057 32.3064 12.4578C32.1176 12.0965 32.0232 11.6615 32.0232 11.153C32.0232 10.069 32.4277 9.23926 33.2369 8.6638C34.0595 8.08835 35.1856 7.80062 36.6151 7.80062C37.6265 7.80062 38.4828 7.94114 39.1841 8.22217C39.8988 8.50321 40.4855 8.898 40.944 9.40654L39.5887 10.892C39.292 10.5708 38.8942 10.2898 38.3952 10.0489C37.9097 9.79464 37.2893 9.6675 36.5341 9.6675C35.2125 9.6675 34.5517 10.0757 34.5517 10.892C34.5517 11.2667 34.6866 11.5277 34.9563 11.6749C35.226 11.8087 35.5767 11.9091 36.0082 11.976L37.6669 12.237C38.112 12.3039 38.5368 12.4043 38.9414 12.5381C39.3594 12.6585 39.7235 12.8325 40.0337 13.06C40.3574 13.2875 40.6136 13.5752 40.8024 13.9232C40.9912 14.2711 41.0856 14.6994 41.0856 15.2079C41.0856 16.2786 40.6675 17.1217 39.8314 17.7373C39.0088 18.3395 37.8557 18.6406 36.3723 18.6406Z" fill="#0D0716"/>
+<path d="M42.4532 8.04151H45.0425V9.86824H45.1841C45.4673 9.23926 45.8517 8.73741 46.3371 8.36269C46.8361 7.98798 47.4902 7.80062 48.2993 7.80062C48.8927 7.80062 49.4321 7.91437 49.9176 8.14188C50.4166 8.356 50.8414 8.69057 51.192 9.14558C51.5426 9.58721 51.8124 10.1493 52.0012 10.8318C52.19 11.5143 52.2844 12.3106 52.2844 13.2206C52.2844 14.1306 52.19 14.9269 52.0012 15.6094C51.8124 16.2919 51.5426 16.8607 51.192 17.3157C50.8414 17.7573 50.4166 18.0919 49.9176 18.3194C49.4321 18.5335 48.8927 18.6406 48.2993 18.6406C47.4902 18.6406 46.8361 18.4532 46.3371 18.0785C45.8517 17.7038 45.4673 17.202 45.1841 16.573H45.0425V22.4145H42.4532V8.04151ZM47.207 16.593C47.9622 16.593 48.5421 16.3655 48.9466 15.9105C49.3647 15.4555 49.5737 14.8332 49.5737 14.0436V12.3976C49.5737 11.608 49.3647 10.9857 48.9466 10.5307C48.5421 10.0757 47.9622 9.84817 47.207 9.84817C46.6136 9.84817 46.1011 9.99538 45.6696 10.2898C45.2515 10.5708 45.0425 11.0058 45.0425 11.5946V14.8466C45.0425 15.4354 45.2515 15.8771 45.6696 16.1715C46.1011 16.4525 46.6136 16.593 47.207 16.593Z" fill="#0D0716"/>
+<path d="M58.2439 18.6406C57.4483 18.6406 56.7335 18.5135 56.0997 18.2592C55.4793 18.0049 54.9466 17.6436 54.5016 17.1752C54.0701 16.7068 53.7329 16.138 53.4902 15.4689C53.2609 14.7998 53.1463 14.0503 53.1463 13.2206C53.1463 12.3909 53.2609 11.6414 53.4902 10.9723C53.7329 10.3032 54.0701 9.73442 54.5016 9.26602C54.9466 8.79763 55.4793 8.4363 56.0997 8.18202C56.7335 7.92775 57.4483 7.80062 58.2439 7.80062C59.0261 7.80062 59.7341 7.92775 60.3679 8.18202C61.0018 8.4363 61.5344 8.79763 61.966 9.26602C62.411 9.73442 62.7482 10.3032 62.9774 10.9723C63.2202 11.6414 63.3415 12.3909 63.3415 13.2206C63.3415 14.0503 63.2202 14.7998 62.9774 15.4689C62.7482 16.138 62.411 16.7068 61.966 17.1752C61.5344 17.6436 61.0018 18.0049 60.3679 18.2592C59.7341 18.5135 59.0261 18.6406 58.2439 18.6406ZM58.2439 16.6733C58.9856 16.6733 59.5723 16.4525 60.0038 16.0109C60.4354 15.5559 60.6511 14.8934 60.6511 14.0236V12.4176C60.6511 11.5478 60.4354 10.892 60.0038 10.4504C59.5723 9.99538 58.9856 9.76787 58.2439 9.76787C57.5022 9.76787 56.9156 9.99538 56.484 10.4504C56.0525 10.892 55.8367 11.5478 55.8367 12.4176V14.0236C55.8367 14.8934 56.0525 15.5559 56.484 16.0109C56.9156 16.4525 57.5022 16.6733 58.2439 16.6733Z" fill="#0D0716"/>
+<path d="M70.0698 18.3997C69.0718 18.3997 68.3368 18.1387 67.8648 17.6168C67.3928 17.0949 67.1568 16.4191 67.1568 15.5893V10.069H64.1225V8.04151H66.1859C66.6039 8.04151 66.9006 7.96121 67.0759 7.80062C67.2512 7.62664 67.3389 7.32553 67.3389 6.89729V4.38803H69.7461V8.04151H73.9941V10.069H69.7461V16.3722H73.9941V18.3997H70.0698Z" fill="#0D0716"/>
+<path d="M75.3213 16.3722H78.5174V10.069H75.119V8.04151H78.5174V6.35529C78.5174 5.94042 78.5714 5.56571 78.6793 5.23114C78.8006 4.88319 78.9827 4.58877 79.2255 4.34788C79.4682 4.09361 79.7716 3.89956 80.1357 3.76574C80.5133 3.61853 80.9516 3.54492 81.4506 3.54492H84.9704V5.5724H81.1067V8.04151H84.9704V10.069H81.1067V16.3722H84.5051V18.3997H75.3213V16.3722Z" fill="#0D0716"/>
+<path d="M85.7716 16.3722H89.0891V5.5724H85.7716V3.54492H91.6784V16.3722H95.0161V18.3997H85.7716V16.3722Z" fill="#0D0716"/>
+<path d="M100.895 18.6406C100.099 18.6406 99.3844 18.5135 98.7505 18.2592C98.1302 18.0049 97.5975 17.6436 97.1525 17.1752C96.7209 16.7068 96.3838 16.138 96.141 15.4689C95.9118 14.7998 95.7971 14.0503 95.7971 13.2206C95.7971 12.3909 95.9118 11.6414 96.141 10.9723C96.3838 10.3032 96.7209 9.73442 97.1525 9.26602C97.5975 8.79763 98.1302 8.4363 98.7505 8.18202C99.3844 7.92775 100.099 7.80062 100.895 7.80062C101.677 7.80062 102.385 7.92775 103.019 8.18202C103.653 8.4363 104.185 8.79763 104.617 9.26602C105.062 9.73442 105.399 10.3032 105.628 10.9723C105.871 11.6414 105.992 12.3909 105.992 13.2206C105.992 14.0503 105.871 14.7998 105.628 15.4689C105.399 16.138 105.062 16.7068 104.617 17.1752C104.185 17.6436 103.653 18.0049 103.019 18.2592C102.385 18.5135 101.677 18.6406 100.895 18.6406ZM100.895 16.6733C101.636 16.6733 102.223 16.4525 102.655 16.0109C103.086 15.5559 103.302 14.8934 103.302 14.0236V12.4176C103.302 11.5478 103.086 10.892 102.655 10.4504C102.223 9.99538 101.636 9.76787 100.895 9.76787C100.153 9.76787 99.5664 9.99538 99.1349 10.4504C98.7033 10.892 98.4876 11.5478 98.4876 12.4176V14.0236C98.4876 14.8934 98.7033 15.5559 99.1349 16.0109C99.5664 16.4525 100.153 16.6733 100.895 16.6733Z" fill="#0D0716"/>
+<path d="M106.43 8.04151H108.594L109.484 16.593H109.666L111.082 8.04151H113.449L114.845 16.593H115.027L115.937 8.04151H118L116.665 18.3997H113.53L112.316 10.7916H112.134L110.9 18.3997H107.765L106.43 8.04151Z" fill="#0D0716"/>
+<defs>
+<clipPath id="clip0_14870_10130">
+<rect width="25.7815" height="24.0069" fill="white"/>
+</clipPath>
+</defs>
+</svg>
+
+      </div>
+      <h1>December 2025 Transaction Insights</h1>
+      <p class='coverage'>Data coverage: December 08 – December 31, 2025 (partial coverage)</p>
+    </div>
+  </header>
+  <main>
+    <section>
+      <div class='section-header'>
+        <div class='title-with-total'><h2>Executive summary</h2><span class='badge'>Total transactions: 14951</span></div>
+      </div>
+      <div class='panel-grid two'>
+        <div class='metric-card'>
+          <h3>Status mix</h3>
+          <ul class='data-list'><li>Successful — 4004</li><li>Failed — 1702</li><li>Abandoned — 8658</li><li>Cancelled — 587</li></ul>
+          <h3>Channel distribution</h3>
+          <ul class='data-list'><li>Card — 1528</li><li>Bank Transfer — 9878</li><li>Mobile Money — 2946</li><li>Eft — 599</li></ul>
+        </div>
+        <div class='metric-card'>
+          <h3>Top success messages</h3>
+          <ul class='data-list'><li>No provider message (blank) — 2928</li><li>Success — 1015</li><li>Payment completed — 36</li><li>Transaction successfully found — 16</li><li>Payment processed — 7</li><li>Approved by financial institution — 2</li></ul>
+          <h3>Top failure messages</h3>
+          <ul class='data-list'><li>No provider message (blank) — 406</li><li>The MTN mobile money user has reached counter or balance limits — 360</li><li>Transaction failed — 208</li><li>Request to generate token is successful — 132</li><li>Provider failed — 81</li><li>Merchant is not enabled for international transactions — 75</li><li>Transaction id is invalid — 61</li><li>OTP verification required — 57</li><li>Insufficient funds — 56</li><li>Unable to process transaction — 48</li><li>Unable to process transaction at this time — 33</li><li>Token authentication failed. incorrect token supplied — 23</li><li>Payment rejected — 21</li><li>MTN exception: account holder with FRI not found — 18</li><li>Exception happened with upstream provider — 17</li><li>Transaction error — 16</li><li>Payment amount 650 is below the minimum allowed amount of 1000 for TZS — 16</li><li>Incorrect PIN — 14</li><li>Verve is currently unavailable. please try again with a mastercard — 11</li><li>PIN tries exceeded — 10</li><li>Invalid card number — 7</li><li>Fellback-bnf — 5</li><li>Transaction declined — 5</li><li>Generic failure — 4</li><li>Error processing payment — 2</li><li>No card record — 2</li><li>Invalid zip code — 1</li><li>Customer 302 — 1</li><li>Your payment has exceeded the time required to pay — 1</li><li>System exception — 1</li><li>Mobile number not available — 1</li><li>Transaction not allowed at terminal — 1</li><li>Timed out — 1</li><li>State not found — 1</li><li>Customer 519 — 1</li><li>Card validation failed. error occured while processing your request — 1</li><li>Card validation failed or error occurred while processing your request — 1</li><li>Customer 429 — 1</li><li>Customer 73 — 1</li><li>Lost card — 1</li></ul>
+        </div>
+      </div>
+    </section>
+    <section>
+      <div class='section-header'>
+        <div class='title-with-total'><h2>Provider contribution</h2><span class='badge'>Providers: 7</span></div>
+      </div>
+      <div class='table-container extra-wide'>
+        <table>
+          <thead>
+            <tr>
+              <th>Provider</th><th>Total</th><th>Success</th><th>Failed</th><th>Abandoned</th><th>Cancelled</th><th>Success rate</th><th>Failure rate</th><th>Abandon rate</th><th>Top success reasons</th><th>Top failure reasons</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>cellulant</td><td>62</td><td>16</td><td>0</td><td>46</td><td>0</td><td>25.8%</td><td>0.0%</td><td>74.2%</td><td><ul class='table-list'><li>Transaction successfully found (16)</li></ul></td><td><ul class='table-list'><li>—</li></ul></td></tr><tr><td>hubtel</td><td>2618</td><td>1015</td><td>666</td><td>625</td><td>312</td><td>38.8%</td><td>25.4%</td><td>23.9%</td><td><ul class='table-list'><li>Success (1015)</li></ul></td><td><ul class='table-list'><li>The MTN mobile money user has reached counter or balance limits (360)</li><li>Transaction failed (208)</li><li>Transaction id is invalid (61)</li><li>MTN exception: account holder with FRI not found (18)</li><li>Exception happened with upstream provider (17)</li><li>Error processing payment (2)</li></ul></td></tr><tr><td>interswitch</td><td>3</td><td>2</td><td>0</td><td>1</td><td>0</td><td>66.7%</td><td>0.0%</td><td>33.3%</td><td><ul class='table-list'><li>Approved by financial institution (2)</li></ul></td><td><ul class='table-list'><li>—</li></ul></td></tr><tr><td>ozow</td><td>599</td><td>7</td><td>247</td><td>177</td><td>168</td><td>1.2%</td><td>41.2%</td><td>29.5%</td><td><ul class='table-list'><li>No provider message (blank) (7)</li></ul></td><td><ul class='table-list'><li>No provider message (blank) (247)</li></ul></td></tr><tr><td>paystack</td><td>1528</td><td>431</td><td>595</td><td>395</td><td>107</td><td>28.2%</td><td>38.9%</td><td>25.9%</td><td><ul class='table-list'><li>No provider message (blank) (431)</li></ul></td><td><ul class='table-list'><li>No provider message (blank) (157)</li><li>Request to generate token is successful (132)</li><li>Merchant is not enabled for international transactions (75)</li><li>OTP verification required (57)</li><li>Unable to process transaction (48)</li><li>Token authentication failed. incorrect token supplied (23)</li><li>Insufficient funds (19)</li><li>Transaction error (16)</li><li>Incorrect PIN (14)</li><li>Verve is currently unavailable. please try again with a mastercard (11)</li><li>PIN tries exceeded (10)</li><li>Invalid card number (7)</li><li>Fellback-bnf (5)</li><li>Transaction declined (5)</li><li>No card record (2)</li><li>Invalid zip code (1)</li><li>Customer 302 (1)</li><li>Your payment has exceeded the time required to pay (1)</li><li>System exception (1)</li><li>Mobile number not available (1)</li><li>Transaction not allowed at terminal (1)</li><li>Timed out (1)</li><li>State not found (1)</li><li>Customer 519 (1)</li><li>Card validation failed. error occured while processing your request (1)</li><li>Card validation failed or error occurred while processing your request (1)</li><li>Customer 429 (1)</li><li>Customer 73 (1)</li><li>Lost card (1)</li></ul></td></tr><tr><td>spotflow_accounts</td><td>9875</td><td>2490</td><td>33</td><td>7352</td><td>0</td><td>25.2%</td><td>0.3%</td><td>74.5%</td><td><ul class='table-list'><li>No provider message (blank) (2490)</li></ul></td><td><ul class='table-list'><li>Unable to process transaction at this time (33)</li></ul></td></tr><tr><td>tembo_plus</td><td>266</td><td>43</td><td>161</td><td>62</td><td>0</td><td>16.2%</td><td>60.5%</td><td>23.3%</td><td><ul class='table-list'><li>Payment completed (36)</li><li>Payment processed (7)</li></ul></td><td><ul class='table-list'><li>Provider failed (81)</li><li>Insufficient funds (37)</li><li>Payment rejected (21)</li><li>Payment amount 650 is below the minimum allowed amount of 1000 for TZS (16)</li><li>Generic failure (4)</li><li>No provider message (blank) (2)</li></ul></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+    
+<section>
+  <div class='section-header'>
+    <div class='title-with-total'><h2>Nigeria</h2><span class='badge'>Total: 11125</span></div>
+  </div>
+  <div class='panel-grid two'>
+    <div class='metric-card'>
+      <h3>Status mix</h3>
+      <ul class='data-list'><li>Successful — 2860</li><li>Failed — 599</li><li>Abandoned — 7559</li><li>Cancelled — 107</li></ul>
+      <h3>Channel breakdown</h3><ul class='data-list'><li>Card — 1247</li><li>Bank Transfer — 9878</li></ul>
+    </div>
+    <div class='metric-card'>
+      <h3>Top success reasons</h3>
+      <ul class='data-list'><li>No provider message (blank) — 2858</li><li>Approved by financial institution — 2</li></ul>
+      <h3>Top failure reasons</h3>
+      <ul class='data-list'><li>No provider message (blank) — 135</li><li>Request to generate token is successful — 132</li><li>Merchant is not enabled for international transactions — 75</li><li>OTP verification required — 57</li><li>Unable to process transaction — 47</li><li>Unable to process transaction at this time — 33</li><li>Token authentication failed. incorrect token supplied — 23</li><li>Insufficient funds — 19</li><li>Transaction error — 16</li><li>Incorrect PIN — 14</li><li>Verve is currently unavailable. please try again with a mastercard — 11</li><li>PIN tries exceeded — 10</li><li>Fellback-bnf — 5</li><li>Transaction declined — 5</li><li>Invalid card number — 3</li><li>No card record — 2</li><li>Customer 302 — 1</li><li>Your payment has exceeded the time required to pay — 1</li><li>System exception — 1</li><li>Mobile number not available — 1</li><li>Transaction not allowed at terminal — 1</li><li>Timed out — 1</li><li>Customer 519 — 1</li><li>Card validation failed. error occured while processing your request — 1</li><li>Card validation failed or error occurred while processing your request — 1</li><li>Customer 429 — 1</li><li>Customer 73 — 1</li><li>Lost card — 1</li></ul>
+    </div>
+  </div>
+  <details class='details-panel'><summary>Provider breakdown</summary><div class='details-grid'><div class='sub-card'><h4>interswitch</h4><p class='muted'>Total: 3</p><ul class='stat-list'><li>Successful — 2</li><li>Abandoned — 1</li></ul><h5 class='subtle-heading'>provider message highlights</h5><ul class='mini-list'><li>Approved by financial institution — 2</li></ul></div><div class='sub-card'><h4>paystack</h4><p class='muted'>Total: 1247</p><ul class='stat-list'><li>Successful — 368</li><li>Failed — 566</li><li>Abandoned — 206</li><li>Cancelled — 107</li></ul><h5 class='subtle-heading'>provider message highlights</h5><ul class='mini-list'><li>No provider message (blank) — 368</li></ul><ul class='mini-list'><li>No provider message (blank) — 135</li><li>Request to generate token is successful — 132</li><li>Merchant is not enabled for international transactions — 75</li><li>OTP verification required — 57</li><li>Unable to process transaction — 47</li><li>Token authentication failed. incorrect token supplied — 23</li><li>Insufficient funds — 19</li><li>Transaction error — 16</li><li>Incorrect PIN — 14</li><li>Verve is currently unavailable. please try again with a mastercard — 11</li><li>PIN tries exceeded — 10</li><li>Fellback-bnf — 5</li><li>Transaction declined — 5</li><li>Invalid card number — 3</li><li>No card record — 2</li><li>Customer 302 — 1</li><li>Your payment has exceeded the time required to pay — 1</li><li>System exception — 1</li><li>Mobile number not available — 1</li><li>Transaction not allowed at terminal — 1</li><li>Timed out — 1</li><li>Customer 519 — 1</li><li>Card validation failed. error occured while processing your request — 1</li><li>Card validation failed or error occurred while processing your request — 1</li><li>Customer 429 — 1</li><li>Customer 73 — 1</li><li>Lost card — 1</li></ul></div><div class='sub-card'><h4>spotflow_accounts</h4><p class='muted'>Total: 9875</p><ul class='stat-list'><li>Successful — 2490</li><li>Failed — 33</li><li>Abandoned — 7352</li></ul><h5 class='subtle-heading'>provider message highlights</h5><ul class='mini-list'><li>No provider message (blank) — 2490</li></ul><ul class='mini-list'><li>Unable to process transaction at this time — 33</li></ul></div></div></details>
+</section>
+
+<section>
+  <div class='section-header'>
+    <div class='title-with-total'><h2>Ghana</h2><span class='badge'>Total: 2899</span></div>
+  </div>
+  <div class='panel-grid two'>
+    <div class='metric-card'>
+      <h3>Status mix</h3>
+      <ul class='data-list'><li>Successful — 1078</li><li>Failed — 695</li><li>Abandoned — 814</li><li>Cancelled — 312</li></ul>
+      <h3>Channel breakdown</h3><ul class='data-list'><li>Card — 281</li><li>Mobile Money — 2618</li></ul>
+    </div>
+    <div class='metric-card'>
+      <h3>Top success reasons</h3>
+      <ul class='data-list'><li>Success — 1015</li><li>No provider message (blank) — 63</li></ul>
+      <h3>Top failure reasons</h3>
+      <ul class='data-list'><li>The MTN mobile money user has reached counter or balance limits — 360</li><li>Transaction failed — 208</li><li>Transaction id is invalid — 61</li><li>No provider message (blank) — 22</li><li>MTN exception: account holder with FRI not found — 18</li><li>Exception happened with upstream provider — 17</li><li>Invalid card number — 4</li><li>Error processing payment — 2</li><li>Invalid zip code — 1</li><li>Unable to process transaction — 1</li><li>State not found — 1</li></ul>
+    </div>
+  </div>
+  <details class='details-panel'><summary>Provider breakdown</summary><div class='details-grid'><div class='sub-card'><h4>hubtel</h4><p class='muted'>Total: 2618</p><ul class='stat-list'><li>Successful — 1015</li><li>Failed — 666</li><li>Abandoned — 625</li><li>Cancelled — 312</li></ul><h5 class='subtle-heading'>provider message highlights</h5><ul class='mini-list'><li>Success — 1015</li></ul><ul class='mini-list'><li>The MTN mobile money user has reached counter or balance limits — 360</li><li>Transaction failed — 208</li><li>Transaction id is invalid — 61</li><li>MTN exception: account holder with FRI not found — 18</li><li>Exception happened with upstream provider — 17</li><li>Error processing payment — 2</li></ul></div><div class='sub-card'><h4>paystack</h4><p class='muted'>Total: 281</p><ul class='stat-list'><li>Successful — 63</li><li>Failed — 29</li><li>Abandoned — 189</li></ul><h5 class='subtle-heading'>provider message highlights</h5><ul class='mini-list'><li>No provider message (blank) — 63</li></ul><ul class='mini-list'><li>No provider message (blank) — 22</li><li>Invalid card number — 4</li><li>Invalid zip code — 1</li><li>Unable to process transaction — 1</li><li>State not found — 1</li></ul></div></div></details>
+</section>
+
+<section>
+  <div class='section-header'>
+    <div class='title-with-total'><h2>South Africa</h2><span class='badge'>Total: 599</span></div>
+  </div>
+  <div class='panel-grid two'>
+    <div class='metric-card'>
+      <h3>Status mix</h3>
+      <ul class='data-list'><li>Successful — 7</li><li>Failed — 247</li><li>Abandoned — 177</li><li>Cancelled — 168</li></ul>
+      <h3>Channel breakdown</h3><ul class='data-list'><li>Eft — 599</li></ul>
+    </div>
+    <div class='metric-card'>
+      <h3>Top success reasons</h3>
+      <ul class='data-list'><li>No provider message (blank) — 7</li></ul>
+      <h3>Top failure reasons</h3>
+      <ul class='data-list'><li>No provider message (blank) — 247</li></ul>
+    </div>
+  </div>
+  <details class='details-panel'><summary>Provider breakdown</summary><div class='details-grid'><div class='sub-card'><h4>ozow</h4><p class='muted'>Total: 599</p><ul class='stat-list'><li>Successful — 7</li><li>Failed — 247</li><li>Abandoned — 177</li><li>Cancelled — 168</li></ul><h5 class='subtle-heading'>provider message highlights</h5><ul class='mini-list'><li>No provider message (blank) — 7</li></ul><ul class='mini-list'><li>No provider message (blank) — 247</li></ul></div></div></details>
+</section>
+
+<section>
+  <div class='section-header'>
+    <div class='title-with-total'><h2>Kenya</h2><span class='badge'>Total: 62</span></div>
+  </div>
+  <div class='panel-grid two'>
+    <div class='metric-card'>
+      <h3>Status mix</h3>
+      <ul class='data-list'><li>Successful — 16</li><li>Abandoned — 46</li></ul>
+      <h3>Channel breakdown</h3><ul class='data-list'><li>Mobile Money — 62</li></ul>
+    </div>
+    <div class='metric-card'>
+      <h3>Top success reasons</h3>
+      <ul class='data-list'><li>Transaction successfully found — 16</li></ul>
+      <h3>Top failure reasons</h3>
+      <ul class='data-list'><li>—</li></ul>
+    </div>
+  </div>
+  <details class='details-panel'><summary>Provider breakdown</summary><div class='details-grid'><div class='sub-card'><h4>cellulant</h4><p class='muted'>Total: 62</p><ul class='stat-list'><li>Successful — 16</li><li>Abandoned — 46</li></ul><h5 class='subtle-heading'>provider message highlights</h5><ul class='mini-list'><li>Transaction successfully found — 16</li></ul></div></div></details>
+</section>
+
+<section>
+  <div class='section-header'>
+    <div class='title-with-total'><h2>Tanzania</h2><span class='badge'>Total: 266</span></div>
+  </div>
+  <div class='panel-grid two'>
+    <div class='metric-card'>
+      <h3>Status mix</h3>
+      <ul class='data-list'><li>Successful — 43</li><li>Failed — 161</li><li>Abandoned — 62</li></ul>
+      <h3>Channel breakdown</h3><ul class='data-list'><li>Mobile Money — 266</li></ul>
+    </div>
+    <div class='metric-card'>
+      <h3>Top success reasons</h3>
+      <ul class='data-list'><li>Payment completed — 36</li><li>Payment processed — 7</li></ul>
+      <h3>Top failure reasons</h3>
+      <ul class='data-list'><li>Provider failed — 81</li><li>Insufficient funds — 37</li><li>Payment rejected — 21</li><li>Payment amount 650 is below the minimum allowed amount of 1000 for TZS — 16</li><li>Generic failure — 4</li><li>No provider message (blank) — 2</li></ul>
+    </div>
+  </div>
+  <details class='details-panel'><summary>Provider breakdown</summary><div class='details-grid'><div class='sub-card'><h4>tembo_plus</h4><p class='muted'>Total: 266</p><ul class='stat-list'><li>Successful — 43</li><li>Failed — 161</li><li>Abandoned — 62</li></ul><h5 class='subtle-heading'>provider message highlights</h5><ul class='mini-list'><li>Payment completed — 36</li><li>Payment processed — 7</li></ul><ul class='mini-list'><li>Provider failed — 81</li><li>Insufficient funds — 37</li><li>Payment rejected — 21</li><li>Payment amount 650 is below the minimum allowed amount of 1000 for TZS — 16</li><li>Generic failure — 4</li><li>No provider message (blank) — 2</li></ul></div></div></details>
+</section>
+
+    <section>
+      <div class='section-header'>
+        <div class='title-with-total'><h2>Highest failure causes by region</h2><span class='badge'>Across the month</span></div>
+      </div>
+      <div class='panel-grid two'>
+        
+<div class='sub-card'>
+  <h3>Nigeria</h3>
+  <p class='muted'>Total failed: 599</p>
+  <ul class='mini-list'><li>No provider message (blank) — 135 (22.5% of failures)</li><li>Request to generate token is successful — 132 (22.0% of failures)</li><li>Merchant is not enabled for international transactions — 75 (12.5% of failures)</li><li>OTP verification required — 57 (9.5% of failures)</li><li>Unable to process transaction — 47 (7.8% of failures)</li><li>Unable to process transaction at this time — 33 (5.5% of failures)</li><li>Token authentication failed. incorrect token supplied — 23 (3.8% of failures)</li><li>Insufficient funds — 19 (3.2% of failures)</li><li>Transaction error — 16 (2.7% of failures)</li><li>Incorrect PIN — 14 (2.3% of failures)</li><li>Verve is currently unavailable. please try again with a mastercard — 11 (1.8% of failures)</li><li>PIN tries exceeded — 10 (1.7% of failures)</li><li>Fellback-bnf — 5 (0.8% of failures)</li><li>Transaction declined — 5 (0.8% of failures)</li><li>Invalid card number — 3 (0.5% of failures)</li><li>No card record — 2 (0.3% of failures)</li><li>Customer 302 — 1 (0.2% of failures)</li><li>Your payment has exceeded the time required to pay — 1 (0.2% of failures)</li><li>System exception — 1 (0.2% of failures)</li><li>Mobile number not available — 1 (0.2% of failures)</li><li>Transaction not allowed at terminal — 1 (0.2% of failures)</li><li>Timed out — 1 (0.2% of failures)</li><li>Customer 519 — 1 (0.2% of failures)</li><li>Card validation failed. error occured while processing your request — 1 (0.2% of failures)</li><li>Card validation failed or error occurred while processing your request — 1 (0.2% of failures)</li><li>Customer 429 — 1 (0.2% of failures)</li><li>Customer 73 — 1 (0.2% of failures)</li><li>Lost card — 1 (0.2% of failures)</li></ul>
+</div>
+
+<div class='sub-card'>
+  <h3>Ghana</h3>
+  <p class='muted'>Total failed: 695</p>
+  <ul class='mini-list'><li>The MTN mobile money user has reached counter or balance limits — 360 (51.8% of failures)</li><li>Transaction failed — 208 (29.9% of failures)</li><li>Transaction id is invalid — 61 (8.8% of failures)</li><li>No provider message (blank) — 22 (3.2% of failures)</li><li>MTN exception: account holder with FRI not found — 18 (2.6% of failures)</li><li>Exception happened with upstream provider — 17 (2.4% of failures)</li><li>Invalid card number — 4 (0.6% of failures)</li><li>Error processing payment — 2 (0.3% of failures)</li><li>Invalid zip code — 1 (0.1% of failures)</li><li>Unable to process transaction — 1 (0.1% of failures)</li><li>State not found — 1 (0.1% of failures)</li></ul>
+</div>
+
+<div class='sub-card'>
+  <h3>South Africa</h3>
+  <p class='muted'>Total failed: 247</p>
+  <ul class='mini-list'><li>No provider message (blank) — 247 (100.0% of failures)</li></ul>
+</div>
+<div class='sub-card'><h3>Kenya</h3><p class='muted'>No recorded failures.</p></div>
+<div class='sub-card'>
+  <h3>Tanzania</h3>
+  <p class='muted'>Total failed: 161</p>
+  <ul class='mini-list'><li>Provider failed — 81 (50.3% of failures)</li><li>Insufficient funds — 37 (23.0% of failures)</li><li>Payment rejected — 21 (13.0% of failures)</li><li>Payment amount 650 is below the minimum allowed amount of 1000 for TZS — 16 (9.9% of failures)</li><li>Generic failure — 4 (2.5% of failures)</li><li>No provider message (blank) — 2 (1.2% of failures)</li></ul>
+</div>
+
+      </div>
+    </section>
+    <section>
+      <div class='section-header'>
+        <div class='title-with-total'><h2>Regional success vs failure</h2><span class='badge'>Full-month view</span></div>
+        <button class='btn btn-secondary' id='toggleChart'>Toggle view</button>
+      </div>
+      <div class='chart-wrapper'>
+        <canvas id='regionChart'></canvas>
+      </div>
+    </section>
+  </main>
+  <script>
+    const regionData = {"labels": ["Nigeria", "Ghana", "South Africa", "Kenya", "Tanzania"], "success": [2860, 1078, 7, 16, 43], "failed": [599, 695, 247, 0, 161]};
+    const ctx = document.getElementById('regionChart').getContext('2d');
+    let chartType = 'bar';
+    const baseConfig = {
+      data: {
+        labels: regionData.labels,
+        datasets: [
+          { label: 'Successful', data: regionData.success, backgroundColor: '#10b981', borderColor: '#10b981', borderWidth: 2, borderRadius: 8 },
+          { label: 'Failed', data: regionData.failed, backgroundColor: '#ef4444', borderColor: '#ef4444', borderWidth: 2, borderRadius: 8 }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, padding: 14 } } },
+        scales: {
+          x: { stacked: false, ticks: { color: '#1f2937' }, grid: { color: '#e2e8f0' } },
+          y: { beginAtZero: true, grid: { color: '#e2e8f0' }, ticks: { color: '#1f2937' } }
+        }
+      }
+    };
+
+    function createChart(type) {
+      const config = Object.assign({ type }, JSON.parse(JSON.stringify(baseConfig)));
+      config.data.datasets.forEach(ds => {
+        ds.fill = type !== 'line';
+        ds.borderWidth = type === 'line' ? 3 : 2;
+        ds.tension = type === 'line' ? 0.35 : 0;
+      });
+      return new Chart(ctx, config);
+    }
+
+    let regionChart = createChart(chartType);
+    document.getElementById('toggleChart').addEventListener('click', () => {
+      chartType = chartType === 'bar' ? 'line' : 'bar';
+      regionChart.destroy();
+      regionChart = createChart(chartType);
+    });
+  </script>
+</body>
+</html>
