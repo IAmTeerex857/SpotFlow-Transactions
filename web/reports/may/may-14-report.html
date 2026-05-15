@@ -63,16 +63,16 @@
   </header>
       <main>
     <section>
-      <div class='section-header'><div class='title-with-total'><h2>Aggregate overview</h2><span class='badge'>Total: 729</span></div></div>
+      <div class='section-header'><div class='title-with-total'><h2>Aggregate overview</h2><span class='badge'>Total: 736</span></div></div>
       <div class='panel-grid two'>
-        <div class='metric-card'><h3>Status mix</h3><ul class='data-list'><li>Successful — 216</li><li>Failed — 81</li><li>Abandoned — 422</li><li>Cancelled — 10</li></ul>
-          <h3>Channel distribution</h3><ul class='data-list'><li>Bank Transfer — 480</li><li>Mobile Money — 179</li><li>Card — 56</li><li>Eft — 14</li></ul></div>
+        <div class='metric-card'><h3>Status mix</h3><ul class='data-list'><li>Successful — 216</li><li>Failed — 88</li><li>Abandoned — 422</li><li>Cancelled — 10</li></ul>
+          <h3>Channel distribution</h3><ul class='data-list'><li>Bank Transfer — 480</li><li>Mobile Money — 186</li><li>Card — 56</li><li>Eft — 14</li></ul></div>
         <div class='metric-card'><h3>Top success messages</h3><ul class='data-list'><li>successful — 110</li><li>success — 83</li><li>Approved by Financial Institution — 13</li><li>Transaction successfully found. — 5</li><li><blank> — 3</li><li>Payment completed — 2</li></ul>
-          <h3>Top failure messages</h3><ul class='data-list'><li>The MTN Mobile Money user has reached counter or balance limits" — 24</li><li>Transaction Failed — 17</li><li>Error processing payment — 16</li><li><blank> — 11</li><li>Exception happened with upstream provider. — 4</li><li>Please enter your pin — 2</li><li>INSUFFICIENT_FUNDS — 2</li><li>PROVIDER_FAILED — 2</li><li>Your account is not a valid Vodafone Cash account — 1</li><li>Authorized successful — 1</li></ul></div>
+          <h3>Top failure messages</h3><ul class='data-list'><li>The MTN Mobile Money user has reached counter or balance limits" — 24</li><li>Transaction Failed — 17</li><li>Error processing payment — 16</li><li><blank> — 11</li><li>Country code resolved from MSISDN is not valid — 4</li><li>Exception happened with upstream provider. — 4</li><li>Please enter your pin — 2</li><li>INSUFFICIENT_FUNDS — 2</li><li>The MSISDN is too short for the identified country TLS — 2</li><li>PROVIDER_FAILED — 2</li></ul></div>
       </div>
     </section>
     <section>
-      <div class='section-header'><div class='title-with-total'><h2>Provider contribution</h2><span class='badge'>Providers: 8</span></div></div>
+      <div class='section-header'><div class='title-with-total'><h2>Provider contribution</h2><span class='badge'>Providers: 9</span></div></div>
       <div class='table-container extra-wide'><table>
         <thead><tr><th>Provider</th><th>Total</th><th>Success</th><th>Failed</th><th>Abandoned</th><th>Cancelled</th><th>Success rate</th><th>Failure rate</th><th>Abandon rate</th><th>Top success reasons</th><th>Top failure reasons</th></tr></thead>
         <tbody><tr><td>cellulant</td><td>8</td><td>5</td><td>0</td><td>3</td><td>0</td><td>62.5%</td><td>0.0%</td><td>37.5%</td><td><ul class="table-list"><li>Transaction successfully found. (5)</li></ul></td><td><ul class="table-list"><li>—</li></ul></td></tr>
@@ -80,11 +80,20 @@
 <tr><td>hubtel</td><td>162</td><td>83</td><td>47</td><td>27</td><td>5</td><td>51.2%</td><td>29.0%</td><td>16.7%</td><td><ul class="table-list"><li>success (83)</li></ul></td><td><ul class="table-list"><li>The MTN Mobile Money user has reached counter or balance limits" (24)</li><li>Transaction Failed (17)</li><li>Exception happened with upstream provider. (4)</li><li>Your account is not a valid Vodafone Cash account (1)</li><li>FAILED (1)</li></ul></td></tr>
 <tr><td>interswitch</td><td>45</td><td>13</td><td>21</td><td>8</td><td>3</td><td>28.9%</td><td>46.7%</td><td>17.8%</td><td><ul class="table-list"><li>Approved by Financial Institution (13)</li></ul></td><td><ul class="table-list"><li>Error processing payment (16)</li><li><blank> (3)</li><li>Please enter your pin (2)</li></ul></td></tr>
 <tr><td>ozow</td><td>14</td><td>0</td><td>8</td><td>4</td><td>2</td><td>0.0%</td><td>57.1%</td><td>28.6%</td><td><ul class="table-list"><li>—</li></ul></td><td><ul class="table-list"><li><blank> (8)</li></ul></td></tr>
+<tr><td>pawapay</td><td>7</td><td>0</td><td>7</td><td>0</td><td>0</td><td>0.0%</td><td>100.0%</td><td>0.0%</td><td><ul class="table-list"><li>—</li></ul></td><td><ul class="table-list"><li>Country code resolved from MSISDN is not valid (4)</li><li>The MSISDN is too short for the identified country TLS (2)</li><li>The MSISDN is too short for the identified country SGP (1)</li></ul></td></tr>
 <tr><td>paystack</td><td>11</td><td>3</td><td>0</td><td>8</td><td>0</td><td>27.3%</td><td>0.0%</td><td>72.7%</td><td><ul class="table-list"><li><blank> (3)</li></ul></td><td><ul class="table-list"><li>—</li></ul></td></tr>
 <tr><td>spotflow_accounts</td><td>480</td><td>110</td><td>0</td><td>370</td><td>0</td><td>22.9%</td><td>0.0%</td><td>77.1%</td><td><ul class="table-list"><li>successful (110)</li></ul></td><td><ul class="table-list"><li>—</li></ul></td></tr>
 <tr><td>tembo_plus</td><td>8</td><td>2</td><td>4</td><td>2</td><td>0</td><td>25.0%</td><td>50.0%</td><td>25.0%</td><td><ul class="table-list"><li>Payment completed (2)</li></ul></td><td><ul class="table-list"><li>INSUFFICIENT_FUNDS (2)</li><li>PROVIDER_FAILED (2)</li></ul></td></tr>
 </tbody>
       </table></div>
+    </section>
+    <section>
+      <div class='section-header'><div class='title-with-total'><h2>Cameroon</h2><span class='badge'>Total: 7</span></div></div>
+      <div class='panel-grid two'>
+        <div class='metric-card'><h3>Status mix</h3><ul class='data-list'><li>Failed — 7</li></ul><h3>Channel breakdown</h3><ul class='data-list'><li>Mobile Money — 7</li></ul></div>
+        <div class='metric-card'><h3>Top success reasons</h3><ul class='data-list'><li>None</li></ul><h3>Top failure reasons</h3><ul class='data-list'><li>Country code resolved from MSISDN is not valid — 4</li><li>The MSISDN is too short for the identified country TLS — 2</li><li>The MSISDN is too short for the identified country SGP — 1</li></ul></div>
+      </div>
+      <details class='details-panel'><summary>Provider breakdown</summary><div class='details-grid'><div class='sub-card'><h4>pawapay</h4><p class='muted'>Total: 7</p><ul class='stat-list'><li>Failed — 7</li></ul><h5 class='subtle-heading'>success</h5><ul class='mini-list'><li>—</li></ul><h5 class='subtle-heading'>failure</h5><ul class='mini-list'><li>Country code resolved from MSISDN is not valid — 4; The MSISDN is too short for the identified country TLS — 2; The MSISDN is too short for the identified country SGP — 1</li></ul></div></div></details>
     </section>
     <section>
       <div class='section-header'><div class='title-with-total'><h2>Ghana</h2><span class='badge'>Total: 173</span></div></div>
@@ -138,18 +147,18 @@
       <div class='section-header'><div class='title-with-total'><h2>Further insights</h2><span class='badge'>Customer retry behaviour</span></div></div>
       <div class='panel-grid two'>
         <div class='metric-card'><h3>Customer retry outcomes</h3>
-          <ul class='data-list'><li>Customers who retried — 96</li><li>Ever completed after retry — 43</li><li>Still unresolved — 64</li><li>Succeeded mid-sequence but ended non-success — 11</li></ul>
-          <h3>Final attempt statuses</h3><ul class='data-list'><li>Successful — 32</li><li>Abandoned — 50</li><li>Failed — 12</li><li>Cancelled — 2</li></ul></div>
-        <div class='metric-card'><h3>Retry depth</h3><ul class='data-list'><li>2 attempts — 48 customers</li><li>3 attempts — 24 customers</li><li>4 attempts — 9 customers</li><li>5 attempts — 4 customers</li><li>6 attempts — 4 customers</li><li>7 attempts — 2 customers</li><li>8 attempts — 1 customer</li><li>10 attempts — 2 customers</li><li>11 attempts — 1 customer</li><li>20 attempts — 1 customer</li></ul>
-          <h3>Timing</h3><ul class='data-list'><li>Average gap — 0.77h (~46 min)</li><li>Median gap — 0.0539h (~3.2 min)</li><li>Max retries: 20 (final: successful)</li></ul></div>
+          <ul class='data-list'><li>Customers who retried — 98</li><li>Ever completed after retry — 43</li><li>Still unresolved — 66</li><li>Succeeded mid-sequence but ended non-success — 11</li></ul>
+          <h3>Final attempt statuses</h3><ul class='data-list'><li>Successful — 32</li><li>Abandoned — 50</li><li>Failed — 14</li><li>Cancelled — 2</li></ul></div>
+        <div class='metric-card'><h3>Retry depth</h3><ul class='data-list'><li>2 attempts — 49 customers</li><li>3 attempts — 24 customers</li><li>4 attempts — 10 customers</li><li>5 attempts — 4 customers</li><li>6 attempts — 4 customers</li><li>7 attempts — 2 customers</li><li>8 attempts — 1 customer</li><li>10 attempts — 2 customers</li><li>11 attempts — 1 customer</li><li>20 attempts — 1 customer</li></ul>
+          <h3>Timing</h3><ul class='data-list'><li>Average gap — 0.76h (~45 min)</li><li>Median gap — 0.0539h (~3.2 min)</li><li>Max retries: 20 (final: successful)</li></ul></div>
       </div>
       <div class='panel-grid two'><div class='metric-card'><h3>Path consistency</h3>
-        <ul class='data-list'><li>Same provider/channel — 82</li><li>Switched — 14</li></ul>
-        <h3>Most common repeated paths</h3><ul class='data-list'><li>spotflow_accounts · bank_transfer (Nigeria) — 62 customers</li><li>hubtel · mobile_money (Ghana) — 21 customers</li><li>interswitch · card (Nigeria) — 8 customers</li><li>paystack · card (Ghana) — 3 customers</li><li>ozow · eft (South Africa) — 1 customer</li><li>tembo_plus · mobile_money (Tanzania) — 1 customer</li></ul></div></div>
+        <ul class='data-list'><li>Same provider/channel — 84</li><li>Switched — 14</li></ul>
+        <h3>Most common repeated paths</h3><ul class='data-list'><li>spotflow_accounts · bank_transfer (Nigeria) — 62 customers</li><li>hubtel · mobile_money (Ghana) — 21 customers</li><li>interswitch · card (Nigeria) — 8 customers</li><li>paystack · card (Ghana) — 3 customers</li><li>pawapay · mobile_money (Cameroon) — 2 customers</li><li>ozow · eft (South Africa) — 1 customer</li><li>tembo_plus · mobile_money (Tanzania) — 1 customer</li></ul></div></div>
     </section>
     <section>
       <div class='section-header'><div class='title-with-total'><h2>Highest failure causes by region</h2><span class='badge'>Focused on customer pain</span></div></div>
-      <div class='panel-grid two'><div class='sub-card'><h3>Ghana</h3><p class='muted'>Total failed: 47</p><ul class='mini-list'><li>The MTN Mobile Money user has reached counter or balance limits" — 24 (51.1%)</li><li>Transaction Failed — 17 (36.2%)</li><li>Exception happened with upstream provider. — 4 (8.5%)</li><li>Your account is not a valid Vodafone Cash account — 1 (2.1%)</li><li>FAILED — 1 (2.1%)</li></ul></div><div class='sub-card'><h3>Kenya</h3><p class='muted'>No recorded failures.</p></div><div class='sub-card'><h3>Nigeria</h3><p class='muted'>Total failed: 21</p><ul class='mini-list'><li>Error processing payment — 16 (76.2%)</li><li><blank> — 3 (14.3%)</li><li>Please enter your pin — 2 (9.5%)</li></ul></div><div class='sub-card'><h3>South Africa</h3><p class='muted'>Total failed: 8</p><ul class='mini-list'><li><blank> — 8 (100.0%)</li></ul></div><div class='sub-card'><h3>Tanzania</h3><p class='muted'>Total failed: 4</p><ul class='mini-list'><li>INSUFFICIENT_FUNDS — 2 (50.0%)</li><li>PROVIDER_FAILED — 2 (50.0%)</li></ul></div><div class='sub-card'><h3>Togo</h3><p class='muted'>Total failed: 1</p><ul class='mini-list'><li>Authorized successful — 1 (100.0%)</li></ul></div></div>
+      <div class='panel-grid two'><div class='sub-card'><h3>Cameroon</h3><p class='muted'>Total failed: 7</p><ul class='mini-list'><li>Country code resolved from MSISDN is not valid — 4 (57.1%)</li><li>The MSISDN is too short for the identified country TLS — 2 (28.6%)</li><li>The MSISDN is too short for the identified country SGP — 1 (14.3%)</li></ul></div><div class='sub-card'><h3>Ghana</h3><p class='muted'>Total failed: 47</p><ul class='mini-list'><li>The MTN Mobile Money user has reached counter or balance limits" — 24 (51.1%)</li><li>Transaction Failed — 17 (36.2%)</li><li>Exception happened with upstream provider. — 4 (8.5%)</li><li>Your account is not a valid Vodafone Cash account — 1 (2.1%)</li><li>FAILED — 1 (2.1%)</li></ul></div><div class='sub-card'><h3>Kenya</h3><p class='muted'>No recorded failures.</p></div><div class='sub-card'><h3>Nigeria</h3><p class='muted'>Total failed: 21</p><ul class='mini-list'><li>Error processing payment — 16 (76.2%)</li><li><blank> — 3 (14.3%)</li><li>Please enter your pin — 2 (9.5%)</li></ul></div><div class='sub-card'><h3>South Africa</h3><p class='muted'>Total failed: 8</p><ul class='mini-list'><li><blank> — 8 (100.0%)</li></ul></div><div class='sub-card'><h3>Tanzania</h3><p class='muted'>Total failed: 4</p><ul class='mini-list'><li>INSUFFICIENT_FUNDS — 2 (50.0%)</li><li>PROVIDER_FAILED — 2 (50.0%)</li></ul></div><div class='sub-card'><h3>Togo</h3><p class='muted'>Total failed: 1</p><ul class='mini-list'><li>Authorized successful — 1 (100.0%)</li></ul></div></div>
     </section>
     <section>
       <div class='section-header'><div class='title-with-total'><h2>Regional success vs failure</h2><span class='badge'>Side-by-side comparison</span></div>
@@ -158,7 +167,7 @@
     </section>
   </main>
   <script>
-    const regionData = {"labels":["Ghana", "Kenya", "Nigeria", "South Africa", "Tanzania", "Togo"],"success":[86, 5, 123, 0, 2, 0],"failed":[47, 0, 21, 8, 4, 1]};
+    const regionData = {"labels":["Cameroon", "Ghana", "Kenya", "Nigeria", "South Africa", "Tanzania", "Togo"],"success":[0, 86, 5, 123, 0, 2, 0],"failed":[7, 47, 0, 21, 8, 4, 1]};
     const ctx = document.getElementById('regionChart').getContext('2d');
     let chartType = 'bar';
     const base = {data:{labels:regionData.labels,datasets:[
