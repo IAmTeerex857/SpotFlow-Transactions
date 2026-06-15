@@ -2,61 +2,424 @@
 <html lang='en'>
 <head>
   <meta charset='utf-8'>
-  <title>Jun 7, 2026 — Spotflow Insights</title>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+  <title>Jun 07, 2026 — Spotflow Insights</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <script src='https://cdn.jsdelivr.net/npm/chart.js'></script>
   <style>
-    :root { color-scheme: light; font-size: 16px; }
-    * { box-sizing: border-box; }
-    body { font-family: "Inter", "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif; margin: 0; background: #f4f6fb; color: #1f2937; line-height: 1.65; }
-    header { background: #0f172a; color: #f8fafc; padding: 2.8rem 0; margin-bottom: 2.4rem; position: relative; }
-    header .header-inner { width: min(1400px, 92vw); margin: 0 auto; padding: 0 1.5rem; text-align: center; position: relative; }
-    header .logo-wrapper { position: absolute; top: 1.2rem; left: 1.5rem; }
-    header svg { width: 170px; height: auto; }
-    header svg [fill] { fill: #f8fafc !important; }
-    header h1 { margin: 0; font-size: 2.6rem; letter-spacing: -0.02em; }
-    main { width: min(1400px, 95vw); margin: 0 auto 3.5rem; display: grid; gap: 2rem; padding: 0 1rem; }
-    section { background: #fff; border-radius: 22px; padding: 2.2rem 2.6rem; box-shadow: 0 22px 40px rgba(15, 23, 42, 0.08); display: grid; gap: 1.6rem; }
-    .section-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: .8rem; margin-bottom: .3rem; }
-    .title-with-total { display: inline-flex; align-items: baseline; gap: .8rem; }
-    h2 { margin: 0; font-size: 1.45rem; letter-spacing: -0.01em; color: #0f172a; text-transform: capitalize; }
-    h3 { margin: 1.2rem 0 .8rem; font-size: 1.05rem; color: #0f172a; }
-    h4 { margin: 0 0 .4rem; font-size: 1rem; color: #0f172a; text-transform: capitalize; }
-    h5.subtle-heading { margin: .6rem 0 .4rem; font-size: .9rem; font-weight: 600; color: #475569; text-transform: none; letter-spacing: .06em; }
-    .badge { background: #e0e7ff; color: #3730a3; padding: .35rem .9rem; border-radius: 999px; font-weight: 600; font-size: .82rem; }
-    .btn { font-size: .88rem; padding: .45rem .85rem; border-radius: 999px; border: 1px solid transparent; cursor: pointer; transition: transform .15s ease, box-shadow .15s ease; }
-    .btn-secondary { background: #eef2ff; color: #3730a3; border-color: #c7d2fe; }
-    .btn-secondary:hover { transform: translateY(-1px); box-shadow: 0 8px 16px rgba(79, 70, 229, 0.2); }
-    .panel-grid.two { display: grid; gap: 1.6rem; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
-    .metric-card { background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%); border-radius: 18px; padding: 1.4rem 1.6rem; box-shadow: inset 0 0 0 1px #e2e8f0; }
-    ul { list-style: disc; padding-left: 1.3rem; margin: 0 0 1.2rem; }
-    .data-list li, .stat-list li, .mini-list li, .table-list li { margin-bottom: .45rem; line-height: 1.55; word-break: break-word; }
-    .stat-list { margin-bottom: 1rem; }
-    .mini-list { list-style: disc inside; margin-bottom: 0; padding-left: 1rem; }
-    .table-container { overflow-x: auto; border-radius: 20px; border: 1px solid #dce3ef; background: #f8fafc; padding: 1rem 1.2rem; }
-    .table-container.extra-wide table { min-width: 1320px; }
-    table { width: 100%; border-collapse: collapse; min-width: 1100px; background: #fff; border-radius: 16px; overflow: hidden; }
-    th, td { padding: 1rem 1.15rem; border-bottom: 1px solid #e2e8f0; text-align: left; vertical-align: top; font-size: .95rem; }
-    th { background: #eef2ff; font-weight: 600; color: #0f172a; }
-    tbody tr:nth-child(even) { background: #f9fbff; }
-    .table-list { list-style: disc inside; margin: 0; padding-left: 1rem; }
-    details.details-panel { background: #f8fafc; border-radius: 18px; padding: 1rem 1.3rem; box-shadow: inset 0 0 0 1px #e2e8f0; }
-    details summary { cursor: pointer; font-weight: 600; font-size: 1.02rem; list-style: none; }
-    details summary::marker { display: none; }
-    details summary::after { content: '▾'; display: inline-block; margin-left: .6rem; transition: transform .2s ease; }
-    details[open] summary::after { transform: rotate(180deg); }
-    .details-grid { display: grid; gap: 1.2rem; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); margin-top: 1rem; }
-    .sub-card { background: #fff; border-radius: 16px; padding: 1.1rem 1.3rem; box-shadow: inset 0 0 0 1px #e2e8f0; }
-    .muted { color: #64748b; margin: 0 0 .8rem; }
-    .chart-wrapper { background: #fff; border-radius: 20px; padding: 1.8rem; box-shadow: inset 0 0 0 1px #e2e8f0; min-height: 380px; }
-    canvas { width: 100%; height: 100%; }
-    @media (max-width: 768px) {
-      header { padding: 2.4rem 0; }
-      header .logo-wrapper { position: static; margin-bottom: 1rem; }
-      header svg { width: 140px; }
+    :root {
+      --bg: #0A0C0F;
+      --bg-alt: #0C1019;
+      --ink: #EBEFF4;
+      --muted: #93A0AD;
+      --faint: #5A6675;
+      --line: rgba(255,255,255,.10);
+      --line-soft: rgba(255,255,255,.06);
+      --surface: rgba(255,255,255,.035);
+      --surface-2: rgba(255,255,255,.06);
+      --accent: #4DB6FF;
+      --accent-dim: rgba(77,182,255,.14);
+      --accent-line: rgba(77,182,255,.40);
+      --green: #5FD08A;
+      --amber: #F2C261;
+      --red: #FF7A7A;
+      --magenta: #E26BD6;
+      --font-display: 'Space Grotesk', system-ui, sans-serif;
+      --font-body: 'IBM Plex Sans', system-ui, sans-serif;
+      --font-mono: 'JetBrains Mono', ui-monospace, monospace;
     }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-body);
+      background: radial-gradient(1200px 800px at 82% -8%, rgba(77,182,255,.07), transparent 60%), var(--bg);
+      color: var(--ink);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Header */
+    header {
+      padding: 3.5rem 0 2.5rem;
+      text-align: center;
+      position: relative;
+      border-bottom: 1px solid var(--line-soft);
+    }
+    header .header-inner {
+      width: min(1400px, 92vw);
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      position: relative;
+    }
+    header .logo-wrapper {
+      position: absolute;
+      top: 0;
+      left: 1.5rem;
+    }
+    header svg { width: 160px; height: auto; }
+    header svg [fill] { fill: var(--ink) !important; }
+    .eyebrow {
+      font-family: var(--font-mono);
+      font-size: .75rem;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      display: inline-flex;
+      align-items: center;
+      gap: .8rem;
+      margin-bottom: .6rem;
+    }
+    .eyebrow::before {
+      content: '';
+      width: 30px;
+      height: 2px;
+      background: var(--accent);
+    }
+    header h1 {
+      font-family: var(--font-display);
+      font-size: 2.4rem;
+      font-weight: 600;
+      letter-spacing: -.015em;
+      line-height: 1.1;
+      color: var(--ink);
+      margin: .4rem 0 .3rem;
+    }
+    header .date-range {
+      font-family: var(--font-mono);
+      font-size: .8rem;
+      color: var(--muted);
+    }
+
+    /* Main */
+    main {
+      width: min(1400px, 95vw);
+      margin: 2rem auto 4rem;
+      display: grid;
+      gap: 1.6rem;
+      padding: 0 1rem;
+    }
+
+    /* KPI Strip */
+    .kpi-strip {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+    .kpi-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 1.4rem 1.6rem;
+      display: flex;
+      flex-direction: column;
+      gap: .3rem;
+    }
+    .kpi-label {
+      font-family: var(--font-mono);
+      font-size: .7rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .kpi-value {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -.02em;
+      color: var(--ink);
+    }
+    .kpi-sub {
+      font-size: .78rem;
+      color: var(--faint);
+    }
+    .kpi-accent .kpi-value { color: var(--accent); }
+    .kpi-green .kpi-value { color: var(--green); }
+    .kpi-red .kpi-value { color: var(--red); }
+
+    /* Cards / Sections */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 2rem 2.2rem;
+      display: grid;
+      gap: 1.4rem;
+    }
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: .6rem;
+    }
+    .title-with-total {
+      display: inline-flex;
+      align-items: baseline;
+      gap: .8rem;
+    }
+    h2 {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 600;
+      letter-spacing: -.01em;
+      color: var(--ink);
+      text-transform: capitalize;
+    }
+    h3 {
+      font-family: var(--font-display);
+      font-size: .95rem;
+      font-weight: 600;
+      color: var(--ink);
+      margin: 1rem 0 .6rem;
+    }
+    h4 {
+      font-family: var(--font-display);
+      font-size: .9rem;
+      font-weight: 600;
+      color: var(--ink);
+      text-transform: capitalize;
+    }
+    h5.subtle-heading {
+      font-family: var(--font-mono);
+      font-size: .72rem;
+      font-weight: 500;
+      color: var(--faint);
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      margin: .6rem 0 .4rem;
+    }
+    .badge {
+      font-family: var(--font-mono);
+      background: var(--accent-dim);
+      color: var(--accent);
+      padding: .3rem .8rem;
+      border-radius: 999px;
+      font-weight: 500;
+      font-size: .72rem;
+      letter-spacing: .04em;
+    }
+    .panel-grid.two {
+      display: grid;
+      gap: 1.2rem;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+    .panel-grid.three {
+      display: grid;
+      gap: 1.2rem;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    }
+    .metric-card {
+      background: var(--surface-2);
+      border: 1px solid var(--line-soft);
+      border-radius: 14px;
+      padding: 1.2rem 1.4rem;
+    }
+
+    /* Lists */
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 .8rem;
+    }
+    .data-list li, .stat-list li, .mini-list li, .table-list li {
+      font-size: .85rem;
+      color: var(--muted);
+      padding: .3rem 0;
+      line-height: 1.45;
+      border-bottom: 1px solid var(--line-soft);
+      word-break: break-word;
+    }
+    .data-list li::before {
+      content: '◆';
+      font-size: .5rem;
+      color: var(--accent);
+      margin-right: .6rem;
+      vertical-align: middle;
+    }
+    .stat-list { margin-bottom: .8rem; }
+    .mini-list { padding-left: .8rem; }
+    .mini-list li::before {
+      content: '·';
+      color: var(--faint);
+      margin-right: .5rem;
+    }
+    .table-list { margin: 0; }
+    .table-list li { border: none; padding: .15rem 0; font-size: .78rem; }
+    .table-list li::before {
+      content: '–';
+      color: var(--faint);
+      margin-right: .4rem;
+    }
+
+    /* Tables */
+    .table-container {
+      overflow-x: auto;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: var(--surface);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 900px;
+    }
+    th, td {
+      padding: .85rem 1rem;
+      text-align: left;
+      vertical-align: top;
+      font-size: .82rem;
+      border-bottom: 1px solid var(--line-soft);
+      color: var(--muted);
+    }
+    th {
+      font-family: var(--font-mono);
+      font-size: .7rem;
+      font-weight: 500;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--faint);
+      background: var(--surface-2);
+    }
+    tbody tr:hover { background: var(--accent-dim); }
+    .muted-text { color: var(--faint); font-size: .82rem; margin: 0 0 .6rem; }
+
+    /* Details / Accordion */
+    details.details-panel {
+      background: var(--surface-2);
+      border: 1px solid var(--line-soft);
+      border-radius: 14px;
+      padding: .8rem 1.2rem;
+    }
+    details summary {
+      cursor: pointer;
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: .9rem;
+      color: var(--ink);
+      list-style: none;
+    }
+    details summary::marker { display: none; }
+    details summary::after {
+      content: '▾';
+      display: inline-block;
+      margin-left: .5rem;
+      transition: transform .2s ease;
+      color: var(--accent);
+    }
+    details[open] summary::after { transform: rotate(180deg); }
+    .details-grid {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      margin-top: .8rem;
+    }
+    .sub-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 1rem 1.2rem;
+    }
+    .sub-card h3 { font-size: .88rem; margin: .6rem 0 .4rem; }
+
+    /* Chart */
+    .chart-wrapper {
+      background: var(--surface-2);
+      border: 1px solid var(--line-soft);
+      border-radius: 14px;
+      padding: 1.5rem;
+      min-height: 280px;
+      position: relative;
+    }
+    .vol-pill {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: .72rem;
+      font-weight: 500;
+      background: rgba(95,208,138,.14);
+      color: var(--green);
+      padding: .2rem .6rem;
+      border-radius: 999px;
+      letter-spacing: .03em;
+    }
+    .btn {
+      font-family: var(--font-mono);
+      font-size: .72rem;
+      padding: .4rem .8rem;
+      border-radius: 999px;
+      border: 1px solid var(--accent-line);
+      background: var(--accent-dim);
+      color: var(--accent);
+      cursor: pointer;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      transition: all .15s ease;
+    }
+    .btn:hover {
+      background: rgba(77,182,255,.22);
+      transform: translateY(-1px);
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      border-top: 1px solid var(--line-soft);
+    }
+    footer p {
+      font-family: var(--font-mono);
+      font-size: .7rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--faint);
+    }
+
+    /* Animations */
+    @media (prefers-reduced-motion: no-preference) {
+      .anim  { animation: rise .55s cubic-bezier(.2,.7,.2,1) both; }
+      .anim2 { animation: rise .55s cubic-bezier(.2,.7,.2,1) .08s both; }
+      .anim3 { animation: rise .55s cubic-bezier(.2,.7,.2,1) .16s both; }
+      .anim4 { animation: rise .55s cubic-bezier(.2,.7,.2,1) .24s both; }
+      @keyframes rise {
+        from { opacity: 0; transform: translateY(16px); }
+        to   { opacity: 1; transform: none; }
+      }
+    }
+    @media print {
+      .anim,.anim2,.anim3,.anim4 { animation: none !important; opacity: 1 !important; transform: none !important; }
+      body { background: #fff; color: #1a1a1a; }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      header { padding: 2.4rem 0 1.8rem; }
+      header .logo-wrapper { position: static; margin-bottom: .8rem; }
+      header h1 { font-size: 1.8rem; }
+      .kpi-strip { grid-template-columns: repeat(2, 1fr); }
+      .kpi-value { font-size: 1.5rem; }
+      .card { padding: 1.4rem 1.2rem; }
+    }
+
+    /* Back nav */
+    .back-nav {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      padding: .75rem 1.5rem;
+      font-family: var(--font-mono);
+      font-size: .72rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      border-bottom: 1px solid var(--line-soft);
+      width: 100%;
+      transition: color .15s;
+    }
+    .back-nav:hover { color: var(--accent); }
+    .back-nav::before { content: '←'; font-size: .9rem; letter-spacing: 0; }
   </style>
 </head>
 <body>
+  <a class="back-nav" href="../../index.html">All reports</a>
   <header>
     <div class='header-inner'>
       <div class='logo-wrapper'>
@@ -80,318 +443,633 @@
 </svg>
 
       </div>
-      <h1>Jun 7, 2026 — Spotflow Insights</h1>
+      <div class="eyebrow">Spotflow Insights</div>
+      <h1>Jun 07, 2026 — Spotflow Insights</h1>
+      <p class="date-range">Jun 07, 2026 00:00 — Jun 07, 2026 23:59</p>
     </div>
   </header>
   <main>
-    <section>
-      <div class='section-header'>
-        <div class='title-with-total'><h2>Aggregate overview</h2><span class='badge'>Total: 795</span></div>
+    
+    <div class="kpi-strip">
+      <div class="kpi-card">
+        <span class="kpi-label">Total Transactions</span>
+        <span class="kpi-value">795</span>
+        <span class="kpi-sub">S:260 · F:135 · A:376</span>
       </div>
-      <div class='panel-grid two'>
-        <div class='metric-card'>
+      <div class="kpi-card kpi-accent">
+        <span class="kpi-label">Success Revenue</span>
+        <span class="kpi-value"><span class="vol-pill" style="font-size:inherit;padding:.2rem .8rem;">$2,454.67</span></span>
+        <span class="kpi-sub">Successful transactions only</span>
+      </div>
+      <div class="kpi-card kpi-green">
+        <span class="kpi-label">Success Rate</span>
+        <span class="kpi-value">32.7%</span>
+        <span class="kpi-sub">260 of 795 transactions</span>
+      </div>
+      <div class="kpi-card kpi-red">
+        <span class="kpi-label">Failed Revenue</span>
+        <span class="kpi-value"><span class="vol-pill" style="font-size:inherit;padding:.2rem .8rem;background:rgba(255,122,122,.14);color:var(--red);">$1,066.10</span></span>
+        <span class="kpi-sub">135 failed transactions</span>
+      </div>
+    </div>
+    
+
+    <section class="card anim">
+      <div class="section-header">
+        <div class="title-with-total"><h2>Merchant volume</h2><span class="badge">4 merchants</span></div>
+      </div>
+      <div class="panel-grid two">
+        <div class="chart-wrapper">
+          <canvas id="merchantChart"></canvas>
+        </div>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr><th>Merchant</th><th>Txns</th><th>Success</th><th>Failed</th><th>Volume</th><th>Failed $</th><th>Rate</th><th>Top Channel</th><th>Top Region</th></tr>
+            </thead>
+            <tbody><tr>
+          <td>Audiomack Inc.</td>
+          <td>625</td>
+          <td>179</td>
+          <td>61</td>
+          <td><span class='vol-pill'>$1,288.46</span></td>
+          <td><span class='vol-pill' style='background:rgba(255,122,122,.14);color:var(--red);'>$498.48</span></td>
+          <td>28.6%</td>
+          <td>Bank Transfer</td>
+          <td>Nigeria</td>
+        </tr><tr>
+          <td>Nestuge</td>
+          <td>73</td>
+          <td>50</td>
+          <td>9</td>
+          <td><span class='vol-pill'>$980.68</span></td>
+          <td><span class='vol-pill' style='background:rgba(255,122,122,.14);color:var(--red);'>$178.60</span></td>
+          <td>68.5%</td>
+          <td>Mobile Money</td>
+          <td>Ghana</td>
+        </tr><tr>
+          <td>Gadsfy</td>
+          <td>96</td>
+          <td>31</td>
+          <td>65</td>
+          <td><span class='vol-pill'>$185.53</span></td>
+          <td><span class='vol-pill' style='background:rgba(255,122,122,.14);color:var(--red);'>$389.02</span></td>
+          <td>32.3%</td>
+          <td>Mobile Money</td>
+          <td>Cameroon</td>
+        </tr><tr>
+          <td>Spotflow Demo</td>
+          <td>1</td>
+          <td>0</td>
+          <td>0</td>
+          <td><span class='vol-pill'>$0.00</span></td>
+          <td><span class='vol-pill' style='background:rgba(255,122,122,.14);color:var(--red);'>$0.00</span></td>
+          <td>0.0%</td>
+          <td>Bank Transfer</td>
+          <td>Nigeria</td>
+        </tr></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="card anim2">
+      <div class="section-header">
+        <div class="title-with-total"><h2>Aggregate overview</h2><span class="badge">795 txns</span></div>
+      </div>
+      <div class="panel-grid two">
+        <div class="metric-card">
           <h3>Status mix</h3>
           <ul class='data-list'><li>Successful — 260</li><li>Failed — 135</li><li>Abandoned — 376</li><li>Cancelled — 24</li></ul>
           <h3>Channel distribution</h3>
           <ul class='data-list'><li>Card — 38</li><li>Bank Transfer — 434</li><li>Mobile Money — 312</li><li>Eft — 11</li></ul>
         </div>
-        <div class='metric-card'>
+        <div class="metric-card">
           <h3>Top success messages</h3>
           <ul class='data-list'><li>No provider message (blank) — 122</li><li>Success — 99</li><li>Complete payment process — 31</li><li>Payment completed — 8</li></ul>
           <h3>Top failure messages</h3>
-          <ul class='data-list'><li>Payment failed. the customer doesn't have enough funds — 39</li><li>The MTN mobile money user has reached counter or balance limits — 18</li><li>Transaction failed — 16</li><li>Payment failed. the waiting period for payment execution has expired — 15</li><li>No provider message (blank) — 12</li><li>An error occurred on our server. please retry later — 6</li><li>Insufficient funds — 5</li><li>Request to generate token is successful — 3</li><li>OTP verification required — 3</li><li>Token authentication failed. incorrect token supplied — 2</li><li>Invalid card number — 2</li><li>Authorized successful — 2</li><li>Merchant not found — 2</li><li>Provider failed — 2</li><li>The vodafone cash failed — 2</li><li>Error processing payment — 1</li><li>Payment in progress — 1</li><li>Verve cards can only pay NGN at this time — 1</li><li>Merchant is not enabled for international transactions — 1</li><li>Payment failed. incorrect phone number — 1</li><li>OTP is required when orange provider is selected — 1</li></ul>
+          <ul class='data-list'><li>Payment failed. the customer doesn't have enough funds — 39</li><li>The MTN mobile money user has reached counter or balance limits — 18</li><li>Transaction failed — 16</li><li>Payment failed. the waiting period for payment execution has expired — 15</li><li>No provider message (blank) — 12</li><li>An error occurred on our server. please retry later — 6</li><li>Insufficient funds — 5</li><li>Request to generate token is successful — 3</li><li>OTP verification required — 3</li><li>Token authentication failed. incorrect token supplied — 2</li><div id='more-ea989025' style='display:none;'><li>Invalid card number — 2</li><li>Authorized successful — 2</li><li>Merchant not found — 2</li><li>Provider failed — 2</li><li>The vodafone cash failed — 2</li><li>Error processing payment — 1</li><li>Payment in progress — 1</li><li>Verve cards can only pay NGN at this time — 1</li><li>Merchant is not enabled for international transactions — 1</li><li>Payment failed. incorrect phone number — 1</li><li>OTP is required when orange provider is selected — 1</li></div></ul><button class='btn' style='margin-top:.5rem;' onclick="var el=document.getElementById('more-ea989025');if(el.style.display==='none'){el.style.display='block';this.textContent='Show less'}else{el.style.display='none';this.textContent='See all 21 messages'}">See all 21 messages</button>
         </div>
       </div>
     </section>
-    <section>
-      <div class='section-header'>
-        <div class='title-with-total'><h2>Provider contribution</h2><span class='badge'>Providers: 8</span></div>
+
+    <section class="card anim2">
+      <div class="section-header">
+        <div class="title-with-total"><h2>Provider contribution</h2><span class="badge">8 providers</span></div>
       </div>
-      <div class='table-container extra-wide'>
+      <div class="table-container">
         <table>
           <thead>
-            <tr>
-              <th>Provider</th><th>Total</th><th>Success</th><th>Failed</th><th>Abandoned</th><th>Cancelled</th><th>Success rate</th><th>Failure rate</th><th>Abandon rate</th><th>Top success reasons</th><th>Top failure reasons</th>
-            </tr>
+            <tr><th>Provider</th><th>Total</th><th>Success</th><th>Failed</th><th>Abandoned</th><th>Cancelled</th><th>Success %</th><th>Fail %</th><th>Volume</th><th>Top success</th><th>Top failure</th></tr>
           </thead>
-          <tbody>
-            <tr><td>cellulant</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0.0%</td><td>0.0%</td><td>100.0%</td><td><ul class='table-list'><li>—</li></ul></td><td><ul class='table-list'><li>—</li></ul></td></tr><tr><td>hub2</td><td>98</td><td>31</td><td>67</td><td>0</td><td>0</td><td>31.6%</td><td>68.4%</td><td>0.0%</td><td><ul class='table-list'><li>Complete payment process (31)</li></ul></td><td><ul class='table-list'><li>Payment failed. the customer doesn't have enough funds (39)</li><li>Payment failed. the waiting period for payment execution has expired (15)</li><li>An error occurred on our server. please retry later (6)</li><li>Authorized successful (2)</li><li>Merchant not found (2)</li><li>Payment in progress (1)</li><li>Payment failed. incorrect phone number (1)</li><li>OTP is required when orange provider is selected (1)</li></ul></td></tr><tr><td>hubtel</td><td>186</td><td>99</td><td>39</td><td>30</td><td>18</td><td>53.2%</td><td>21.0%</td><td>16.1%</td><td><ul class='table-list'><li>Success (99)</li></ul></td><td><ul class='table-list'><li>The MTN mobile money user has reached counter or balance limits (18)</li><li>Transaction failed (16)</li><li>The vodafone cash failed (2)</li><li>No provider message (blank) (2)</li><li>Error processing payment (1)</li></ul></td></tr><tr><td>ozow</td><td>11</td><td>0</td><td>3</td><td>3</td><td>5</td><td>0.0%</td><td>27.3%</td><td>27.3%</td><td><ul class='table-list'><li>—</li></ul></td><td><ul class='table-list'><li>No provider message (blank) (3)</li></ul></td></tr><tr><td>pawapay</td><td>5</td><td>4</td><td>1</td><td>0</td><td>0</td><td>80.0%</td><td>20.0%</td><td>0.0%</td><td><ul class='table-list'><li>No provider message (blank) (4)</li></ul></td><td><ul class='table-list'><li>No provider message (blank) (1)</li></ul></td></tr><tr><td>paystack</td><td>38</td><td>9</td><td>18</td><td>10</td><td>1</td><td>23.7%</td><td>47.4%</td><td>26.3%</td><td><ul class='table-list'><li>No provider message (blank) (9)</li></ul></td><td><ul class='table-list'><li>No provider message (blank) (6)</li><li>Request to generate token is successful (3)</li><li>OTP verification required (3)</li><li>Token authentication failed. incorrect token supplied (2)</li><li>Invalid card number (2)</li><li>Verve cards can only pay NGN at this time (1)</li><li>Merchant is not enabled for international transactions (1)</li></ul></td></tr><tr><td>spotflow_accounts</td><td>434</td><td>109</td><td>0</td><td>325</td><td>0</td><td>25.1%</td><td>0.0%</td><td>74.9%</td><td><ul class='table-list'><li>No provider message (blank) (109)</li></ul></td><td><ul class='table-list'><li>—</li></ul></td></tr><tr><td>tembo_plus</td><td>22</td><td>8</td><td>7</td><td>7</td><td>0</td><td>36.4%</td><td>31.8%</td><td>31.8%</td><td><ul class='table-list'><li>Payment completed (8)</li></ul></td><td><ul class='table-list'><li>Insufficient funds (5)</li><li>Provider failed (2)</li></ul></td></tr>
-          </tbody>
+          <tbody><tr>
+          <td>cellulant</td>
+          <td>1</td>
+          <td>0</td>
+          <td>0</td>
+          <td>1</td>
+          <td>0</td>
+          <td>0.0%</td>
+          <td>0.0%</td>
+          <td><span class='vol-pill'>$0.00</span></td>
+          <td><ul class='table-list'><li>—</li></ul></td>
+          <td><ul class='table-list'><li>—</li></ul></td>
+        </tr><tr>
+          <td>hub2</td>
+          <td>98</td>
+          <td>31</td>
+          <td>67</td>
+          <td>0</td>
+          <td>0</td>
+          <td>31.6%</td>
+          <td>68.4%</td>
+          <td><span class='vol-pill'>$185.53</span></td>
+          <td><ul class='table-list'><li>Complete payment process (31)</li></ul></td>
+          <td><ul class='table-list'><li>Payment failed. the customer doesn't have enough funds (39)</li><li>Payment failed. the waiting period for payment execution has expired (15)</li><li>An error occurred on our server. please retry later (6)</li></ul></td>
+        </tr><tr>
+          <td>hubtel</td>
+          <td>186</td>
+          <td>99</td>
+          <td>39</td>
+          <td>30</td>
+          <td>18</td>
+          <td>53.2%</td>
+          <td>21.0%</td>
+          <td><span class='vol-pill'>$1,043.54</span></td>
+          <td><ul class='table-list'><li>Success (99)</li></ul></td>
+          <td><ul class='table-list'><li>The MTN mobile money user has reached counter or balance limits (18)</li><li>Transaction failed (16)</li><li>The vodafone cash failed (2)</li></ul></td>
+        </tr><tr>
+          <td>ozow</td>
+          <td>11</td>
+          <td>0</td>
+          <td>3</td>
+          <td>3</td>
+          <td>5</td>
+          <td>0.0%</td>
+          <td>27.3%</td>
+          <td><span class='vol-pill'>$0.00</span></td>
+          <td><ul class='table-list'><li>—</li></ul></td>
+          <td><ul class='table-list'><li>No provider message (blank) (3)</li></ul></td>
+        </tr><tr>
+          <td>pawapay</td>
+          <td>5</td>
+          <td>4</td>
+          <td>1</td>
+          <td>0</td>
+          <td>0</td>
+          <td>80.0%</td>
+          <td>20.0%</td>
+          <td><span class='vol-pill'>$192.37</span></td>
+          <td><ul class='table-list'><li>No provider message (blank) (4)</li></ul></td>
+          <td><ul class='table-list'><li>No provider message (blank) (1)</li></ul></td>
+        </tr><tr>
+          <td>paystack</td>
+          <td>38</td>
+          <td>9</td>
+          <td>18</td>
+          <td>10</td>
+          <td>1</td>
+          <td>23.7%</td>
+          <td>47.4%</td>
+          <td><span class='vol-pill'>$36.38</span></td>
+          <td><ul class='table-list'><li>No provider message (blank) (9)</li></ul></td>
+          <td><ul class='table-list'><li>No provider message (blank) (6)</li><li>Request to generate token is successful (3)</li><li>OTP verification required (3)</li></ul></td>
+        </tr><tr>
+          <td>spotflow_accounts</td>
+          <td>434</td>
+          <td>109</td>
+          <td>0</td>
+          <td>325</td>
+          <td>0</td>
+          <td>25.1%</td>
+          <td>0.0%</td>
+          <td><span class='vol-pill'>$937.72</span></td>
+          <td><ul class='table-list'><li>No provider message (blank) (109)</li></ul></td>
+          <td><ul class='table-list'><li>—</li></ul></td>
+        </tr><tr>
+          <td>tembo_plus</td>
+          <td>22</td>
+          <td>8</td>
+          <td>7</td>
+          <td>7</td>
+          <td>0</td>
+          <td>36.4%</td>
+          <td>31.8%</td>
+          <td><span class='vol-pill'>$59.13</span></td>
+          <td><ul class='table-list'><li>Payment completed (8)</li></ul></td>
+          <td><ul class='table-list'><li>Insufficient funds (5)</li><li>Provider failed (2)</li></ul></td>
+        </tr></tbody>
         </table>
       </div>
     </section>
-    
-<section>
-  <div class='section-header'>
-    <div class='title-with-total'><h2>Nigeria</h2><span class='badge'>Total: 463</span></div>
-  </div>
-  <div class='panel-grid two'>
-    <div class='metric-card'>
-      <h3>Status mix</h3>
-      <ul class='data-list'><li>Successful — 118</li><li>Failed — 16</li><li>Abandoned — 328</li><li>Cancelled — 1</li></ul>
-      <h3>Channel breakdown</h3><ul class='data-list'><li>Card — 29</li><li>Bank Transfer — 434</li></ul>
-    </div>
-    <div class='metric-card'>
-      <h3>Top success reasons</h3>
-      <ul class='data-list'><li>No provider message (blank) — 118</li></ul>
-      <h3>Top failure reasons</h3>
-      <ul class='data-list'><li>No provider message (blank) — 5</li><li>Request to generate token is successful — 3</li><li>OTP verification required — 3</li><li>Token authentication failed. incorrect token supplied — 2</li><li>Invalid card number — 2</li><li>Merchant is not enabled for international transactions — 1</li></ul>
-    </div>
-  </div>
-  <details class='details-panel'><summary>Provider breakdown</summary><div class='details-grid'><div class='sub-card'><h4>paystack</h4><p class='muted'>Total: 29</p><ul class='stat-list'><li>Successful — 9</li><li>Failed — 16</li><li>Abandoned — 3</li><li>Cancelled — 1</li></ul><h5 class='subtle-heading'>provider message highlights</h5><ul class='mini-list'><li>No provider message (blank) — 9</li></ul><ul class='mini-list'><li>No provider message (blank) — 5</li><li>Request to generate token is successful — 3</li><li>OTP verification required — 3</li><li>Token authentication failed. incorrect token supplied — 2</li><li>Invalid card number — 2</li><li>Merchant is not enabled for international transactions — 1</li></ul></div><div class='sub-card'><h4>spotflow_accounts</h4><p class='muted'>Total: 434</p><ul class='stat-list'><li>Successful — 109</li><li>Abandoned — 325</li></ul><h5 class='subtle-heading'>provider message highlights</h5><ul class='mini-list'><li>No provider message (blank) — 109</li></ul></div></div></details>
-</section>
-
-<section>
-  <div class='section-header'>
-    <div class='title-with-total'><h2>Ghana</h2><span class='badge'>Total: 195</span></div>
-  </div>
-  <div class='panel-grid two'>
-    <div class='metric-card'>
-      <h3>Status mix</h3>
-      <ul class='data-list'><li>Successful — 99</li><li>Failed — 41</li><li>Abandoned — 37</li><li>Cancelled — 18</li></ul>
-      <h3>Channel breakdown</h3><ul class='data-list'><li>Card — 9</li><li>Mobile Money — 186</li></ul>
-    </div>
-    <div class='metric-card'>
-      <h3>Top success reasons</h3>
-      <ul class='data-list'><li>Success — 99</li></ul>
-      <h3>Top failure reasons</h3>
-      <ul class='data-list'><li>The MTN mobile money user has reached counter or balance limits — 18</li><li>Transaction failed — 16</li><li>No provider message (blank) — 3</li><li>The vodafone cash failed — 2</li><li>Error processing payment — 1</li><li>Verve cards can only pay NGN at this time — 1</li></ul>
-    </div>
-  </div>
-  <details class='details-panel'><summary>Provider breakdown</summary><div class='details-grid'><div class='sub-card'><h4>hubtel</h4><p class='muted'>Total: 186</p><ul class='stat-list'><li>Successful — 99</li><li>Failed — 39</li><li>Abandoned — 30</li><li>Cancelled — 18</li></ul><h5 class='subtle-heading'>provider message highlights</h5><ul class='mini-list'><li>Success — 99</li></ul><ul class='mini-list'><li>The MTN mobile money user has reached counter or balance limits — 18</li><li>Transaction failed — 16</li><li>The vodafone cash failed — 2</li><li>No provider message (blank) — 2</li><li>Error processing payment — 1</li></ul></div><div class='sub-card'><h4>paystack</h4><p class='muted'>Total: 9</p><ul class='stat-list'><li>Failed — 2</li><li>Abandoned — 7</li></ul><h5 class='subtle-heading'>provider message highlights</h5><ul class='mini-list'><li>No provider message (blank) — 1</li><li>Verve cards can only pay NGN at this time — 1</li></ul></div></div></details>
-</section>
-
-<section>
-  <div class='section-header'>
-    <div class='title-with-total'><h2>South Africa</h2><span class='badge'>Total: 11</span></div>
-  </div>
-  <div class='panel-grid two'>
-    <div class='metric-card'>
-      <h3>Status mix</h3>
-      <ul class='data-list'><li>Failed — 3</li><li>Abandoned — 3</li><li>Cancelled — 5</li></ul>
-      <h3>Channel breakdown</h3><ul class='data-list'><li>Eft — 11</li></ul>
-    </div>
-    <div class='metric-card'>
-      <h3>Top success reasons</h3>
-      <ul class='data-list'><li>—</li></ul>
-      <h3>Top failure reasons</h3>
-      <ul class='data-list'><li>No provider message (blank) — 3</li></ul>
-    </div>
-  </div>
-  <details class='details-panel'><summary>Provider breakdown</summary><div class='details-grid'><div class='sub-card'><h4>ozow</h4><p class='muted'>Total: 11</p><ul class='stat-list'><li>Failed — 3</li><li>Abandoned — 3</li><li>Cancelled — 5</li></ul><h5 class='subtle-heading'>provider message highlights</h5><ul class='mini-list'><li>No provider message (blank) — 3</li></ul></div></div></details>
-</section>
-
-<section>
-  <div class='section-header'>
-    <div class='title-with-total'><h2>Kenya</h2><span class='badge'>Total: 1</span></div>
-  </div>
-  <div class='panel-grid two'>
-    <div class='metric-card'>
-      <h3>Status mix</h3>
-      <ul class='data-list'><li>Abandoned — 1</li></ul>
-      <h3>Channel breakdown</h3><ul class='data-list'><li>Mobile Money — 1</li></ul>
-    </div>
-    <div class='metric-card'>
-      <h3>Top success reasons</h3>
-      <ul class='data-list'><li>—</li></ul>
-      <h3>Top failure reasons</h3>
-      <ul class='data-list'><li>—</li></ul>
-    </div>
-  </div>
-  <details class='details-panel'><summary>Provider breakdown</summary><div class='details-grid'><div class='sub-card'><h4>cellulant</h4><p class='muted'>Total: 1</p><ul class='stat-list'><li>Abandoned — 1</li></ul></div></div></details>
-</section>
-
-<section>
-  <div class='section-header'>
-    <div class='title-with-total'><h2>Tanzania</h2><span class='badge'>Total: 22</span></div>
-  </div>
-  <div class='panel-grid two'>
-    <div class='metric-card'>
-      <h3>Status mix</h3>
-      <ul class='data-list'><li>Successful — 8</li><li>Failed — 7</li><li>Abandoned — 7</li></ul>
-      <h3>Channel breakdown</h3><ul class='data-list'><li>Mobile Money — 22</li></ul>
-    </div>
-    <div class='metric-card'>
-      <h3>Top success reasons</h3>
-      <ul class='data-list'><li>Payment completed — 8</li></ul>
-      <h3>Top failure reasons</h3>
-      <ul class='data-list'><li>Insufficient funds — 5</li><li>Provider failed — 2</li></ul>
-    </div>
-  </div>
-  <details class='details-panel'><summary>Provider breakdown</summary><div class='details-grid'><div class='sub-card'><h4>tembo_plus</h4><p class='muted'>Total: 22</p><ul class='stat-list'><li>Successful — 8</li><li>Failed — 7</li><li>Abandoned — 7</li></ul><h5 class='subtle-heading'>provider message highlights</h5><ul class='mini-list'><li>Payment completed — 8</li></ul><ul class='mini-list'><li>Insufficient funds — 5</li><li>Provider failed — 2</li></ul></div></div></details>
-</section>
-
-<section>
-  <div class='section-header'>
-    <div class='title-with-total'><h2>Benin</h2><span class='badge'>Total: 2</span></div>
-  </div>
-  <div class='panel-grid two'>
-    <div class='metric-card'>
-      <h3>Status mix</h3>
-      <ul class='data-list'><li>Failed — 2</li></ul>
-      <h3>Channel breakdown</h3><ul class='data-list'><li>Mobile Money — 2</li></ul>
-    </div>
-    <div class='metric-card'>
-      <h3>Top success reasons</h3>
-      <ul class='data-list'><li>—</li></ul>
-      <h3>Top failure reasons</h3>
-      <ul class='data-list'><li>Authorized successful — 2</li></ul>
-    </div>
-  </div>
-  <details class='details-panel'><summary>Provider breakdown</summary><div class='details-grid'><div class='sub-card'><h4>hub2</h4><p class='muted'>Total: 2</p><ul class='stat-list'><li>Failed — 2</li></ul><h5 class='subtle-heading'>provider message highlights</h5><ul class='mini-list'><li>Authorized successful — 2</li></ul></div></div></details>
-</section>
-
-<section>
-  <div class='section-header'>
-    <div class='title-with-total'><h2>Cameroon</h2><span class='badge'>Total: 101</span></div>
-  </div>
-  <div class='panel-grid two'>
-    <div class='metric-card'>
-      <h3>Status mix</h3>
-      <ul class='data-list'><li>Successful — 35</li><li>Failed — 66</li></ul>
-      <h3>Channel breakdown</h3><ul class='data-list'><li>Mobile Money — 101</li></ul>
-    </div>
-    <div class='metric-card'>
-      <h3>Top success reasons</h3>
-      <ul class='data-list'><li>Complete payment process — 31</li><li>No provider message (blank) — 4</li></ul>
-      <h3>Top failure reasons</h3>
-      <ul class='data-list'><li>Payment failed. the customer doesn't have enough funds — 39</li><li>Payment failed. the waiting period for payment execution has expired — 15</li><li>An error occurred on our server. please retry later — 6</li><li>Merchant not found — 2</li><li>No provider message (blank) — 1</li><li>Payment in progress — 1</li><li>Payment failed. incorrect phone number — 1</li><li>OTP is required when orange provider is selected — 1</li></ul>
-    </div>
-  </div>
-  <details class='details-panel'><summary>Provider breakdown</summary><div class='details-grid'><div class='sub-card'><h4>hub2</h4><p class='muted'>Total: 96</p><ul class='stat-list'><li>Successful — 31</li><li>Failed — 65</li></ul><h5 class='subtle-heading'>provider message highlights</h5><ul class='mini-list'><li>Complete payment process — 31</li></ul><ul class='mini-list'><li>Payment failed. the customer doesn't have enough funds — 39</li><li>Payment failed. the waiting period for payment execution has expired — 15</li><li>An error occurred on our server. please retry later — 6</li><li>Merchant not found — 2</li><li>Payment in progress — 1</li><li>Payment failed. incorrect phone number — 1</li><li>OTP is required when orange provider is selected — 1</li></ul></div><div class='sub-card'><h4>pawapay</h4><p class='muted'>Total: 5</p><ul class='stat-list'><li>Successful — 4</li><li>Failed — 1</li></ul><h5 class='subtle-heading'>provider message highlights</h5><ul class='mini-list'><li>No provider message (blank) — 4</li></ul><ul class='mini-list'><li>No provider message (blank) — 1</li></ul></div></div></details>
-</section>
 
     
-    <section>
-      <div class='section-header'>
-        <div class='title-with-total'><h2>Further insights</h2><span class='badge'>Customer retry behaviour</span></div>
+    <section class="card anim3">
+      <div class="section-header">
+        <div class="title-with-total"><h2>Nigeria</h2><span class="badge">463 txns · <span class='vol-pill'>$974.10</span></span></div>
       </div>
-      <div class='panel-grid two'>
-        <div class='metric-card'>
-          <h3>Customer retry outcomes</h3>
-          <ul class='data-list'><li>Customers who retried — 124</li><li>Ever completed after retry — 57</li><li>Still unresolved after retries — 67</li><li>Succeeded mid-sequence but ended with non-success status — 5</li><li>Transactions at 990 NGN — 2</li></ul>
+      <div class="panel-grid two">
+        <div class="metric-card">
+          <h3>Status mix</h3>
+          <ul class='data-list'><li>Successful — 118</li><li>Failed — 16</li><li>Abandoned — 328</li><li>Cancelled — 1</li></ul>
+          <h3>Channel distribution</h3>
+          <ul class='data-list'><li>Card — 29</li><li>Bank Transfer — 434</li></ul>
+        </div>
+        <div class="metric-card">
+          <h3>Top success reasons</h3>
+          <ul class='data-list'><li>No provider message (blank) — 118</li></ul>
+          <h3>Top failure reasons</h3>
+          <ul class='data-list'><li>No provider message (blank) — 5</li><li>Request to generate token is successful — 3</li><li>OTP verification required — 3</li><li>Token authentication failed. incorrect token supplied — 2</li><li>Invalid card number — 2</li><li>Merchant is not enabled for international transactions — 1</li></ul>
+        </div>
+      </div>
+      <details class='details-panel'><summary>Provider breakdown</summary><div class='details-grid'><div class='sub-card'>
+              <h4>paystack</h4>
+              <p class='muted-text'>Total: 29 · <span class='vol-pill'>$36.38</span></p>
+              <ul class='stat-list'><li>Successful — 9</li><li>Failed — 16</li><li>Abandoned — 3</li><li>Cancelled — 1</li></ul><h5 class='subtle-heading'>Provider message highlights</h5><ul class='mini-list'><li>No provider message (blank) — 9</li></ul><ul class='mini-list'><li>No provider message (blank) — 5</li><li>Request to generate token is successful — 3</li><li>OTP verification required — 3</li><li>Token authentication failed. incorrect token supplied — 2</li><li>Invalid card number — 2</li><li>Merchant is not enabled for international transactions — 1</li></ul></div><div class='sub-card'>
+              <h4>spotflow_accounts</h4>
+              <p class='muted-text'>Total: 434 · <span class='vol-pill'>$937.72</span></p>
+              <ul class='stat-list'><li>Successful — 109</li><li>Abandoned — 325</li></ul><h5 class='subtle-heading'>Provider message highlights</h5><ul class='mini-list'><li>No provider message (blank) — 109</li></ul></div></div></details>
+      <details class='details-panel'><summary>Merchant breakdown</summary><div class='details-grid'><div class='sub-card'>
+              <h4>Audiomack Inc.</h4>
+              <p class='muted-text'>461 txns · <span class='vol-pill'>$974.10</span> · Success: 25.6% · Top channel: Bank Transfer</p>
+              <ul class='stat-list'><li>Successful — 118</li><li>Failed — 16</li><li>Abandoned — 326</li><li>Cancelled — 1</li></ul>
+            </div><div class='sub-card'>
+              <h4>Nestuge</h4>
+              <p class='muted-text'>1 txns · <span class='vol-pill'>$0.00</span> · Success: 0.0% · Top channel: Bank Transfer</p>
+              <ul class='stat-list'><li>Abandoned — 1</li></ul>
+            </div><div class='sub-card'>
+              <h4>Spotflow Demo</h4>
+              <p class='muted-text'>1 txns · <span class='vol-pill'>$0.00</span> · Success: 0.0% · Top channel: Bank Transfer</p>
+              <ul class='stat-list'><li>Abandoned — 1</li></ul>
+            </div></div></details>
+    </section>
+
+    <section class="card anim3">
+      <div class="section-header">
+        <div class="title-with-total"><h2>Ghana</h2><span class="badge">195 txns · <span class='vol-pill'>$1,043.54</span></span></div>
+      </div>
+      <div class="panel-grid two">
+        <div class="metric-card">
+          <h3>Status mix</h3>
+          <ul class='data-list'><li>Successful — 99</li><li>Failed — 41</li><li>Abandoned — 37</li><li>Cancelled — 18</li></ul>
+          <h3>Channel distribution</h3>
+          <ul class='data-list'><li>Card — 9</li><li>Mobile Money — 186</li></ul>
+        </div>
+        <div class="metric-card">
+          <h3>Top success reasons</h3>
+          <ul class='data-list'><li>Success — 99</li></ul>
+          <h3>Top failure reasons</h3>
+          <ul class='data-list'><li>The MTN mobile money user has reached counter or balance limits — 18</li><li>Transaction failed — 16</li><li>No provider message (blank) — 3</li><li>The vodafone cash failed — 2</li><li>Error processing payment — 1</li><li>Verve cards can only pay NGN at this time — 1</li></ul>
+        </div>
+      </div>
+      <details class='details-panel'><summary>Provider breakdown</summary><div class='details-grid'><div class='sub-card'>
+              <h4>hubtel</h4>
+              <p class='muted-text'>Total: 186 · <span class='vol-pill'>$1,043.54</span></p>
+              <ul class='stat-list'><li>Successful — 99</li><li>Failed — 39</li><li>Abandoned — 30</li><li>Cancelled — 18</li></ul><h5 class='subtle-heading'>Provider message highlights</h5><ul class='mini-list'><li>Success — 99</li></ul><ul class='mini-list'><li>The MTN mobile money user has reached counter or balance limits — 18</li><li>Transaction failed — 16</li><li>The vodafone cash failed — 2</li><li>No provider message (blank) — 2</li><li>Error processing payment — 1</li></ul></div><div class='sub-card'>
+              <h4>paystack</h4>
+              <p class='muted-text'>Total: 9 · <span class='vol-pill'>$0.00</span></p>
+              <ul class='stat-list'><li>Failed — 2</li><li>Abandoned — 7</li></ul><h5 class='subtle-heading'>Provider message highlights</h5><ul class='mini-list'><li>No provider message (blank) — 1</li><li>Verve cards can only pay NGN at this time — 1</li></ul></div></div></details>
+      <details class='details-panel'><summary>Merchant breakdown</summary><div class='details-grid'><div class='sub-card'>
+              <h4>Nestuge</h4>
+              <p class='muted-text'>61 txns · <span class='vol-pill'>$755.18</span> · Success: 70.5% · Top channel: Mobile Money</p>
+              <ul class='stat-list'><li>Successful — 43</li><li>Failed — 6</li><li>Abandoned — 8</li><li>Cancelled — 4</li></ul>
+            </div><div class='sub-card'>
+              <h4>Audiomack Inc.</h4>
+              <p class='muted-text'>134 txns · <span class='vol-pill'>$288.36</span> · Success: 41.8% · Top channel: Mobile Money</p>
+              <ul class='stat-list'><li>Successful — 56</li><li>Failed — 35</li><li>Abandoned — 29</li><li>Cancelled — 14</li></ul>
+            </div></div></details>
+    </section>
+
+    <section class="card anim3">
+      <div class="section-header">
+        <div class="title-with-total"><h2>South Africa</h2><span class="badge">11 txns · <span class='vol-pill'>$0.00</span></span></div>
+      </div>
+      <div class="panel-grid two">
+        <div class="metric-card">
+          <h3>Status mix</h3>
+          <ul class='data-list'><li>Failed — 3</li><li>Abandoned — 3</li><li>Cancelled — 5</li></ul>
+          <h3>Channel distribution</h3>
+          <ul class='data-list'><li>Eft — 11</li></ul>
+        </div>
+        <div class="metric-card">
+          <h3>Top success reasons</h3>
+          <ul class='data-list'><li>—</li></ul>
+          <h3>Top failure reasons</h3>
+          <ul class='data-list'><li>No provider message (blank) — 3</li></ul>
+        </div>
+      </div>
+      <details class='details-panel'><summary>Provider breakdown</summary><div class='details-grid'><div class='sub-card'>
+              <h4>ozow</h4>
+              <p class='muted-text'>Total: 11 · <span class='vol-pill'>$0.00</span></p>
+              <ul class='stat-list'><li>Failed — 3</li><li>Abandoned — 3</li><li>Cancelled — 5</li></ul><h5 class='subtle-heading'>Provider message highlights</h5><ul class='mini-list'><li>No provider message (blank) — 3</li></ul></div></div></details>
+      <details class='details-panel'><summary>Merchant breakdown</summary><div class='details-grid'><div class='sub-card'>
+              <h4>Audiomack Inc.</h4>
+              <p class='muted-text'>11 txns · <span class='vol-pill'>$0.00</span> · Success: 0.0% · Top channel: Eft</p>
+              <ul class='stat-list'><li>Failed — 3</li><li>Abandoned — 3</li><li>Cancelled — 5</li></ul>
+            </div></div></details>
+    </section>
+
+    <section class="card anim3">
+      <div class="section-header">
+        <div class="title-with-total"><h2>Kenya</h2><span class="badge">1 txns · <span class='vol-pill'>$0.00</span></span></div>
+      </div>
+      <div class="panel-grid two">
+        <div class="metric-card">
+          <h3>Status mix</h3>
+          <ul class='data-list'><li>Abandoned — 1</li></ul>
+          <h3>Channel distribution</h3>
+          <ul class='data-list'><li>Mobile Money — 1</li></ul>
+        </div>
+        <div class="metric-card">
+          <h3>Top success reasons</h3>
+          <ul class='data-list'><li>—</li></ul>
+          <h3>Top failure reasons</h3>
+          <ul class='data-list'><li>—</li></ul>
+        </div>
+      </div>
+      <details class='details-panel'><summary>Provider breakdown</summary><div class='details-grid'><div class='sub-card'>
+              <h4>cellulant</h4>
+              <p class='muted-text'>Total: 1 · <span class='vol-pill'>$0.00</span></p>
+              <ul class='stat-list'><li>Abandoned — 1</li></ul></div></div></details>
+      <details class='details-panel'><summary>Merchant breakdown</summary><div class='details-grid'><div class='sub-card'>
+              <h4>Audiomack Inc.</h4>
+              <p class='muted-text'>1 txns · <span class='vol-pill'>$0.00</span> · Success: 0.0% · Top channel: Mobile Money</p>
+              <ul class='stat-list'><li>Abandoned — 1</li></ul>
+            </div></div></details>
+    </section>
+
+    <section class="card anim3">
+      <div class="section-header">
+        <div class="title-with-total"><h2>Tanzania</h2><span class="badge">22 txns · <span class='vol-pill'>$59.13</span></span></div>
+      </div>
+      <div class="panel-grid two">
+        <div class="metric-card">
+          <h3>Status mix</h3>
+          <ul class='data-list'><li>Successful — 8</li><li>Failed — 7</li><li>Abandoned — 7</li></ul>
+          <h3>Channel distribution</h3>
+          <ul class='data-list'><li>Mobile Money — 22</li></ul>
+        </div>
+        <div class="metric-card">
+          <h3>Top success reasons</h3>
+          <ul class='data-list'><li>Payment completed — 8</li></ul>
+          <h3>Top failure reasons</h3>
+          <ul class='data-list'><li>Insufficient funds — 5</li><li>Provider failed — 2</li></ul>
+        </div>
+      </div>
+      <details class='details-panel'><summary>Provider breakdown</summary><div class='details-grid'><div class='sub-card'>
+              <h4>tembo_plus</h4>
+              <p class='muted-text'>Total: 22 · <span class='vol-pill'>$59.13</span></p>
+              <ul class='stat-list'><li>Successful — 8</li><li>Failed — 7</li><li>Abandoned — 7</li></ul><h5 class='subtle-heading'>Provider message highlights</h5><ul class='mini-list'><li>Payment completed — 8</li></ul><ul class='mini-list'><li>Insufficient funds — 5</li><li>Provider failed — 2</li></ul></div></div></details>
+      <details class='details-panel'><summary>Merchant breakdown</summary><div class='details-grid'><div class='sub-card'>
+              <h4>Audiomack Inc.</h4>
+              <p class='muted-text'>16 txns · <span class='vol-pill'>$26.00</span> · Success: 31.2% · Top channel: Mobile Money</p>
+              <ul class='stat-list'><li>Successful — 5</li><li>Failed — 5</li><li>Abandoned — 6</li></ul>
+            </div><div class='sub-card'>
+              <h4>Nestuge</h4>
+              <p class='muted-text'>6 txns · <span class='vol-pill'>$33.13</span> · Success: 50.0% · Top channel: Mobile Money</p>
+              <ul class='stat-list'><li>Successful — 3</li><li>Failed — 2</li><li>Abandoned — 1</li></ul>
+            </div></div></details>
+    </section>
+
+    <section class="card anim3">
+      <div class="section-header">
+        <div class="title-with-total"><h2>Benin</h2><span class="badge">2 txns · <span class='vol-pill'>$0.00</span></span></div>
+      </div>
+      <div class="panel-grid two">
+        <div class="metric-card">
+          <h3>Status mix</h3>
+          <ul class='data-list'><li>Failed — 2</li></ul>
+          <h3>Channel distribution</h3>
+          <ul class='data-list'><li>Mobile Money — 2</li></ul>
+        </div>
+        <div class="metric-card">
+          <h3>Top success reasons</h3>
+          <ul class='data-list'><li>—</li></ul>
+          <h3>Top failure reasons</h3>
+          <ul class='data-list'><li>Authorized successful — 2</li></ul>
+        </div>
+      </div>
+      <details class='details-panel'><summary>Provider breakdown</summary><div class='details-grid'><div class='sub-card'>
+              <h4>hub2</h4>
+              <p class='muted-text'>Total: 2 · <span class='vol-pill'>$0.00</span></p>
+              <ul class='stat-list'><li>Failed — 2</li></ul><h5 class='subtle-heading'>Provider message highlights</h5><ul class='mini-list'><li>Authorized successful — 2</li></ul></div></div></details>
+      <details class='details-panel'><summary>Merchant breakdown</summary><div class='details-grid'><div class='sub-card'>
+              <h4>Audiomack Inc.</h4>
+              <p class='muted-text'>2 txns · <span class='vol-pill'>$0.00</span> · Success: 0.0% · Top channel: Mobile Money</p>
+              <ul class='stat-list'><li>Failed — 2</li></ul>
+            </div></div></details>
+    </section>
+
+    <section class="card anim3">
+      <div class="section-header">
+        <div class="title-with-total"><h2>Cameroon</h2><span class="badge">101 txns · <span class='vol-pill'>$377.90</span></span></div>
+      </div>
+      <div class="panel-grid two">
+        <div class="metric-card">
+          <h3>Status mix</h3>
+          <ul class='data-list'><li>Successful — 35</li><li>Failed — 66</li></ul>
+          <h3>Channel distribution</h3>
+          <ul class='data-list'><li>Mobile Money — 101</li></ul>
+        </div>
+        <div class="metric-card">
+          <h3>Top success reasons</h3>
+          <ul class='data-list'><li>Complete payment process — 31</li><li>No provider message (blank) — 4</li></ul>
+          <h3>Top failure reasons</h3>
+          <ul class='data-list'><li>Payment failed. the customer doesn't have enough funds — 39</li><li>Payment failed. the waiting period for payment execution has expired — 15</li><li>An error occurred on our server. please retry later — 6</li><li>Merchant not found — 2</li><li>No provider message (blank) — 1</li><li>Payment in progress — 1</li><li>Payment failed. incorrect phone number — 1</li><li>OTP is required when orange provider is selected — 1</li></ul>
+        </div>
+      </div>
+      <details class='details-panel'><summary>Provider breakdown</summary><div class='details-grid'><div class='sub-card'>
+              <h4>hub2</h4>
+              <p class='muted-text'>Total: 96 · <span class='vol-pill'>$185.53</span></p>
+              <ul class='stat-list'><li>Successful — 31</li><li>Failed — 65</li></ul><h5 class='subtle-heading'>Provider message highlights</h5><ul class='mini-list'><li>Complete payment process — 31</li></ul><ul class='mini-list'><li>Payment failed. the customer doesn't have enough funds — 39</li><li>Payment failed. the waiting period for payment execution has expired — 15</li><li>An error occurred on our server. please retry later — 6</li><li>Merchant not found — 2</li><li>Payment in progress — 1</li><li>Payment failed. incorrect phone number — 1</li><li>OTP is required when orange provider is selected — 1</li></ul></div><div class='sub-card'>
+              <h4>pawapay</h4>
+              <p class='muted-text'>Total: 5 · <span class='vol-pill'>$192.37</span></p>
+              <ul class='stat-list'><li>Successful — 4</li><li>Failed — 1</li></ul><h5 class='subtle-heading'>Provider message highlights</h5><ul class='mini-list'><li>No provider message (blank) — 4</li></ul><ul class='mini-list'><li>No provider message (blank) — 1</li></ul></div></div></details>
+      <details class='details-panel'><summary>Merchant breakdown</summary><div class='details-grid'><div class='sub-card'>
+              <h4>Gadsfy</h4>
+              <p class='muted-text'>96 txns · <span class='vol-pill'>$185.53</span> · Success: 32.3% · Top channel: Mobile Money</p>
+              <ul class='stat-list'><li>Successful — 31</li><li>Failed — 65</li></ul>
+            </div><div class='sub-card'>
+              <h4>Nestuge</h4>
+              <p class='muted-text'>5 txns · <span class='vol-pill'>$192.37</span> · Success: 80.0% · Top channel: Mobile Money</p>
+              <ul class='stat-list'><li>Successful — 4</li><li>Failed — 1</li></ul>
+            </div></div></details>
+    </section>
+
+    <section class="card anim3">
+      <div class="section-header">
+        <div class="title-with-total"><h2>Cameroon</h2><span class="badge">101 txns · <span class='vol-pill'>$377.90</span></span></div>
+      </div>
+      <div class="panel-grid two">
+        <div class="metric-card">
+          <h3>Status mix</h3>
+          <ul class='data-list'><li>Successful — 35</li><li>Failed — 66</li></ul>
+          <h3>Channel distribution</h3>
+          <ul class='data-list'><li>Mobile Money — 101</li></ul>
+        </div>
+        <div class="metric-card">
+          <h3>Top success reasons</h3>
+          <ul class='data-list'><li>Complete payment process — 31</li><li>No provider message (blank) — 4</li></ul>
+          <h3>Top failure reasons</h3>
+          <ul class='data-list'><li>Payment failed. the customer doesn't have enough funds — 39</li><li>Payment failed. the waiting period for payment execution has expired — 15</li><li>An error occurred on our server. please retry later — 6</li><li>Merchant not found — 2</li><li>No provider message (blank) — 1</li><li>Payment in progress — 1</li><li>Payment failed. incorrect phone number — 1</li><li>OTP is required when orange provider is selected — 1</li></ul>
+        </div>
+      </div>
+      <details class='details-panel'><summary>Provider breakdown</summary><div class='details-grid'><div class='sub-card'>
+              <h4>hub2</h4>
+              <p class='muted-text'>Total: 96 · <span class='vol-pill'>$185.53</span></p>
+              <ul class='stat-list'><li>Successful — 31</li><li>Failed — 65</li></ul><h5 class='subtle-heading'>Provider message highlights</h5><ul class='mini-list'><li>Complete payment process — 31</li></ul><ul class='mini-list'><li>Payment failed. the customer doesn't have enough funds — 39</li><li>Payment failed. the waiting period for payment execution has expired — 15</li><li>An error occurred on our server. please retry later — 6</li><li>Merchant not found — 2</li><li>Payment in progress — 1</li><li>Payment failed. incorrect phone number — 1</li><li>OTP is required when orange provider is selected — 1</li></ul></div><div class='sub-card'>
+              <h4>pawapay</h4>
+              <p class='muted-text'>Total: 5 · <span class='vol-pill'>$192.37</span></p>
+              <ul class='stat-list'><li>Successful — 4</li><li>Failed — 1</li></ul><h5 class='subtle-heading'>Provider message highlights</h5><ul class='mini-list'><li>No provider message (blank) — 4</li></ul><ul class='mini-list'><li>No provider message (blank) — 1</li></ul></div></div></details>
+      <details class='details-panel'><summary>Merchant breakdown</summary><div class='details-grid'><div class='sub-card'>
+              <h4>Gadsfy</h4>
+              <p class='muted-text'>96 txns · <span class='vol-pill'>$185.53</span> · Success: 32.3% · Top channel: Mobile Money</p>
+              <ul class='stat-list'><li>Successful — 31</li><li>Failed — 65</li></ul>
+            </div><div class='sub-card'>
+              <h4>Nestuge</h4>
+              <p class='muted-text'>5 txns · <span class='vol-pill'>$192.37</span> · Success: 80.0% · Top channel: Mobile Money</p>
+              <ul class='stat-list'><li>Successful — 4</li><li>Failed — 1</li></ul>
+            </div></div></details>
+    </section>
+
+
+
+
+    <section class="card anim4">
+      <div class="section-header">
+        <div class="title-with-total"><h2>Failure causes by region</h2><span class="badge">Customer pain points</span></div>
+      </div>
+      <div class="panel-grid two">
+        <div class='sub-card'>
+  <h3>Nigeria</h3>
+  <p class='muted-text'>Total failed: 16</p>
+  <ul class='mini-list'><li>No provider message (blank) — 5 (31.2%)</li><li>Request to generate token is successful — 3 (18.8%)</li><li>OTP verification required — 3 (18.8%)</li><li>Token authentication failed. incorrect token supplied — 2 (12.5%)</li><li>Invalid card number — 2 (12.5%)</li><li>Merchant is not enabled for international transactions — 1 (6.2%)</li></ul>
+</div><div class='sub-card'>
+  <h3>Ghana</h3>
+  <p class='muted-text'>Total failed: 41</p>
+  <ul class='mini-list'><li>The MTN mobile money user has reached counter or balance limits — 18 (43.9%)</li><li>Transaction failed — 16 (39.0%)</li><li>No provider message (blank) — 3 (7.3%)</li><li>The vodafone cash failed — 2 (4.9%)</li><li>Error processing payment — 1 (2.4%)</li><li>Verve cards can only pay NGN at this time — 1 (2.4%)</li></ul>
+</div><div class='sub-card'>
+  <h3>South Africa</h3>
+  <p class='muted-text'>Total failed: 3</p>
+  <ul class='mini-list'><li>No provider message (blank) — 3 (100.0%)</li></ul>
+</div><div class='sub-card'><h3>Kenya</h3><p class='muted-text'>No recorded failures.</p></div><div class='sub-card'>
+  <h3>Tanzania</h3>
+  <p class='muted-text'>Total failed: 7</p>
+  <ul class='mini-list'><li>Insufficient funds — 5 (71.4%)</li><li>Provider failed — 2 (28.6%)</li></ul>
+</div><div class='sub-card'>
+  <h3>Benin</h3>
+  <p class='muted-text'>Total failed: 2</p>
+  <ul class='mini-list'><li>Authorized successful — 2 (100.0%)</li></ul>
+</div><div class='sub-card'>
+  <h3>Cameroon</h3>
+  <p class='muted-text'>Total failed: 66</p>
+  <ul class='mini-list'><li>Payment failed. the customer doesn't have enough funds — 39 (59.1%)</li><li>Payment failed. the waiting period for payment execution has expired — 15 (22.7%)</li><li>An error occurred on our server. please retry later — 6 (9.1%)</li><li>Merchant not found — 2 (3.0%)</li><li>No provider message (blank) — 1 (1.5%)</li><li>Payment in progress — 1 (1.5%)</li><li>Payment failed. incorrect phone number — 1 (1.5%)</li><li>OTP is required when orange provider is selected — 1 (1.5%)</li></ul>
+</div><div class='sub-card'>
+  <h3>Cameroon</h3>
+  <p class='muted-text'>Total failed: 66</p>
+  <ul class='mini-list'><li>Payment failed. the customer doesn't have enough funds — 39 (59.1%)</li><li>Payment failed. the waiting period for payment execution has expired — 15 (22.7%)</li><li>An error occurred on our server. please retry later — 6 (9.1%)</li><li>Merchant not found — 2 (3.0%)</li><li>No provider message (blank) — 1 (1.5%)</li><li>Payment in progress — 1 (1.5%)</li><li>Payment failed. incorrect phone number — 1 (1.5%)</li><li>OTP is required when orange provider is selected — 1 (1.5%)</li></ul>
+</div>
+      </div>
+    </section>
+
+    
+    <section class="card anim4">
+      <div class="section-header">
+        <div class="title-with-total"><h2>Customer retry behaviour</h2><span class="badge">124 retriers</span></div>
+      </div>
+      <div class="panel-grid two">
+        <div class="metric-card">
+          <h3>Retry outcomes</h3>
+          <ul class='data-list'><li>Customers who retried — 124</li><li>Ever completed after retry — 57</li><li>Still unresolved — 105</li></ul>
           <h3>Final attempt statuses</h3>
           <ul class='data-list'><li>Successful — 52</li><li>Abandoned — 46</li><li>Failed — 23</li><li>Cancelled — 3</li></ul>
         </div>
-        <div class='metric-card'>
+        <div class="metric-card">
           <h3>Retry depth</h3>
           <ul class='data-list'><li>2 attempts — 78 customers</li><li>3 attempts — 20 customers</li><li>4 attempts — 14 customers</li><li>5 attempts — 5 customers</li><li>6 attempts — 4 customers</li><li>8 attempts — 1 customer</li><li>9 attempts — 1 customer</li><li>13 attempts — 1 customer</li></ul>
           <h3>Timing signals</h3>
-          <ul class='data-list'><li>Average gap between attempts — 0.76 hours (~45 minutes)</li><li>Median gap between attempts — 0.07 hours (~4 minutes)</li><li>A customer attempted 13 times before ending on a successful outcome.</li></ul>
-        </div>
-      </div>
-      <div class='panel-grid two'>
-        <div class='metric-card'>
-          <h3>Providers involved</h3>
-          <ul class='data-list'><li>Spotflow Accounts — 70 customers</li><li>Hubtel — 35 customers</li><li>Paystack — 11 customers</li><li>Hub2 — 10 customers</li><li>Tembo Plus — 3 customers</li><li>Ozow — 1 customer</li></ul>
-        </div>
-        <div class='metric-card'>
-          <h3>Regions involved</h3>
-          <ul class='data-list'><li>Nigeria — 73 customers</li><li>Ghana — 37 customers</li><li>Cameroon — 9 customers</li><li>Tanzania — 3 customers</li><li>Benin — 1 customer</li><li>South Africa — 1 customer</li></ul>
-        </div>
-      </div>
-      <div class='panel-grid two'>
-        <div class='metric-card'>
-          <h3>Path consistency</h3>
-          <ul class='data-list'><li>Stayed on same provider/channel — 118</li><li>Switched provider or channel — 6</li></ul>
-          <h3>Most common repeated paths</h3>
-          <ul class='data-list'><li>Spotflow Accounts · Bank Transfer (Nigeria) — 66 customers</li><li>Hubtel · Mobile Money (Ghana) — 33 customers</li><li>Hub2 · Mobile Money (Cameroon) — 9 customers</li><li>Paystack · Card (Nigeria) — 3 customers</li><li>Tembo Plus · Mobile Money (Tanzania) — 3 customers</li></ul>
+          <ul class='data-list'><li>Average gap — 0.76h (~45m)</li><li>Median gap — 0.07h (~4m)</li></ul>
         </div>
       </div>
     </section>
 
-    <section>
-      <div class='section-header'>
-        <div class='title-with-total'><h2>Highest failure causes by region</h2><span class='badge'>Focused on customer pain</span></div>
+
+    <section class="card anim4">
+      <div class="section-header">
+        <div class="title-with-total"><h2>Regional success vs failure</h2><span class="badge">Comparison</span></div>
+        <button class="btn" id="toggleChart">Toggle view</button>
       </div>
-      <div class='panel-grid two'>
-        
-<div class='sub-card'>
-  <h3>Nigeria</h3>
-  <p class='muted'>Total failed: 16</p>
-  <ul class='mini-list'><li>No provider message (blank) — 5 (31.2% of failures)</li><li>Request to generate token is successful — 3 (18.8% of failures)</li><li>OTP verification required — 3 (18.8% of failures)</li><li>Token authentication failed. incorrect token supplied — 2 (12.5% of failures)</li><li>Invalid card number — 2 (12.5% of failures)</li><li>Merchant is not enabled for international transactions — 1 (6.2% of failures)</li></ul>
-</div>
-
-<div class='sub-card'>
-  <h3>Ghana</h3>
-  <p class='muted'>Total failed: 41</p>
-  <ul class='mini-list'><li>The MTN mobile money user has reached counter or balance limits — 18 (43.9% of failures)</li><li>Transaction failed — 16 (39.0% of failures)</li><li>No provider message (blank) — 3 (7.3% of failures)</li><li>The vodafone cash failed — 2 (4.9% of failures)</li><li>Error processing payment — 1 (2.4% of failures)</li><li>Verve cards can only pay NGN at this time — 1 (2.4% of failures)</li></ul>
-</div>
-
-<div class='sub-card'>
-  <h3>South Africa</h3>
-  <p class='muted'>Total failed: 3</p>
-  <ul class='mini-list'><li>No provider message (blank) — 3 (100.0% of failures)</li></ul>
-</div>
-<div class='sub-card'><h3>Kenya</h3><p class='muted'>No recorded failures.</p></div>
-<div class='sub-card'>
-  <h3>Tanzania</h3>
-  <p class='muted'>Total failed: 7</p>
-  <ul class='mini-list'><li>Insufficient funds — 5 (71.4% of failures)</li><li>Provider failed — 2 (28.6% of failures)</li></ul>
-</div>
-
-<div class='sub-card'>
-  <h3>Benin</h3>
-  <p class='muted'>Total failed: 2</p>
-  <ul class='mini-list'><li>Authorized successful — 2 (100.0% of failures)</li></ul>
-</div>
-
-<div class='sub-card'>
-  <h3>Cameroon</h3>
-  <p class='muted'>Total failed: 66</p>
-  <ul class='mini-list'><li>Payment failed. the customer doesn't have enough funds — 39 (59.1% of failures)</li><li>Payment failed. the waiting period for payment execution has expired — 15 (22.7% of failures)</li><li>An error occurred on our server. please retry later — 6 (9.1% of failures)</li><li>Merchant not found — 2 (3.0% of failures)</li><li>No provider message (blank) — 1 (1.5% of failures)</li><li>Payment in progress — 1 (1.5% of failures)</li><li>Payment failed. incorrect phone number — 1 (1.5% of failures)</li><li>OTP is required when orange provider is selected — 1 (1.5% of failures)</li></ul>
-</div>
-
-      </div>
-    </section>
-    <section>
-      <div class='section-header'>
-        <div class='title-with-total'><h2>Regional success vs failure</h2><span class='badge'>Side-by-side comparison</span></div>
-        <button class='btn btn-secondary' id='toggleChart'>Toggle view</button>
-      </div>
-      <div class='chart-wrapper'>
-        <canvas id='regionChart'></canvas>
+      <div class="chart-wrapper">
+        <canvas id="regionChart"></canvas>
       </div>
     </section>
   </main>
+
+  <footer>
+    <p>◆ Spotflow &middot; Transaction Intelligence</p>
+  </footer>
+
   <script>
-    const regionData = {"labels": ["Nigeria", "Ghana", "South Africa", "Kenya", "Tanzania", "Benin", "Cameroon"], "success": [118, 99, 0, 0, 8, 0, 35], "failed": [16, 41, 3, 0, 7, 2, 66]};
-    const ctx = document.getElementById('regionChart').getContext('2d');
-    let chartType = 'bar';
-    const baseConfig = {
+    Chart.defaults.color = '#93A0AD';
+    Chart.defaults.borderColor = 'rgba(255,255,255,.06)';
+    Chart.defaults.font.family = "'IBM Plex Sans', sans-serif";
+
+    // Merchant chart
+    const mData = {"labels": ["Audiomack Inc.", "Nestuge", "Gadsfy", "Spotflow Demo"], "volume": [1288.46, 980.68, 185.53, 0.0], "success": [179, 50, 31, 0], "failed": [61, 9, 65, 0]};
+    new Chart(document.getElementById('merchantChart'), {
+      type: 'bar',
       data: {
-        labels: regionData.labels,
+        labels: mData.labels,
         datasets: [
-          { label: 'Successful', data: regionData.success, backgroundColor: '#10b981', borderColor: '#10b981', borderWidth: 2, borderRadius: 8 },
-          { label: 'Failed', data: regionData.failed, backgroundColor: '#ef4444', borderColor: '#ef4444', borderWidth: 2, borderRadius: 8 }
+          { label: 'Volume (USD)', data: mData.volume, backgroundColor: 'rgba(77,182,255,.5)', borderColor: '#4DB6FF', borderWidth: 1, borderRadius: 6, yAxisID: 'y' },
         ]
       },
       options: {
+        indexAxis: 'y',
         responsive: true,
         maintainAspectRatio: false,
-        plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, padding: 14 } } },
+        plugins: { legend: { display: false } },
         scales: {
-          x: { stacked: false, ticks: { color: '#1f2937' }, grid: { color: '#e2e8f0' } },
-          y: { beginAtZero: true, grid: { color: '#e2e8f0' }, ticks: { color: '#1f2937' } }
+          x: { grid: { color: 'rgba(255,255,255,.04)' }, ticks: { callback: v => '$' + v.toLocaleString() } },
+          y: { grid: { display: false } }
         }
       }
-    };
+    });
 
-    function createChart(type) {
-      const config = Object.assign({ type }, JSON.parse(JSON.stringify(baseConfig)));
-      config.data.datasets.forEach(ds => {
-        ds.fill = type !== 'line';
-        ds.borderWidth = type === 'line' ? 3 : 2;
-        ds.tension = type === 'line' ? 0.35 : 0;
+
+
+
+
+    // Region chart
+    const rData = {"labels": ["Nigeria", "Ghana", "South Africa", "Kenya", "Tanzania", "Benin", "Cameroon", "Cameroon"], "success": [118, 99, 0, 0, 8, 0, 35, 35], "failed": [16, 41, 3, 0, 7, 2, 66, 66], "volume": [10581.04, 2417.99, 55.33, 5.0, 343.07, 10.0, 777.82, 777.82]};
+    const rCtx = document.getElementById('regionChart').getContext('2d');
+    let rType = 'bar';
+    function createRegionChart(type) {
+      return new Chart(rCtx, {
+        type,
+        data: {
+          labels: rData.labels,
+          datasets: [
+            { label: 'Successful', data: rData.success, backgroundColor: '#5FD08A', borderColor: '#5FD08A', borderWidth: 2, borderRadius: 6, tension: .35 },
+            { label: 'Failed', data: rData.failed, backgroundColor: '#FF7A7A', borderColor: '#FF7A7A', borderWidth: 2, borderRadius: 6, tension: .35 }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, padding: 14 } } },
+          scales: {
+            x: { grid: { color: 'rgba(255,255,255,.04)' } },
+            y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,.04)' } }
+          }
+        }
       });
-      return new Chart(ctx, config);
     }
-
-    let regionChart = createChart(chartType);
+    let regionChart = createRegionChart(rType);
     document.getElementById('toggleChart').addEventListener('click', () => {
-      chartType = chartType === 'bar' ? 'line' : 'bar';
+      rType = rType === 'bar' ? 'line' : 'bar';
       regionChart.destroy();
-      regionChart = createChart(chartType);
+      regionChart = createRegionChart(rType);
     });
   </script>
 </body>
