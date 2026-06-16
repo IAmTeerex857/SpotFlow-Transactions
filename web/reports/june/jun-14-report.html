@@ -104,11 +104,11 @@
       display: flex;
       gap: 1rem;
       overflow-x: auto;
-      padding-bottom: .6rem;
       scroll-snap-type: x proximity;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
     }
-    .kpi-strip::-webkit-scrollbar { height: 6px; }
-    .kpi-strip::-webkit-scrollbar-thumb { background: var(--line); border-radius: 999px; }
+    .kpi-strip::-webkit-scrollbar { display: none; }
     .kpi-card {
       background: var(--surface);
       border: 1px solid var(--line);
@@ -554,7 +554,7 @@
           <h3>Top success messages</h3>
           <ul class='data-list'><li>No provider message (blank) — 119</li><li>Success — 90</li><li>Madepayment — 76</li><li>Payment completed — 4</li><li>Complete payment process — 3</li></ul>
           <h3>Top failure messages</h3>
-          <ul class='data-list'><li>The MTN mobile money user has reached counter or balance limits — 90</li><li>Unable to perform transaction — 33</li><li>Transaction failed — 26</li><li>No provider message (blank) — 23</li><li>Low balance or payee limit reached or not allowed — 21</li><li>The vodafone cash failed — 10</li><li>Authorized successful — 6</li><li>Unable to process transaction — 4</li><li>Insufficient funds — 4</li><li>Payment failed. the customer doesn't have enough funds — 4</li><div id='more-08e4bff5' style='display:none;'><li>Request to generate token is successful — 3</li><li>OTP verification required — 3</li><li>Merchant is not enabled for international transactions — 3</li><li>Token authentication failed. incorrect token supplied — 1</li><li>Expired card — 1</li><li>Provider failed — 1</li><li>Exception happened with upstream provider — 1</li><li>You entered the wrong PIN. please try again — 1</li><li>Payment failed. the waiting period for payment execution has expired — 1</li><li>Your account is not a valid vodafone cash account — 1</li></div></ul><button class='btn' style='margin-top:.5rem;' onclick="var el=document.getElementById('more-08e4bff5');if(el.style.display==='none'){el.style.display='block';this.textContent='Show less'}else{el.style.display='none';this.textContent='See all 20 messages'}">See all 20 messages</button>
+          <ul class='data-list'><li>The MTN mobile money user has reached counter or balance limits — 90</li><li>Unable to perform transaction — 33</li><li>Transaction failed — 26</li><li>No provider message (blank) — 23</li><li>Low balance or payee limit reached or not allowed — 21</li><li>The vodafone cash failed — 10</li><li>Authorized successful — 6</li><li>Unable to process transaction — 4</li><li>Insufficient funds — 4</li><li>Payment failed. the customer doesn't have enough funds — 4</li><div id='more-9cb55c76' style='display:none;'><li>Request to generate token is successful — 3</li><li>OTP verification required — 3</li><li>Merchant is not enabled for international transactions — 3</li><li>Token authentication failed. incorrect token supplied — 1</li><li>Expired card — 1</li><li>Provider failed — 1</li><li>Exception happened with upstream provider — 1</li><li>You entered the wrong PIN. please try again — 1</li><li>Payment failed. the waiting period for payment execution has expired — 1</li><li>Your account is not a valid vodafone cash account — 1</li></div></ul><button class='btn' style='margin-top:.5rem;' onclick="var el=document.getElementById('more-9cb55c76');if(el.style.display==='none'){el.style.display='block';this.textContent='Show less'}else{el.style.display='none';this.textContent='See all 20 messages'}">See all 20 messages</button>
         </div>
       </div>
     </section>

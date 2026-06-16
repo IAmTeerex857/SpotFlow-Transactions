@@ -104,11 +104,11 @@
       display: flex;
       gap: 1rem;
       overflow-x: auto;
-      padding-bottom: .6rem;
       scroll-snap-type: x proximity;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
     }
-    .kpi-strip::-webkit-scrollbar { height: 6px; }
-    .kpi-strip::-webkit-scrollbar-thumb { background: var(--line); border-radius: 999px; }
+    .kpi-strip::-webkit-scrollbar { display: none; }
     .kpi-card {
       background: var(--surface);
       border: 1px solid var(--line);
@@ -594,7 +594,7 @@
           <h3>Top success messages</h3>
           <ul class='data-list'><li>No provider message (blank) — 128</li><li>Success — 60</li><li>Complete payment process — 8</li><li>Approved by financial institution — 8</li><li>Payment completed — 3</li><li>Authorized successful — 2</li><li>Transaction successfully found — 1</li></ul>
           <h3>Top failure messages</h3>
-          <ul class='data-list'><li>No provider message (blank) — 20</li><li>The MTN mobile money user has reached counter or balance limits — 20</li><li>Transaction failed — 16</li><li>Authorized successful — 9</li><li>Error processing payment — 8</li><li>The vodafone cash failed — 4</li><li>Payment failed. the customer doesn't have enough funds — 3</li><li>Payment failed. the waiting period for payment execution has expired — 2</li><li>Insufficient funds — 2</li><li>Transaction id is invalid — 1</li><div id='more-717a734f' style='display:none;'><li>Provider failed — 1</li><li>Merchant is not enabled for international transactions — 1</li></div></ul><button class='btn' style='margin-top:.5rem;' onclick="var el=document.getElementById('more-717a734f');if(el.style.display==='none'){el.style.display='block';this.textContent='Show less'}else{el.style.display='none';this.textContent='See all 12 messages'}">See all 12 messages</button>
+          <ul class='data-list'><li>No provider message (blank) — 20</li><li>The MTN mobile money user has reached counter or balance limits — 20</li><li>Transaction failed — 16</li><li>Authorized successful — 9</li><li>Error processing payment — 8</li><li>The vodafone cash failed — 4</li><li>Payment failed. the customer doesn't have enough funds — 3</li><li>Payment failed. the waiting period for payment execution has expired — 2</li><li>Insufficient funds — 2</li><li>Transaction id is invalid — 1</li><div id='more-e10ca54d' style='display:none;'><li>Provider failed — 1</li><li>Merchant is not enabled for international transactions — 1</li></div></ul><button class='btn' style='margin-top:.5rem;' onclick="var el=document.getElementById('more-e10ca54d');if(el.style.display==='none'){el.style.display='block';this.textContent='Show less'}else{el.style.display='none';this.textContent='See all 12 messages'}">See all 12 messages</button>
         </div>
       </div>
     </section>
