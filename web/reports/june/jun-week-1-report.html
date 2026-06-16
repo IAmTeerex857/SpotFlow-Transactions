@@ -101,10 +101,14 @@
 
     /* KPI Strip */
     .kpi-strip {
-      display: grid;
+      display: flex;
       gap: 1rem;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      overflow-x: auto;
+      padding-bottom: .6rem;
+      scroll-snap-type: x proximity;
     }
+    .kpi-strip::-webkit-scrollbar { height: 6px; }
+    .kpi-strip::-webkit-scrollbar-thumb { background: var(--line); border-radius: 999px; }
     .kpi-card {
       background: var(--surface);
       border: 1px solid var(--line);
@@ -113,6 +117,8 @@
       display: flex;
       flex-direction: column;
       gap: .3rem;
+      flex: 0 0 220px;
+      scroll-snap-align: start;
     }
     .kpi-label {
       font-family: var(--font-mono);
@@ -394,7 +400,7 @@
       header { padding: 2.4rem 0 1.8rem; }
       header .logo-wrapper { position: static; margin-bottom: .8rem; }
       header h1 { font-size: 1.8rem; }
-      .kpi-strip { grid-template-columns: repeat(2, 1fr); }
+      .kpi-card { flex-basis: 180px; padding: 1.2rem 1.3rem; }
       .kpi-value { font-size: 1.5rem; }
       .card { padding: 1.4rem 1.2rem; }
     }
@@ -455,12 +461,11 @@
       <div class="kpi-card">
         <span class="kpi-label">Total Transactions</span>
         <span class="kpi-value">6,926</span>
-        <span class="kpi-sub">S:2,216 · F:1,860 · A:2,693</span>
       </div>
       <div class="kpi-card kpi-accent">
-        <span class="kpi-label">Success Revenue</span>
+        <span class="kpi-label">Success Volume</span>
         <span class="kpi-value"><span class="vol-pill" style="font-size:inherit;padding:.2rem .8rem;">$18,455.58</span></span>
-        <span class="kpi-sub">Successful transactions only</span>
+        <span class="kpi-sub">2,216 successful transactions</span>
       </div>
       <div class="kpi-card kpi-green">
         <span class="kpi-label">Success Rate</span>
@@ -468,9 +473,19 @@
         <span class="kpi-sub">2,216 of 6,926 transactions</span>
       </div>
       <div class="kpi-card kpi-red">
-        <span class="kpi-label">Failed Revenue</span>
+        <span class="kpi-label">Failed Volume</span>
         <span class="kpi-value"><span class="vol-pill" style="font-size:inherit;padding:.2rem .8rem;background:rgba(255,122,122,.14);color:var(--red);">$23,040.46</span></span>
         <span class="kpi-sub">1,860 failed transactions</span>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-label">Abandoned Volume</span>
+        <span class="kpi-value"><span class="vol-pill" style="font-size:inherit;padding:.2rem .8rem;background:rgba(242,194,97,.14);color:var(--amber);">$111,170.98</span></span>
+        <span class="kpi-sub">2,693 abandoned transactions</span>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-label">Cancelled Volume</span>
+        <span class="kpi-value"><span class="vol-pill" style="font-size:inherit;padding:.2rem .8rem;background:rgba(184,154,255,.16);color:#B89AFF;">$1,254.51</span></span>
+        <span class="kpi-sub">157 cancelled transactions</span>
       </div>
     </div>
     
@@ -559,7 +574,7 @@
           <h3>Top success messages</h3>
           <ul class='data-list'><li>No provider message (blank) — 961</li><li>Success — 606</li><li>Complete payment process — 345</li><li>Authorized successful — 163</li><li>Madepayment — 102</li><li>Payment completed — 32</li><li>Transaction successfully found — 5</li><li>Payment processed — 2</li></ul>
           <h3>Top failure messages</h3>
-          <ul class='data-list'><li>Payment failed. the customer doesn't have enough funds — 493</li><li>Authorized successful — 412</li><li>Payment failed. the waiting period for payment execution has expired — 190</li><li>The MTN mobile money user has reached counter or balance limits — 177</li><li>Transaction failed — 143</li><li>No provider message (blank) — 114</li><li>Request to generate token is successful — 48</li><li>Insufficient funds — 33</li><li>OTP verification required — 29</li><li>Low balance or payee limit reached or not allowed — 28</li><div id='more-1a7ea601' style='display:none;'><li>Token authentication failed. incorrect token supplied — 23</li><li>Unable to process transaction — 23</li><li>The vodafone cash failed — 20</li><li>Merchant is not enabled for international transactions — 17</li><li>Provider failed — 17</li><li>Unable to perform transaction — 15</li><li>Payment failed. incorrect phone number — 10</li><li>Payment failed. the service is temporarily disabled due to an ongoing incident. our technical service is aware and is working on its resolution — 8</li><li>Payment rejected — 7</li><li>Error processing payment — 7</li><li>OTP is required when orange provider is selected — 6</li><li>An error occurred on our server. please retry later — 6</li><li>Exception happened with upstream provider — 5</li><li>Your payment has exceeded the time required to pay — 3</li><li>Invalid card number — 3</li><li>Transaction error — 3</li><li>Payment failed. forbidden by hub2 — 2</li><li>Transaction id is invalid — 2</li><li>Payment failed. provider is currently unavailable — 2</li><li>Merchant not found — 2</li><li>Card validation failed or error occurred while processing your request — 1</li><li>Payer account not active — 1</li><li>Your PIN has been locked. likely from entering it wrongly too many times — 1</li><li>The provider 'MTN MOMO CMR' only supports up to '0' decimal places in amount — 1</li><li>Fellback-bnf — 1</li><li>You entered the wrong PIN. please try again — 1</li><li>Unable to retrieve customer details — 1</li><li>Payment amount 650 is below the minimum allowed amount of 1000 for TZS — 1</li><li>Refer to card issuer — 1</li><li>Your account is not a valid vodafone cash account — 1</li><li>Payment in progress — 1</li><li>Verve cards can only pay NGN at this time — 1</li></div></ul><button class='btn' style='margin-top:.5rem;' onclick="var el=document.getElementById('more-1a7ea601');if(el.style.display==='none'){el.style.display='block';this.textContent='Show less'}else{el.style.display='none';this.textContent='See all 42 messages'}">See all 42 messages</button>
+          <ul class='data-list'><li>Payment failed. the customer doesn't have enough funds — 493</li><li>Authorized successful — 412</li><li>Payment failed. the waiting period for payment execution has expired — 190</li><li>The MTN mobile money user has reached counter or balance limits — 177</li><li>Transaction failed — 143</li><li>No provider message (blank) — 114</li><li>Request to generate token is successful — 48</li><li>Insufficient funds — 33</li><li>OTP verification required — 29</li><li>Low balance or payee limit reached or not allowed — 28</li><div id='more-0d57893c' style='display:none;'><li>Token authentication failed. incorrect token supplied — 23</li><li>Unable to process transaction — 23</li><li>The vodafone cash failed — 20</li><li>Merchant is not enabled for international transactions — 17</li><li>Provider failed — 17</li><li>Unable to perform transaction — 15</li><li>Payment failed. incorrect phone number — 10</li><li>Payment failed. the service is temporarily disabled due to an ongoing incident. our technical service is aware and is working on its resolution — 8</li><li>Payment rejected — 7</li><li>Error processing payment — 7</li><li>OTP is required when orange provider is selected — 6</li><li>An error occurred on our server. please retry later — 6</li><li>Exception happened with upstream provider — 5</li><li>Your payment has exceeded the time required to pay — 3</li><li>Invalid card number — 3</li><li>Transaction error — 3</li><li>Payment failed. forbidden by hub2 — 2</li><li>Transaction id is invalid — 2</li><li>Payment failed. provider is currently unavailable — 2</li><li>Merchant not found — 2</li><li>Card validation failed or error occurred while processing your request — 1</li><li>Payer account not active — 1</li><li>Your PIN has been locked. likely from entering it wrongly too many times — 1</li><li>The provider 'MTN MOMO CMR' only supports up to '0' decimal places in amount — 1</li><li>Fellback-bnf — 1</li><li>You entered the wrong PIN. please try again — 1</li><li>Unable to retrieve customer details — 1</li><li>Payment amount 650 is below the minimum allowed amount of 1000 for TZS — 1</li><li>Refer to card issuer — 1</li><li>Your account is not a valid vodafone cash account — 1</li><li>Payment in progress — 1</li><li>Verve cards can only pay NGN at this time — 1</li></div></ul><button class='btn' style='margin-top:.5rem;' onclick="var el=document.getElementById('more-0d57893c');if(el.style.display==='none'){el.style.display='block';this.textContent='Show less'}else{el.style.display='none';this.textContent='See all 42 messages'}">See all 42 messages</button>
         </div>
       </div>
     </section>

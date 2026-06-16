@@ -101,10 +101,14 @@
 
     /* KPI Strip */
     .kpi-strip {
-      display: grid;
+      display: flex;
       gap: 1rem;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      overflow-x: auto;
+      padding-bottom: .6rem;
+      scroll-snap-type: x proximity;
     }
+    .kpi-strip::-webkit-scrollbar { height: 6px; }
+    .kpi-strip::-webkit-scrollbar-thumb { background: var(--line); border-radius: 999px; }
     .kpi-card {
       background: var(--surface);
       border: 1px solid var(--line);
@@ -113,6 +117,8 @@
       display: flex;
       flex-direction: column;
       gap: .3rem;
+      flex: 0 0 220px;
+      scroll-snap-align: start;
     }
     .kpi-label {
       font-family: var(--font-mono);
@@ -394,7 +400,7 @@
       header { padding: 2.4rem 0 1.8rem; }
       header .logo-wrapper { position: static; margin-bottom: .8rem; }
       header h1 { font-size: 1.8rem; }
-      .kpi-strip { grid-template-columns: repeat(2, 1fr); }
+      .kpi-card { flex-basis: 180px; padding: 1.2rem 1.3rem; }
       .kpi-value { font-size: 1.5rem; }
       .card { padding: 1.4rem 1.2rem; }
     }
@@ -455,12 +461,11 @@
       <div class="kpi-card">
         <span class="kpi-label">Total Transactions</span>
         <span class="kpi-value">1,020</span>
-        <span class="kpi-sub">S:305 · F:344 · A:362</span>
       </div>
       <div class="kpi-card kpi-accent">
-        <span class="kpi-label">Success Revenue</span>
+        <span class="kpi-label">Success Volume</span>
         <span class="kpi-value"><span class="vol-pill" style="font-size:inherit;padding:.2rem .8rem;">$2,682.13</span></span>
-        <span class="kpi-sub">Successful transactions only</span>
+        <span class="kpi-sub">305 successful transactions</span>
       </div>
       <div class="kpi-card kpi-green">
         <span class="kpi-label">Success Rate</span>
@@ -468,9 +473,19 @@
         <span class="kpi-sub">305 of 1,020 transactions</span>
       </div>
       <div class="kpi-card kpi-red">
-        <span class="kpi-label">Failed Revenue</span>
+        <span class="kpi-label">Failed Volume</span>
         <span class="kpi-value"><span class="vol-pill" style="font-size:inherit;padding:.2rem .8rem;background:rgba(255,122,122,.14);color:var(--red);">$4,622.33</span></span>
         <span class="kpi-sub">344 failed transactions</span>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-label">Abandoned Volume</span>
+        <span class="kpi-value"><span class="vol-pill" style="font-size:inherit;padding:.2rem .8rem;background:rgba(242,194,97,.14);color:var(--amber);">$12,292.32</span></span>
+        <span class="kpi-sub">362 abandoned transactions</span>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-label">Cancelled Volume</span>
+        <span class="kpi-value"><span class="vol-pill" style="font-size:inherit;padding:.2rem .8rem;background:rgba(184,154,255,.16);color:#B89AFF;">$56.11</span></span>
+        <span class="kpi-sub">9 cancelled transactions</span>
       </div>
     </div>
     
@@ -539,7 +554,7 @@
           <h3>Top success messages</h3>
           <ul class='data-list'><li>No provider message (blank) — 133</li><li>Complete payment process — 76</li><li>Madepayment — 46</li><li>Success — 23</li><li>Authorized successful — 20</li><li>Payment completed — 4</li><li>Transaction successfully found — 2</li><li>Payment processed — 1</li></ul>
           <h3>Top failure messages</h3>
-          <ul class='data-list'><li>Payment failed. the customer doesn't have enough funds — 96</li><li>Payment failed. the waiting period for payment execution has expired — 55</li><li>Authorized successful — 54</li><li>Low balance or payee limit reached or not allowed — 16</li><li>The MTN mobile money user has reached counter or balance limits — 16</li><li>Transaction failed — 16</li><li>No provider message (blank) — 15</li><li>Request to generate token is successful — 12</li><li>Unable to process transaction — 9</li><li>Unable to perform transaction — 7</li><div id='more-f47d82cb' style='display:none;'><li>OTP verification required — 6</li><li>Payment failed. the service is temporarily disabled due to an ongoing incident. our technical service is aware and is working on its resolution — 6</li><li>Merchant is not enabled for international transactions — 5</li><li>Error processing payment — 5</li><li>Payment failed. incorrect phone number — 4</li><li>Payment rejected — 3</li><li>Insufficient funds — 3</li><li>Token authentication failed. incorrect token supplied — 3</li><li>OTP is required when orange provider is selected — 2</li><li>Provider failed — 2</li><li>The vodafone cash failed — 2</li><li>Payment failed. forbidden by hub2 — 2</li><li>Your payment has exceeded the time required to pay — 2</li><li>Card validation failed or error occurred while processing your request — 1</li><li>Payer account not active — 1</li><li>Invalid card number — 1</li></div></ul><button class='btn' style='margin-top:.5rem;' onclick="var el=document.getElementById('more-f47d82cb');if(el.style.display==='none'){el.style.display='block';this.textContent='Show less'}else{el.style.display='none';this.textContent='See all 26 messages'}">See all 26 messages</button>
+          <ul class='data-list'><li>Payment failed. the customer doesn't have enough funds — 96</li><li>Payment failed. the waiting period for payment execution has expired — 55</li><li>Authorized successful — 54</li><li>Low balance or payee limit reached or not allowed — 16</li><li>The MTN mobile money user has reached counter or balance limits — 16</li><li>Transaction failed — 16</li><li>No provider message (blank) — 15</li><li>Request to generate token is successful — 12</li><li>Unable to process transaction — 9</li><li>Unable to perform transaction — 7</li><div id='more-d99492b0' style='display:none;'><li>OTP verification required — 6</li><li>Payment failed. the service is temporarily disabled due to an ongoing incident. our technical service is aware and is working on its resolution — 6</li><li>Merchant is not enabled for international transactions — 5</li><li>Error processing payment — 5</li><li>Payment failed. incorrect phone number — 4</li><li>Payment rejected — 3</li><li>Insufficient funds — 3</li><li>Token authentication failed. incorrect token supplied — 3</li><li>OTP is required when orange provider is selected — 2</li><li>Provider failed — 2</li><li>The vodafone cash failed — 2</li><li>Payment failed. forbidden by hub2 — 2</li><li>Your payment has exceeded the time required to pay — 2</li><li>Card validation failed or error occurred while processing your request — 1</li><li>Payer account not active — 1</li><li>Invalid card number — 1</li></div></ul><button class='btn' style='margin-top:.5rem;' onclick="var el=document.getElementById('more-d99492b0');if(el.style.display==='none'){el.style.display='block';this.textContent='Show less'}else{el.style.display='none';this.textContent='See all 26 messages'}">See all 26 messages</button>
         </div>
       </div>
     </section>

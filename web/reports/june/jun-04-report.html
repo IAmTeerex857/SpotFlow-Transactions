@@ -101,10 +101,14 @@
 
     /* KPI Strip */
     .kpi-strip {
-      display: grid;
+      display: flex;
       gap: 1rem;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      overflow-x: auto;
+      padding-bottom: .6rem;
+      scroll-snap-type: x proximity;
     }
+    .kpi-strip::-webkit-scrollbar { height: 6px; }
+    .kpi-strip::-webkit-scrollbar-thumb { background: var(--line); border-radius: 999px; }
     .kpi-card {
       background: var(--surface);
       border: 1px solid var(--line);
@@ -113,6 +117,8 @@
       display: flex;
       flex-direction: column;
       gap: .3rem;
+      flex: 0 0 220px;
+      scroll-snap-align: start;
     }
     .kpi-label {
       font-family: var(--font-mono);
@@ -394,7 +400,7 @@
       header { padding: 2.4rem 0 1.8rem; }
       header .logo-wrapper { position: static; margin-bottom: .8rem; }
       header h1 { font-size: 1.8rem; }
-      .kpi-strip { grid-template-columns: repeat(2, 1fr); }
+      .kpi-card { flex-basis: 180px; padding: 1.2rem 1.3rem; }
       .kpi-value { font-size: 1.5rem; }
       .card { padding: 1.4rem 1.2rem; }
     }
@@ -455,12 +461,11 @@
       <div class="kpi-card">
         <span class="kpi-label">Total Transactions</span>
         <span class="kpi-value">695</span>
-        <span class="kpi-sub">S:233 · F:102 · A:347</span>
       </div>
       <div class="kpi-card kpi-accent">
-        <span class="kpi-label">Success Revenue</span>
+        <span class="kpi-label">Success Volume</span>
         <span class="kpi-value"><span class="vol-pill" style="font-size:inherit;padding:.2rem .8rem;">$1,382.09</span></span>
-        <span class="kpi-sub">Successful transactions only</span>
+        <span class="kpi-sub">233 successful transactions</span>
       </div>
       <div class="kpi-card kpi-green">
         <span class="kpi-label">Success Rate</span>
@@ -468,9 +473,19 @@
         <span class="kpi-sub">233 of 695 transactions</span>
       </div>
       <div class="kpi-card kpi-red">
-        <span class="kpi-label">Failed Revenue</span>
+        <span class="kpi-label">Failed Volume</span>
         <span class="kpi-value"><span class="vol-pill" style="font-size:inherit;padding:.2rem .8rem;background:rgba(255,122,122,.14);color:var(--red);">$1,032.97</span></span>
         <span class="kpi-sub">102 failed transactions</span>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-label">Abandoned Volume</span>
+        <span class="kpi-value"><span class="vol-pill" style="font-size:inherit;padding:.2rem .8rem;background:rgba(242,194,97,.14);color:var(--amber);">$8,513.94</span></span>
+        <span class="kpi-sub">347 abandoned transactions</span>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-label">Cancelled Volume</span>
+        <span class="kpi-value"><span class="vol-pill" style="font-size:inherit;padding:.2rem .8rem;background:rgba(184,154,255,.16);color:#B89AFF;">$142.89</span></span>
+        <span class="kpi-sub">13 cancelled transactions</span>
       </div>
     </div>
     
@@ -549,7 +564,7 @@
           <h3>Top success messages</h3>
           <ul class='data-list'><li>No provider message (blank) — 143</li><li>Success — 79</li><li>Complete payment process — 6</li><li>Payment completed — 5</li></ul>
           <h3>Top failure messages</h3>
-          <ul class='data-list'><li>The MTN mobile money user has reached counter or balance limits — 21</li><li>Transaction failed — 16</li><li>No provider message (blank) — 14</li><li>Payment failed. the customer doesn't have enough funds — 10</li><li>OTP verification required — 7</li><li>Request to generate token is successful — 6</li><li>Provider failed — 6</li><li>Insufficient funds — 4</li><li>Payment failed. the waiting period for payment execution has expired — 3</li><li>Unable to process transaction — 3</li><div id='more-977435f6' style='display:none;'><li>Token authentication failed. incorrect token supplied — 3</li><li>Authorized successful — 2</li><li>The vodafone cash failed — 2</li><li>Unable to retrieve customer details — 1</li><li>Payment amount 650 is below the minimum allowed amount of 1000 for TZS — 1</li><li>Refer to card issuer — 1</li><li>Payment rejected — 1</li><li>Merchant is not enabled for international transactions — 1</li></div></ul><button class='btn' style='margin-top:.5rem;' onclick="var el=document.getElementById('more-977435f6');if(el.style.display==='none'){el.style.display='block';this.textContent='Show less'}else{el.style.display='none';this.textContent='See all 18 messages'}">See all 18 messages</button>
+          <ul class='data-list'><li>The MTN mobile money user has reached counter or balance limits — 21</li><li>Transaction failed — 16</li><li>No provider message (blank) — 14</li><li>Payment failed. the customer doesn't have enough funds — 10</li><li>OTP verification required — 7</li><li>Request to generate token is successful — 6</li><li>Provider failed — 6</li><li>Insufficient funds — 4</li><li>Payment failed. the waiting period for payment execution has expired — 3</li><li>Unable to process transaction — 3</li><div id='more-16fc8502' style='display:none;'><li>Token authentication failed. incorrect token supplied — 3</li><li>Authorized successful — 2</li><li>The vodafone cash failed — 2</li><li>Unable to retrieve customer details — 1</li><li>Payment amount 650 is below the minimum allowed amount of 1000 for TZS — 1</li><li>Refer to card issuer — 1</li><li>Payment rejected — 1</li><li>Merchant is not enabled for international transactions — 1</li></div></ul><button class='btn' style='margin-top:.5rem;' onclick="var el=document.getElementById('more-16fc8502');if(el.style.display==='none'){el.style.display='block';this.textContent='Show less'}else{el.style.display='none';this.textContent='See all 18 messages'}">See all 18 messages</button>
         </div>
       </div>
     </section>
