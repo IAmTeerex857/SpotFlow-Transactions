@@ -31,6 +31,7 @@ from render_html_report_v2 import render_report_v2  # noqa: E402
 JUNE_WEEKS = [
     ("week-1", "Jun 1 – 7, 2026 — Weekly Insights", list(range(1, 8))),
     ("week-2", "Jun 8 – 14, 2026 — Weekly Insights", list(range(8, 15))),
+    ("week-3", "Jun 15 – 21, 2026 — Weekly Insights", list(range(15, 22))),
 ]
 
 
