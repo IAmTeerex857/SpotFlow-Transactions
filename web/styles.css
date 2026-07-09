@@ -495,6 +495,140 @@ body {
   color: var(--faint);
 }
 
+/* ── Hero top row (reports page sign-out) ─────────────────────────────────── */
+.hero__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+}
+
+.hero__top .hero__logo {
+  margin-bottom: 0;
+}
+
+.hero__signout {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: .10em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-decoration: none;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  transition: color .15s, border-color .15s, transform .15s;
+}
+
+.hero__signout:hover {
+  color: var(--ink);
+  border-color: rgba(255,255,255,.22);
+  transform: translateY(-1px);
+}
+
+/* ── Landing page ─────────────────────────────────────────────────────────── */
+.hero--landing {
+  padding-bottom: 3.5rem;
+}
+
+.lp-actions {
+  margin-top: 2.2rem;
+}
+
+/* Google sign-in button */
+.btn--google {
+  background: #FFFFFF;
+  color: #1F1F1F;
+  padding: 0.7rem 1.3rem;
+  font-size: 13.5px;
+  box-shadow: 0 8px 22px rgba(0,0,0,.35);
+}
+
+.btn--google:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(0,0,0,.45);
+}
+
+.btn--google .g-icon {
+  width: 17px;
+  height: 17px;
+  margin-right: 3px;
+}
+
+.lp-note {
+  margin-top: 1.1rem;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .06em;
+  color: var(--faint);
+}
+
+.lp-note span {
+  color: var(--accent);
+}
+
+.lp-note--error {
+  color: var(--red);
+}
+
+.lp-note--error::before {
+  content: "!";
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 15px;
+  height: 15px;
+  margin-right: 7px;
+  border-radius: 50%;
+  background: rgba(255,122,122,.16);
+  color: var(--red);
+  font-weight: 700;
+  font-size: 10px;
+  vertical-align: -2px;
+}
+
+/* Feature grid */
+.lp-features {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+}
+
+.feature {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 1.4rem 1.5rem;
+  transition: border-color .2s ease, transform .2s ease;
+}
+
+.feature:hover {
+  border-color: rgba(255,255,255,.16);
+  transform: translateY(-2px);
+}
+
+.feature__title {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin-bottom: 0.5rem;
+}
+
+.feature__desc {
+  font-weight: 300;
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--muted);
+}
+
 /* ── Responsive ───────────────────────────────────────────────────────────── */
 @media (max-width: 680px) {
   .hero h1 { font-size: 2rem; }

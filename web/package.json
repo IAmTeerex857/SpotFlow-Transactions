@@ -1,0 +1,9 @@
+{
+  "private": true,
+  "type": "module",
+  "description": "Spotflow transaction reports — static site + Google-auth gate (Vercel)",
+  "dependencies": {
+    "@vercel/edge": "^1.2.1",
+    "jose": "^5.9.6"
+  }
+}

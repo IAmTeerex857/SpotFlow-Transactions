@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Spotflow | Transaction Insights</title>
+  <link rel="icon" type="image/svg+xml" href="assets/icon.svg">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ── Hero ─────────────────────────────────────────────────────────────── -->
+  <header class="hero">
+    <div class="hero__inner">
+      <div class="hero__top">
+        <div class="hero__logo">
+          <img src="assets/logo.svg" alt="Spotflow">
+        </div>
+        <a class="hero__signout" href="/api/auth/logout">Sign out ↗</a>
+      </div>
+      <p class="eyebrow">Transaction Intelligence</p>
+      <h1>Payment performance,<br><em>day by day.</em></h1>
+      <p class="subtitle">Daily Spotflow transaction reports with regional breakdowns, provider analytics, merchant volume, and customer retry behaviour — archived from December 2025 onwards.</p>
+      <div class="hero__stats">
+        <div class="stat">
+          <span class="stat__num">7</span>
+          <span class="stat__label">Months covered</span>
+        </div>
+        <div class="stat">
+          <span class="stat__num">175+</span>
+          <span class="stat__label">Daily reports</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── Month list ────────────────────────────────────────────────────────── -->
+  <main class="content">
+
+    <!-- July 2026 — featured, open by default -->
+    <details class="month-card month-card--featured" open>
+      <summary>
+        <div class="month-summary__left">
+          <div class="month-summary__eyebrow">Current month</div>
+          <div class="month-summary__title">July 2026</div>
+          <div class="month-summary__range">Jul 1 – 8 &nbsp;·&nbsp; Daily insights</div>
+        </div>
+        <div class="month-summary__badges">
+          <span class="badge badge--live">Live</span>
+          <span class="badge badge--days">8 days</span>
+        </div>
+      </summary>
+      <div class="month-body">
+        <p class="month-body__lead">July telemetry with full merchant volume, USD-normalised revenue, and enhanced regional and provider breakdowns.</p>
+        <div class="cta-row">
+          <a class="btn btn--primary" href="reports/july/jul-08-report.html">Open Jul 08 ↗</a>
+        </div>
+        <div class="week-grid">
+          <div class="week-block">
+            <div class="week-block__title">Early July</div>
+            <div class="week-block__range">Jul 1 – 7</div>
+            <a class="btn btn--week" href="reports/july/jul-week-1-report.html">Weekly report ↗</a>
+            <nav class="pill-nav">
+              <a href="reports/july/jul-01-report.html">Jul 01</a>
+              <a href="reports/july/jul-02-report.html">Jul 02</a>
+              <a href="reports/july/jul-03-report.html">Jul 03</a>
+              <a href="reports/july/jul-04-report.html">Jul 04</a>
+              <a href="reports/july/jul-05-report.html">Jul 05</a>
+              <a href="reports/july/jul-06-report.html">Jul 06</a>
+              <a href="reports/july/jul-07-report.html">Jul 07</a>
+            </nav>
+          </div>
+          <div class="week-block">
+            <div class="week-block__title">Mid July</div>
+            <div class="week-block__range">Jul 8 – 14</div>
+            <nav class="pill-nav">
+              <a href="reports/july/jul-08-report.html">Jul 08</a>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <!-- June 2026 -->
+    <details class="month-card">
+      <summary>
+        <div class="month-summary__left">
+          <div class="month-summary__eyebrow">Previous month</div>
+          <div class="month-summary__title">June 2026</div>
+          <div class="month-summary__range">Jun 1 – 30 &nbsp;·&nbsp; Full coverage</div>
+        </div>
+        <div class="month-summary__badges">
+          <span class="badge badge--archive">Archive</span>
+          <span class="badge badge--days">30 days</span>
+        </div>
+      </summary>
+      <div class="month-body">
+        <p class="month-body__lead">June telemetry with full merchant volume, USD-normalised revenue, and enhanced regional and provider breakdowns.</p>
+        <div class="cta-row">
+          <a class="btn btn--primary" href="reports/june/jun-30-report.html">Open Jun 30 ↗</a>
+        </div>
+        <div class="week-grid">
+          <div class="week-block">
+            <div class="week-block__title">Early June</div>
+            <div class="week-block__range">Jun 1 – 7</div>
+            <a class="btn btn--week" href="reports/june/jun-week-1-report.html">Weekly report ↗</a>
+            <nav class="pill-nav">
+              <a href="reports/june/jun-01-report.html">Jun 01</a>
+              <a href="reports/june/jun-02-report.html">Jun 02</a>
+              <a href="reports/june/jun-03-report.html">Jun 03</a>
+              <a href="reports/june/jun-04-report.html">Jun 04</a>
+              <a href="reports/june/jun-05-report.html">Jun 05</a>
+              <a href="reports/june/jun-06-report.html">Jun 06</a>
+              <a href="reports/june/jun-07-report.html">Jun 07</a>
+            </nav>
+          </div>
+          <div class="week-block">
+            <div class="week-block__title">Mid June</div>
+            <div class="week-block__range">Jun 8 – 14</div>
+            <a class="btn btn--week" href="reports/june/jun-week-2-report.html">Weekly report ↗</a>
+            <nav class="pill-nav">
+              <a href="reports/june/jun-08-report.html">Jun 08</a>
+              <a href="reports/june/jun-09-report.html">Jun 09</a>
+              <a href="reports/june/jun-10-report.html">Jun 10</a>
+              <a href="reports/june/jun-11-report.html">Jun 11</a>
+              <a href="reports/june/jun-12-report.html">Jun 12</a>
+              <a href="reports/june/jun-13-report.html">Jun 13</a>
+              <a href="reports/june/jun-14-report.html">Jun 14</a>
+            </nav>
+          </div>
+          <div class="week-block">
+            <div class="week-block__title">Late June</div>
+            <div class="week-block__range">Jun 15 – 21</div>
+            <a class="btn btn--week" href="reports/june/jun-week-3-report.html">Weekly report ↗</a>
+            <nav class="pill-nav">
+              <a href="reports/june/jun-15-report.html">Jun 15</a>
+              <a href="reports/june/jun-16-report.html">Jun 16</a>
+              <a href="reports/june/jun-17-report.html">Jun 17</a>
+              <a href="reports/june/jun-18-report.html">Jun 18</a>
+              <a href="reports/june/jun-19-report.html">Jun 19</a>
+              <a href="reports/june/jun-20-report.html">Jun 20</a>
+              <a href="reports/june/jun-21-report.html">Jun 21</a>
+            </nav>
+          </div>
+          <div class="week-block">
+            <div class="week-block__title">Closing June</div>
+            <div class="week-block__range">Jun 22 – 28</div>
+            <a class="btn btn--week" href="reports/june/jun-week-4-report.html">Weekly report ↗</a>
+            <nav class="pill-nav">
+              <a href="reports/june/jun-22-report.html">Jun 22</a>
+              <a href="reports/june/jun-23-report.html">Jun 23</a>
+              <a href="reports/june/jun-24-report.html">Jun 24</a>
+              <a href="reports/june/jun-25-report.html">Jun 25</a>
+              <a href="reports/june/jun-26-report.html">Jun 26</a>
+              <a href="reports/june/jun-27-report.html">Jun 27</a>
+              <a href="reports/june/jun-28-report.html">Jun 28</a>
+            </nav>
+          </div>
+          <div class="week-block">
+            <div class="week-block__title">Final stretch</div>
+            <div class="week-block__range">Jun 29 – 30</div>
+            <nav class="pill-nav">
+              <a href="reports/june/jun-29-report.html">Jun 29</a>
+              <a href="reports/june/jun-30-report.html">Jun 30</a>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <!-- May 2026 -->
+    <details class="month-card">
+      <summary>
+        <div class="month-summary__left">
+          <div class="month-summary__eyebrow">Archive</div>
+          <div class="month-summary__title">May 2026</div>
+          <div class="month-summary__range">May 1 – 31 &nbsp;·&nbsp; Full coverage</div>
+        </div>
+        <div class="month-summary__badges">
+          <span class="badge badge--archive">Archive</span>
+          <span class="badge badge--days">31 days</span>
+        </div>
+      </summary>
+      <div class="month-body">
+        <p class="month-body__lead">Full month of Spotflow payment telemetry with regional and provider deep-dives across all 31 days.</p>
+        <div class="cta-row">
+          <a class="btn btn--ghost" href="reports/may/may-31-report.html">Open May 31 ↗</a>
+        </div>
+        <div class="week-grid">
+          <div class="week-block">
+            <div class="week-block__title">Week 1</div>
+            <div class="week-block__range">May 1 – 7</div>
+            <nav class="pill-nav">
+              <a href="reports/may/may-01-report.html">May 01</a>
+              <a href="reports/may/may-02-report.html">May 02</a>
+              <a href="reports/may/may-03-report.html">May 03</a>
+              <a href="reports/may/may-04-report.html">May 04</a>
+              <a href="reports/may/may-05-report.html">May 05</a>
+              <a href="reports/may/may-06-report.html">May 06</a>
+              <a href="reports/may/may-07-report.html">May 07</a>
+            </nav>
+          </div>
+          <div class="week-block">
+            <div class="week-block__title">Week 2</div>
+            <div class="week-block__range">May 8 – 14</div>
+            <nav class="pill-nav">
+              <a href="reports/may/may-08-report.html">May 08</a>
+              <a href="reports/may/may-09-report.html">May 09</a>
+              <a href="reports/may/may-10-report.html">May 10</a>
+              <a href="reports/may/may-11-report.html">May 11</a>
+              <a href="reports/may/may-12-report.html">May 12</a>
+              <a href="reports/may/may-13-report.html">May 13</a>
+              <a href="reports/may/may-14-report.html">May 14</a>
+            </nav>
+          </div>
+          <div class="week-block">
+            <div class="week-block__title">Week 3</div>
+            <div class="week-block__range">May 15 – 21</div>
+            <nav class="pill-nav">
+              <a href="reports/may/may-15-report.html">May 15</a>
+              <a href="reports/may/may-16-report.html">May 16</a>
+              <a href="reports/may/may-17-report.html">May 17</a>
+              <a href="reports/may/may-18-report.html">May 18</a>
+              <a href="reports/may/may-19-report.html">May 19</a>
+              <a href="reports/may/may-20-report.html">May 20</a>
+              <a href="reports/may/may-21-report.html">May 21</a>
+            </nav>
+          </div>
+          <div class="week-block">
+            <div class="week-block__title">Week 4 + close</div>
+            <div class="week-block__range">May 22 – 31</div>
+            <nav class="pill-nav">
+              <a href="reports/may/may-22-report.html">May 22</a>
+              <a href="reports/may/may-23-report.html">May 23</a>
+              <a href="reports/may/may-24-report.html">May 24</a>
+              <a href="reports/may/may-25-report.html">May 25</a>
+              <a href="reports/may/may-26-report.html">May 26</a>
+              <a href="reports/may/may-27-report.html">May 27</a>
+              <a href="reports/may/may-28-report.html">May 28</a>
+              <a href="reports/may/may-29-report.html">May 29</a>
+              <a href="reports/may/may-30-report.html">May 30</a>
+              <a href="reports/may/may-31-report.html">May 31</a>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <!-- April 2026 -->
+    <details class="month-card">
+      <summary>
+        <div class="month-summary__left">
+          <div class="month-summary__eyebrow">Archive</div>
+          <div class="month-summary__title">April 2026</div>
+          <div class="month-summary__range">Apr 16 – 30 &nbsp;·&nbsp; Partial coverage</div>
+        </div>
+        <div class="month-summary__badges">
+          <span class="badge badge--archive">Archive</span>
+          <span class="badge badge--days">15 days</span>
+        </div>
+      </summary>
+      <div class="month-body">
+        <p class="month-body__lead">Mid-to-late April telemetry with expanded regional coverage across West Africa and refreshed provider tracking.</p>
+        <div class="cta-row">
+          <a class="btn btn--ghost" href="reports/april/apr-30-report.html">Open Apr 30 ↗</a>
+        </div>
+        <div class="week-grid">
+          <div class="week-block">
+            <div class="week-block__title">Mid-month</div>
+            <div class="week-block__range">Apr 16 – 22</div>
+            <nav class="pill-nav">
+              <a href="reports/april/apr-16-report.html">Apr 16</a>
+              <a href="reports/april/apr-17-report.html">Apr 17</a>
+              <a href="reports/april/apr-18-report.html">Apr 18</a>
+              <a href="reports/april/apr-19-report.html">Apr 19</a>
+              <a href="reports/april/apr-20-report.html">Apr 20</a>
+              <a href="reports/april/apr-21-report.html">Apr 21</a>
+              <a href="reports/april/apr-22-report.html">Apr 22</a>
+            </nav>
+          </div>
+          <div class="week-block">
+            <div class="week-block__title">Late April</div>
+            <div class="week-block__range">Apr 23 – 30</div>
+            <nav class="pill-nav">
+              <a href="reports/april/apr-23-report.html">Apr 23</a>
+              <a href="reports/april/apr-24-report.html">Apr 24</a>
+              <a href="reports/april/apr-25-report.html">Apr 25</a>
+              <a href="reports/april/apr-26-report.html">Apr 26</a>
+              <a href="reports/april/apr-27-report.html">Apr 27</a>
+              <a href="reports/april/apr-28-report.html">Apr 28</a>
+              <a href="reports/april/apr-29-report.html">Apr 29</a>
+              <a href="reports/april/apr-30-report.html">Apr 30</a>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <!-- February 2026 -->
+    <details class="month-card">
+      <summary>
+        <div class="month-summary__left">
+          <div class="month-summary__eyebrow">Archive</div>
+          <div class="month-summary__title">February 2026</div>
+          <div class="month-summary__range">Feb 1 – 23 &nbsp;·&nbsp; Partial coverage</div>
+        </div>
+        <div class="month-summary__badges">
+          <span class="badge badge--archive">Archive</span>
+          <span class="badge badge--days">23 days</span>
+        </div>
+      </summary>
+      <div class="month-body">
+        <p class="month-body__lead">Three weeks of February payment telemetry tracking provider and regional performance.</p>
+        <div class="cta-row">
+          <a class="btn btn--ghost" href="reports/february/feb-23-report.html">Open Feb 23 ↗</a>
+        </div>
+        <div class="week-grid">
+          <div class="week-block">
+            <div class="week-block__title">Week 1</div>
+            <div class="week-block__range">Feb 1 – 7</div>
+            <nav class="pill-nav">
+              <a href="reports/february/feb-01-report.html">Feb 01</a>
+              <a href="reports/february/feb-02-report.html">Feb 02</a>
+              <a href="reports/february/feb-03-report.html">Feb 03</a>
+              <a href="reports/february/feb-04-report.html">Feb 04</a>
+              <a href="reports/february/feb-05-report.html">Feb 05</a>
+              <a href="reports/february/feb-06-report.html">Feb 06</a>
+              <a href="reports/february/feb-07-report.html">Feb 07</a>
+            </nav>
+          </div>
+          <div class="week-block">
+            <div class="week-block__title">Week 2</div>
+            <div class="week-block__range">Feb 8 – 14</div>
+            <nav class="pill-nav">
+              <a href="reports/february/feb-08-report.html">Feb 08</a>
+              <a href="reports/february/feb-09-report.html">Feb 09</a>
+              <a href="reports/february/feb-10-report.html">Feb 10</a>
+              <a href="reports/february/feb-11-report.html">Feb 11</a>
+              <a href="reports/february/feb-12-report.html">Feb 12</a>
+              <a href="reports/february/feb-13-report.html">Feb 13</a>
+              <a href="reports/february/feb-14-report.html">Feb 14</a>
+            </nav>
+          </div>
+          <div class="week-block">
+            <div class="week-block__title">Week 3</div>
+            <div class="week-block__range">Feb 15 – 23</div>
+            <nav class="pill-nav">
+              <a href="reports/february/feb-15-report.html">Feb 15</a>
+              <a href="reports/february/feb-16-report.html">Feb 16</a>
+              <a href="reports/february/feb-17-report.html">Feb 17</a>
+              <a href="reports/february/feb-18-report.html">Feb 18</a>
+              <a href="reports/february/feb-19-report.html">Feb 19</a>
+              <a href="reports/february/feb-20-report.html">Feb 20</a>
+              <a href="reports/february/feb-21-report.html">Feb 21</a>
+              <a href="reports/february/feb-22-report.html">Feb 22</a>
+              <a href="reports/february/feb-23-report.html">Feb 23</a>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <!-- January 2026 -->
+    <details class="month-card">
+      <summary>
+        <div class="month-summary__left">
+          <div class="month-summary__eyebrow">Archive</div>
+          <div class="month-summary__title">January 2026</div>
+          <div class="month-summary__range">Jan 1 – 31 &nbsp;·&nbsp; Full coverage</div>
+        </div>
+        <div class="month-summary__badges">
+          <span class="badge badge--archive">Archive</span>
+          <span class="badge badge--days">31 days</span>
+        </div>
+      </summary>
+      <div class="month-body">
+        <p class="month-body__lead">All 31 days of Spotflow's January performance with regional and provider deep-dives. Monthly rollup available.</p>
+        <div class="cta-row">
+          <a class="btn btn--primary" href="reports/january-2026-monthly-report.html">Monthly report ↗</a>
+          <a class="btn btn--ghost" href="reports/january/jan-31-report.html">Open Jan 31 ↗</a>
+        </div>
+        <div class="week-grid">
+          <div class="week-block">
+            <div class="week-block__title">Week 1</div>
+            <div class="week-block__range">Jan 1 – 7</div>
+            <nav class="pill-nav">
+              <a href="reports/january/jan-01-report.html">Jan 01</a>
+              <a href="reports/january/jan-02-report.html">Jan 02</a>
+              <a href="reports/january/jan-03-report.html">Jan 03</a>
+              <a href="reports/january/jan-04-report.html">Jan 04</a>
+              <a href="reports/january/jan-05-report.html">Jan 05</a>
+              <a href="reports/january/jan-06-report.html">Jan 06</a>
+              <a href="reports/january/jan-07-report.html">Jan 07</a>
+            </nav>
+          </div>
+          <div class="week-block">
+            <div class="week-block__title">Week 2</div>
+            <div class="week-block__range">Jan 8 – 14</div>
+            <nav class="pill-nav">
+              <a href="reports/january/jan-08-report.html">Jan 08</a>
+              <a href="reports/january/jan-09-report.html">Jan 09</a>
+              <a href="reports/january/jan-10-report.html">Jan 10</a>
+              <a href="reports/january/jan-11-report.html">Jan 11</a>
+              <a href="reports/january/jan-12-report.html">Jan 12</a>
+              <a href="reports/january/jan-13-report.html">Jan 13</a>
+              <a href="reports/january/jan-14-report.html">Jan 14</a>
+            </nav>
+          </div>
+          <div class="week-block">
+            <div class="week-block__title">Week 3</div>
+            <div class="week-block__range">Jan 15 – 21</div>
+            <nav class="pill-nav">
+              <a href="reports/january/jan-15-report.html">Jan 15</a>
+              <a href="reports/january/jan-16-report.html">Jan 16</a>
+              <a href="reports/january/jan-17-report.html">Jan 17</a>
+              <a href="reports/january/jan-18-report.html">Jan 18</a>
+              <a href="reports/january/jan-19-report.html">Jan 19</a>
+              <a href="reports/january/jan-20-report.html">Jan 20</a>
+              <a href="reports/january/jan-21-report.html">Jan 21</a>
+            </nav>
+          </div>
+          <div class="week-block">
+            <div class="week-block__title">Week 4 + close</div>
+            <div class="week-block__range">Jan 22 – 31</div>
+            <nav class="pill-nav">
+              <a href="reports/january/jan-22-report.html">Jan 22</a>
+              <a href="reports/january/jan-23-report.html">Jan 23</a>
+              <a href="reports/january/jan-24-report.html">Jan 24</a>
+              <a href="reports/january/jan-25-report.html">Jan 25</a>
+              <a href="reports/january/jan-26-report.html">Jan 26</a>
+              <a href="reports/january/jan-27-report.html">Jan 27</a>
+              <a href="reports/january/jan-28-report.html">Jan 28</a>
+              <a href="reports/january/jan-29-report.html">Jan 29</a>
+              <a href="reports/january/jan-30-report.html">Jan 30</a>
+              <a href="reports/january/jan-31-report.html">Jan 31</a>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <!-- December 2025 -->
+    <details class="month-card">
+      <summary>
+        <div class="month-summary__left">
+          <div class="month-summary__eyebrow">Archive · 2025</div>
+          <div class="month-summary__title">December 2025</div>
+          <div class="month-summary__range">Dec 1 – 31 &nbsp;·&nbsp; Full coverage</div>
+        </div>
+        <div class="month-summary__badges">
+          <span class="badge badge--archive">Archive</span>
+          <span class="badge badge--days">31 days</span>
+        </div>
+      </summary>
+      <div class="month-body">
+        <p class="month-body__lead">Holiday season telemetry across cards, transfers, and mobile money with deep retry analytics. Monthly rollup available.</p>
+        <div class="cta-row">
+          <a class="btn btn--primary" href="reports/december-2025-monthly-report.html">Monthly report ↗</a>
+          <a class="btn btn--ghost" href="reports/december/dec-31-report.html">Open Dec 31 ↗</a>
+        </div>
+        <div class="week-grid">
+          <div class="week-block">
+            <div class="week-block__title">Week 1</div>
+            <div class="week-block__range">Dec 1 – 7</div>
+            <nav class="pill-nav">
+              <a href="reports/december/dec-01-report.html">Dec 01</a>
+              <a href="reports/december/dec-02-report.html">Dec 02</a>
+              <a href="reports/december/dec-03-report.html">Dec 03</a>
+              <a href="reports/december/dec-04-report.html">Dec 04</a>
+              <a href="reports/december/dec-05-report.html">Dec 05</a>
+              <a href="reports/december/dec-06-report.html">Dec 06</a>
+              <a href="reports/december/dec-07-report.html">Dec 07</a>
+            </nav>
+          </div>
+          <div class="week-block">
+            <div class="week-block__title">Week 2</div>
+            <div class="week-block__range">Dec 8 – 14</div>
+            <nav class="pill-nav">
+              <a href="reports/december/dec-08-report.html">Dec 08</a>
+              <a href="reports/december/dec-09-report.html">Dec 09</a>
+              <a href="reports/december/dec-10-report.html">Dec 10</a>
+              <a href="reports/december/dec-11-report.html">Dec 11</a>
+              <a href="reports/december/dec-12-report.html">Dec 12</a>
+              <a href="reports/december/dec-13-report.html">Dec 13</a>
+              <a href="reports/december/dec-14-report.html">Dec 14</a>
+            </nav>
+          </div>
+          <div class="week-block">
+            <div class="week-block__title">Week 3</div>
+            <div class="week-block__range">Dec 15 – 21</div>
+            <nav class="pill-nav">
+              <a href="reports/december/dec-15-report.html">Dec 15</a>
+              <a href="reports/december/dec-16-report.html">Dec 16</a>
+              <a href="reports/december/dec-17-report.html">Dec 17</a>
+              <a href="reports/december/dec-18-report.html">Dec 18</a>
+              <a href="reports/december/dec-19-report.html">Dec 19</a>
+              <a href="reports/december/dec-20-report.html">Dec 20</a>
+              <a href="reports/december/dec-21-report.html">Dec 21</a>
+            </nav>
+          </div>
+          <div class="week-block">
+            <div class="week-block__title">Week 4 + close</div>
+            <div class="week-block__range">Dec 22 – 31</div>
+            <nav class="pill-nav">
+              <a href="reports/december/dec-22-report.html">Dec 22</a>
+              <a href="reports/december/dec-23-report.html">Dec 23</a>
+              <a href="reports/december/dec-24-report.html">Dec 24</a>
+              <a href="reports/december/dec-25-report.html">Dec 25</a>
+              <a href="reports/december/dec-26-report.html">Dec 26</a>
+              <a href="reports/december/dec-27-report.html">Dec 27</a>
+              <a href="reports/december/dec-28-report.html">Dec 28</a>
+              <a href="reports/december/dec-29-report.html">Dec 29</a>
+              <a href="reports/december/dec-30-report.html">Dec 30</a>
+              <a href="reports/december/dec-31-report.html">Dec 31</a>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <!-- November 2025 -->
+    <details class="month-card">
+      <summary>
+        <div class="month-summary__left">
+          <div class="month-summary__eyebrow">Archive · 2025</div>
+          <div class="month-summary__title">November 2025</div>
+          <div class="month-summary__range">Nov 25 – 30 &nbsp;·&nbsp; Partial coverage</div>
+        </div>
+        <div class="month-summary__badges">
+          <span class="badge badge--archive">Archive</span>
+          <span class="badge badge--days">6 days</span>
+        </div>
+      </summary>
+      <div class="month-body">
+        <p class="month-body__lead">Six-day snapshot of late-November behaviour as Spotflow headed into the holiday sprint. Monthly rollup available.</p>
+        <div class="cta-row">
+          <a class="btn btn--primary" href="reports/november-2025-monthly-report.html">Monthly report ↗</a>
+          <a class="btn btn--ghost" href="reports/nov-30-report.html">Open Nov 30 ↗</a>
+        </div>
+        <nav class="pill-nav" style="max-width:460px;">
+          <a href="reports/nov-25-report.html">Nov 25</a>
+          <a href="reports/nov-26-report.html">Nov 26</a>
+          <a href="reports/nov-27-report.html">Nov 27</a>
+          <a href="reports/nov-28-report.html">Nov 28</a>
+          <a href="reports/nov-29-report.html">Nov 29</a>
+          <a href="reports/nov-30-report.html">Nov 30</a>
+        </nav>
+      </div>
+    </details>
+
+  </main>
+
+  <footer>
+    <div class="footer">
+      <span class="footer__brand">Spotflow &nbsp;·&nbsp; Transaction Intelligence</span>
+      <span class="footer__copy">Updated Jul 9, 2026</span>
+    </div>
+  </footer>
+
+</body>
+</html>

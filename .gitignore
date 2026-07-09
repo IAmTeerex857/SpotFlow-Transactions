@@ -5,3 +5,4 @@ __pycache__/
 *.mapping.json
 Spotflow transactions data/
 Logo.svg
+node_modules/
