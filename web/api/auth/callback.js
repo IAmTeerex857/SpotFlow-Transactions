@@ -42,12 +42,17 @@ export default async function handler(req, res) {
         grant_type: 'authorization_code',
       }),
     });
-    if (!tokenRes.ok) return deny(res, 'token');
-    idToken = (await tokenRes.json()).id_token;
-  } catch {
-    return deny(res, 'token');
+    const tokenJson = await tokenRes.json().catch(() => ({}));
+    if (!tokenRes.ok) {
+      console.error('token exchange failed', tokenRes.status, tokenJson);
+      return deny(res, `token_${tokenJson.error || tokenRes.status}`);
+    }
+    idToken = tokenJson.id_token;
+  } catch (e) {
+    console.error('token exchange threw', e);
+    return deny(res, 'token_fetch');
   }
-  if (!idToken) return deny(res, 'token');
+  if (!idToken) return deny(res, 'token_noid');
 
   // The id_token comes straight from Google over TLS in a server-to-server
   // exchange, so we can trust its payload without re-fetching JWKS.
