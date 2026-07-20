@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='utf-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+  <title>Jul 17, 2026 — Spotflow Insights</title>
+  <link rel="icon" type="image/svg+xml" href="../../assets/icon.svg">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src='https://cdn.jsdelivr.net/npm/chart.js'></script>
+  <style>
+    :root {
+      --bg: #0A0C0F;
+      --bg-alt: #0C1019;
+      --ink: #EBEFF4;
+      --muted: #93A0AD;
+      --faint: #5A6675;
+      --line: rgba(255,255,255,.10);
+      --line-soft: rgba(255,255,255,.06);
+      --surface: rgba(255,255,255,.035);
+      --surface-2: rgba(255,255,255,.06);
+      --accent: #4DB6FF;
+      --accent-dim: rgba(77,182,255,.14);
+      --accent-line: rgba(77,182,255,.40);
+      --green: #5FD08A;
+      --amber: #F2C261;
+      --red: #FF7A7A;
+      --magenta: #E26BD6;
+      --font-display: 'Space Grotesk', system-ui, sans-serif;
+      --font-body: 'IBM Plex Sans', system-ui, sans-serif;
+      --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-body);
+      background: radial-gradient(1200px 800px at 82% -8%, rgba(77,182,255,.07), transparent 60%), var(--bg);
+      color: var(--ink);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Header */
+    header {
+      padding: 3.5rem 0 2.5rem;
+      text-align: center;
+      position: relative;
+      border-bottom: 1px solid var(--line-soft);
+    }
+    header .header-inner {
+      width: min(1400px, 92vw);
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      position: relative;
+    }
+    header .logo-wrapper {
+      position: absolute;
+      top: 0;
+      left: 1.5rem;
+    }
+    header svg { width: 160px; height: auto; }
+    header svg [fill] { fill: var(--ink) !important; }
+    .eyebrow {
+      font-family: var(--font-mono);
+      font-size: .75rem;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      display: inline-flex;
+      align-items: center;
+      gap: .8rem;
+      margin-bottom: .6rem;
+    }
+    .eyebrow::before {
+      content: '';
+      width: 30px;
+      height: 2px;
+      background: var(--accent);
+    }
+    header h1 {
+      font-family: var(--font-display);
+      font-size: 2.4rem;
+      font-weight: 600;
+      letter-spacing: -.015em;
+      line-height: 1.1;
+      color: var(--ink);
+      margin: .4rem 0 .3rem;
+    }
+    header .date-range {
+      font-family: var(--font-mono);
+      font-size: .8rem;
+      color: var(--muted);
+    }
+
+    /* Main */
+    main {
+      width: min(1400px, 95vw);
+      margin: 2rem auto 4rem;
+      display: grid;
+      gap: 1.6rem;
+      padding: 0 1rem;
+    }
+
+    /* KPI Strip */
+    .kpi-strip {
+      display: flex;
+      gap: 1rem;
+      overflow-x: auto;
+      scroll-snap-type: x proximity;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    .kpi-strip::-webkit-scrollbar { display: none; }
+    .kpi-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 1.4rem 1.6rem;
+      display: flex;
+      flex-direction: column;
+      gap: .3rem;
+      flex: 0 0 220px;
+      scroll-snap-align: start;
+    }
+    .kpi-label {
+      font-family: var(--font-mono);
+      font-size: .7rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .kpi-value {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -.02em;
+      color: var(--ink);
+    }
+    .kpi-sub {
+      font-size: .78rem;
+      color: var(--faint);
+    }
+    .kpi-accent .kpi-value { color: var(--accent); }
+    .kpi-green .kpi-value { color: var(--green); }
+    .kpi-red .kpi-value { color: var(--red); }
+
+    /* Cards / Sections */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 2rem 2.2rem;
+      display: grid;
+      gap: 1.4rem;
+    }
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: .6rem;
+    }
+    .title-with-total {
+      display: inline-flex;
+      align-items: baseline;
+      gap: .8rem;
+    }
+    h2 {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 600;
+      letter-spacing: -.01em;
+      color: var(--ink);
+      text-transform: capitalize;
+    }
+    h3 {
+      font-family: var(--font-display);
+      font-size: .95rem;
+      font-weight: 600;
+      color: var(--ink);
+      margin: 1rem 0 .6rem;
+    }
+    h4 {
+      font-family: var(--font-display);
+      font-size: .9rem;
+      font-weight: 600;
+      color: var(--ink);
+      text-transform: capitalize;
+    }
+    h5.subtle-heading {
+      font-family: var(--font-mono);
+      font-size: .72rem;
+      font-weight: 500;
+      color: var(--faint);
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      margin: .6rem 0 .4rem;
+    }
+    .badge {
+      font-family: var(--font-mono);
+      background: var(--accent-dim);
+      color: var(--accent);
+      padding: .3rem .8rem;
+      border-radius: 999px;
+      font-weight: 500;
+      font-size: .72rem;
+      letter-spacing: .04em;
+    }
+    .panel-grid.two {
+      display: grid;
+      gap: 1.2rem;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+    .panel-grid.three {
+      display: grid;
+      gap: 1.2rem;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    }
+    .metric-card {
+      background: var(--surface-2);
+      border: 1px solid var(--line-soft);
+      border-radius: 14px;
+      padding: 1.2rem 1.4rem;
+    }
+
+    /* Lists */
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 .8rem;
+    }
+    .data-list li, .stat-list li, .mini-list li, .table-list li {
+      font-size: .85rem;
+      color: var(--muted);
+      padding: .3rem 0;
+      line-height: 1.45;
+      border-bottom: 1px solid var(--line-soft);
+      word-break: break-word;
+    }
+    .data-list li::before {
+      content: '◆';
+      font-size: .5rem;
+      color: var(--accent);
+      margin-right: .6rem;
+      vertical-align: middle;
+    }
+    .stat-list { margin-bottom: .8rem; }
+    .mini-list { padding-left: .8rem; }
+    .mini-list li::before {
+      content: '·';
+      color: var(--faint);
+      margin-right: .5rem;
+    }
+    .table-list { margin: 0; }
+    .table-list li { border: none; padding: .15rem 0; font-size: .78rem; }
+    .table-list li::before {
+      content: '–';
+      color: var(--faint);
+      margin-right: .4rem;
+    }
+
+    /* Tables */
+    .table-container {
+      overflow-x: auto;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: var(--surface);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 900px;
+    }
+    th, td {
+      padding: .85rem 1rem;
+      text-align: left;
+      vertical-align: top;
+      font-size: .82rem;
+      border-bottom: 1px solid var(--line-soft);
+      color: var(--muted);
+    }
+    th {
+      font-family: var(--font-mono);
+      font-size: .7rem;
+      font-weight: 500;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--faint);
+      background: var(--surface-2);
+    }
+    tbody tr:hover { background: var(--accent-dim); }
+    .muted-text { color: var(--faint); font-size: .82rem; margin: 0 0 .6rem; }
+
+    /* Details / Accordion */
+    details.details-panel {
+      background: var(--surface-2);
+      border: 1px solid var(--line-soft);
+      border-radius: 14px;
+      padding: .8rem 1.2rem;
+    }
+    details summary {
+      cursor: pointer;
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: .9rem;
+      color: var(--ink);
+      list-style: none;
+    }
+    details summary::marker { display: none; }
+    details summary::after {
+      content: '▾';
+      display: inline-block;
+      margin-left: .5rem;
+      transition: transform .2s ease;
+      color: var(--accent);
+    }
+    details[open] summary::after { transform: rotate(180deg); }
+    .details-grid {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      margin-top: .8rem;
+    }
+    .sub-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 1rem 1.2rem;
+    }
+    .sub-card h3 { font-size: .88rem; margin: .6rem 0 .4rem; }
+
+    /* Chart */
+    .chart-wrapper {
+      background: var(--surface-2);
+      border: 1px solid var(--line-soft);
+      border-radius: 14px;
+      padding: 1.5rem;
+      min-height: 280px;
+      position: relative;
+    }
+    .vol-pill {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: .72rem;
+      font-weight: 500;
+      background: rgba(95,208,138,.14);
+      color: var(--green);
+      padding: .2rem .6rem;
+      border-radius: 999px;
+      letter-spacing: .03em;
+    }
+    .btn {
+      font-family: var(--font-mono);
+      font-size: .72rem;
+      padding: .4rem .8rem;
+      border-radius: 999px;
+      border: 1px solid var(--accent-line);
+      background: var(--accent-dim);
+      color: var(--accent);
+      cursor: pointer;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      transition: all .15s ease;
+    }
+    .btn:hover {
+      background: rgba(77,182,255,.22);
+      transform: translateY(-1px);
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      border-top: 1px solid var(--line-soft);
+    }
+    footer p {
+      font-family: var(--font-mono);
+      font-size: .7rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--faint);
+    }
+
+    /* Animations */
+    @media (prefers-reduced-motion: no-preference) {
+      .anim  { animation: rise .55s cubic-bezier(.2,.7,.2,1) both; }
+      .anim2 { animation: rise .55s cubic-bezier(.2,.7,.2,1) .08s both; }
+      .anim3 { animation: rise .55s cubic-bezier(.2,.7,.2,1) .16s both; }
+      .anim4 { animation: rise .55s cubic-bezier(.2,.7,.2,1) .24s both; }
+      @keyframes rise {
+        from { opacity: 0; transform: translateY(16px); }
+        to   { opacity: 1; transform: none; }
+      }
+    }
+    @media print {
+      .anim,.anim2,.anim3,.anim4 { animation: none !important; opacity: 1 !important; transform: none !important; }
+      body { background: #fff; color: #1a1a1a; }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      header { padding: 2.4rem 0 1.8rem; }
+      header .logo-wrapper { position: static; margin-bottom: .8rem; }
+      header h1 { font-size: 1.8rem; }
+      .kpi-card { flex-basis: 180px; padding: 1.2rem 1.3rem; }
+      .kpi-value { font-size: 1.5rem; }
+      .card { padding: 1.4rem 1.2rem; }
+    }
+
+    /* Back nav */
+    .back-nav {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      padding: .75rem 1.5rem;
+      font-family: var(--font-mono);
+      font-size: .72rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      border-bottom: 1px solid var(--line-soft);
+      width: 100%;
+      transition: color .15s;
+    }
+    .back-nav:hover { color: var(--accent); }
+    .back-nav::before { content: '←'; font-size: .9rem; letter-spacing: 0; }
+  </style>
+</head>
+<body>
+  <a class="back-nav" href="../../reports.html">All reports</a>
+  <header>
+    <div class='header-inner'>
+      <div class='logo-wrapper'>
+        <svg width="118" height="24" viewBox="0 0 118 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_14870_10130)">
+<path d="M14.1144 0.024227C7.37476 -0.406742 1.10079 5.08202 0.116132 12.2811C-0.868529 19.4802 4.36342 24.706 11.7696 23.9363C19.1757 23.1665 25.4633 17.6587 25.7692 11.655C26.0751 5.65123 20.8596 0.44571 14.1144 0.024227ZM21.7623 11.7078L19.4406 14.0009C19.3168 14.1253 19.1645 14.2181 18.9967 14.2714C18.829 14.3247 18.6507 14.337 18.4771 14.3072C18.3035 14.2774 18.1398 14.2063 17.9999 14.1001C17.8599 13.994 17.7479 13.8558 17.6734 13.6973L14.0666 6.07677C13.3196 6.31259 13.1994 6.93736 13.6242 7.86435L17.2432 15.6692C17.4834 16.1373 17.5785 16.6655 17.5164 17.1871C17.4481 17.6086 17.2282 18.0802 16.7857 18.1642C15.4446 18.4854 14.1021 18.789 12.7597 19.1129C12.7091 19.1305 12.6409 19.1305 12.5903 19.1468C12.1137 19.2647 11.6221 19.3487 11.129 19.4328C10.6866 19.5181 10.2796 19.5181 9.93953 19.1807L4.09711 13.3599C3.99553 13.2592 3.91495 13.1396 3.85996 13.008C3.80498 12.8764 3.77668 12.7353 3.77668 12.5928C3.77668 12.4503 3.80498 12.3092 3.85996 12.1776C3.91495 12.046 3.99553 11.9264 4.09711 11.8257L6.8599 9.08001C6.9852 8.95485 7.13958 8.86219 7.30945 8.81018C7.47933 8.75816 7.65948 8.74839 7.83406 8.78173C8.00863 8.81507 8.17227 8.89048 8.31056 9.00134C8.44885 9.1122 8.55756 9.25511 8.6271 9.41746C8.6271 9.41746 12.6873 18.5044 12.6873 18.5383C13.5204 18.2008 13.6733 17.5097 13.1803 16.4485C13.1803 16.4485 9.35638 8.13675 9.34136 8.11913C9.17065 7.71256 8.98355 7.25991 9.06822 6.80454C9.1007 6.56727 9.22153 6.35067 9.40691 6.19739C9.53137 6.10339 9.6781 6.04272 9.833 6.02121C10.4202 5.91821 11.0239 5.88568 11.618 5.83283C11.9034 5.80572 12.1875 5.77455 12.4729 5.73932C12.9987 5.67291 13.5081 5.62141 14.0352 5.55365C14.4941 5.5035 14.9912 5.40186 15.4624 5.41812C15.853 5.452 16.1589 5.75558 16.4306 5.99139C16.7707 6.29497 17.1449 6.56466 17.5013 6.85062C18.4191 7.55942 19.3355 8.26686 20.2532 8.99192C20.7285 9.34564 21.1873 9.71697 21.664 10.0883C21.7853 10.1832 21.8851 10.3025 21.9566 10.4384C22.0281 10.5743 22.0697 10.7237 22.0787 10.8767C22.0878 11.0298 22.064 11.183 22.009 11.3263C21.954 11.4695 21.869 11.5996 21.7596 11.7078H21.7623Z" fill="#0D0716"/>
+</g>
+<path d="M36.3723 18.6406C35.226 18.6406 34.2348 18.4666 33.3987 18.1187C32.5626 17.7573 31.9085 17.2756 31.4365 16.6733L32.9537 15.3083C33.3852 15.7767 33.8774 16.138 34.4304 16.3923C34.9968 16.6466 35.6508 16.7737 36.3925 16.7737C37.0399 16.7737 37.5591 16.6666 37.9501 16.4525C38.3412 16.2384 38.5368 15.9105 38.5368 15.4689C38.5368 15.0942 38.4019 14.8399 38.1322 14.7061C37.876 14.5723 37.5321 14.4719 37.1005 14.405L35.4216 14.144C34.99 14.0771 34.5652 13.9834 34.1472 13.863C33.7426 13.7291 33.3785 13.5485 33.0548 13.321C32.7446 13.0935 32.4952 12.8057 32.3064 12.4578C32.1176 12.0965 32.0232 11.6615 32.0232 11.153C32.0232 10.069 32.4277 9.23926 33.2369 8.6638C34.0595 8.08835 35.1856 7.80062 36.6151 7.80062C37.6265 7.80062 38.4828 7.94114 39.1841 8.22217C39.8988 8.50321 40.4855 8.898 40.944 9.40654L39.5887 10.892C39.292 10.5708 38.8942 10.2898 38.3952 10.0489C37.9097 9.79464 37.2893 9.6675 36.5341 9.6675C35.2125 9.6675 34.5517 10.0757 34.5517 10.892C34.5517 11.2667 34.6866 11.5277 34.9563 11.6749C35.226 11.8087 35.5767 11.9091 36.0082 11.976L37.6669 12.237C38.112 12.3039 38.5368 12.4043 38.9414 12.5381C39.3594 12.6585 39.7235 12.8325 40.0337 13.06C40.3574 13.2875 40.6136 13.5752 40.8024 13.9232C40.9912 14.2711 41.0856 14.6994 41.0856 15.2079C41.0856 16.2786 40.6675 17.1217 39.8314 17.7373C39.0088 18.3395 37.8557 18.6406 36.3723 18.6406Z" fill="#0D0716"/>
+<path d="M42.4532 8.04151H45.0425V9.86824H45.1841C45.4673 9.23926 45.8517 8.73741 46.3371 8.36269C46.8361 7.98798 47.4902 7.80062 48.2993 7.80062C48.8927 7.80062 49.4321 7.91437 49.9176 8.14188C50.4166 8.356 50.8414 8.69057 51.192 9.14558C51.5426 9.58721 51.8124 10.1493 52.0012 10.8318C52.19 11.5143 52.2844 12.3106 52.2844 13.2206C52.2844 14.1306 52.19 14.9269 52.0012 15.6094C51.8124 16.2919 51.5426 16.8607 51.192 17.3157C50.8414 17.7573 50.4166 18.0919 49.9176 18.3194C49.4321 18.5335 48.8927 18.6406 48.2993 18.6406C47.4902 18.6406 46.8361 18.4532 46.3371 18.0785C45.8517 17.7038 45.4673 17.202 45.1841 16.573H45.0425V22.4145H42.4532V8.04151ZM47.207 16.593C47.9622 16.593 48.5421 16.3655 48.9466 15.9105C49.3647 15.4555 49.5737 14.8332 49.5737 14.0436V12.3976C49.5737 11.608 49.3647 10.9857 48.9466 10.5307C48.5421 10.0757 47.9622 9.84817 47.207 9.84817C46.6136 9.84817 46.1011 9.99538 45.6696 10.2898C45.2515 10.5708 45.0425 11.0058 45.0425 11.5946V14.8466C45.0425 15.4354 45.2515 15.8771 45.6696 16.1715C46.1011 16.4525 46.6136 16.593 47.207 16.593Z" fill="#0D0716"/>
+<path d="M58.2439 18.6406C57.4483 18.6406 56.7335 18.5135 56.0997 18.2592C55.4793 18.0049 54.9466 17.6436 54.5016 17.1752C54.0701 16.7068 53.7329 16.138 53.4902 15.4689C53.2609 14.7998 53.1463 14.0503 53.1463 13.2206C53.1463 12.3909 53.2609 11.6414 53.4902 10.9723C53.7329 10.3032 54.0701 9.73442 54.5016 9.26602C54.9466 8.79763 55.4793 8.4363 56.0997 8.18202C56.7335 7.92775 57.4483 7.80062 58.2439 7.80062C59.0261 7.80062 59.7341 7.92775 60.3679 8.18202C61.0018 8.4363 61.5344 8.79763 61.966 9.26602C62.411 9.73442 62.7482 10.3032 62.9774 10.9723C63.2202 11.6414 63.3415 12.3909 63.3415 13.2206C63.3415 14.0503 63.2202 14.7998 62.9774 15.4689C62.7482 16.138 62.411 16.7068 61.966 17.1752C61.5344 17.6436 61.0018 18.0049 60.3679 18.2592C59.7341 18.5135 59.0261 18.6406 58.2439 18.6406ZM58.2439 16.6733C58.9856 16.6733 59.5723 16.4525 60.0038 16.0109C60.4354 15.5559 60.6511 14.8934 60.6511 14.0236V12.4176C60.6511 11.5478 60.4354 10.892 60.0038 10.4504C59.5723 9.99538 58.9856 9.76787 58.2439 9.76787C57.5022 9.76787 56.9156 9.99538 56.484 10.4504C56.0525 10.892 55.8367 11.5478 55.8367 12.4176V14.0236C55.8367 14.8934 56.0525 15.5559 56.484 16.0109C56.9156 16.4525 57.5022 16.6733 58.2439 16.6733Z" fill="#0D0716"/>
+<path d="M70.0698 18.3997C69.0718 18.3997 68.3368 18.1387 67.8648 17.6168C67.3928 17.0949 67.1568 16.4191 67.1568 15.5893V10.069H64.1225V8.04151H66.1859C66.6039 8.04151 66.9006 7.96121 67.0759 7.80062C67.2512 7.62664 67.3389 7.32553 67.3389 6.89729V4.38803H69.7461V8.04151H73.9941V10.069H69.7461V16.3722H73.9941V18.3997H70.0698Z" fill="#0D0716"/>
+<path d="M75.3213 16.3722H78.5174V10.069H75.119V8.04151H78.5174V6.35529C78.5174 5.94042 78.5714 5.56571 78.6793 5.23114C78.8006 4.88319 78.9827 4.58877 79.2255 4.34788C79.4682 4.09361 79.7716 3.89956 80.1357 3.76574C80.5133 3.61853 80.9516 3.54492 81.4506 3.54492H84.9704V5.5724H81.1067V8.04151H84.9704V10.069H81.1067V16.3722H84.5051V18.3997H75.3213V16.3722Z" fill="#0D0716"/>
+<path d="M85.7716 16.3722H89.0891V5.5724H85.7716V3.54492H91.6784V16.3722H95.0161V18.3997H85.7716V16.3722Z" fill="#0D0716"/>
+<path d="M100.895 18.6406C100.099 18.6406 99.3844 18.5135 98.7505 18.2592C98.1302 18.0049 97.5975 17.6436 97.1525 17.1752C96.7209 16.7068 96.3838 16.138 96.141 15.4689C95.9118 14.7998 95.7971 14.0503 95.7971 13.2206C95.7971 12.3909 95.9118 11.6414 96.141 10.9723C96.3838 10.3032 96.7209 9.73442 97.1525 9.26602C97.5975 8.79763 98.1302 8.4363 98.7505 8.18202C99.3844 7.92775 100.099 7.80062 100.895 7.80062C101.677 7.80062 102.385 7.92775 103.019 8.18202C103.653 8.4363 104.185 8.79763 104.617 9.26602C105.062 9.73442 105.399 10.3032 105.628 10.9723C105.871 11.6414 105.992 12.3909 105.992 13.2206C105.992 14.0503 105.871 14.7998 105.628 15.4689C105.399 16.138 105.062 16.7068 104.617 17.1752C104.185 17.6436 103.653 18.0049 103.019 18.2592C102.385 18.5135 101.677 18.6406 100.895 18.6406ZM100.895 16.6733C101.636 16.6733 102.223 16.4525 102.655 16.0109C103.086 15.5559 103.302 14.8934 103.302 14.0236V12.4176C103.302 11.5478 103.086 10.892 102.655 10.4504C102.223 9.99538 101.636 9.76787 100.895 9.76787C100.153 9.76787 99.5664 9.99538 99.1349 10.4504C98.7033 10.892 98.4876 11.5478 98.4876 12.4176V14.0236C98.4876 14.8934 98.7033 15.5559 99.1349 16.0109C99.5664 16.4525 100.153 16.6733 100.895 16.6733Z" fill="#0D0716"/>
+<path d="M106.43 8.04151H108.594L109.484 16.593H109.666L111.082 8.04151H113.449L114.845 16.593H115.027L115.937 8.04151H118L116.665 18.3997H113.53L112.316 10.7916H112.134L110.9 18.3997H107.765L106.43 8.04151Z" fill="#0D0716"/>
+<defs>
+<clipPath id="clip0_14870_10130">
+<rect width="25.7815" height="24.0069" fill="white"/>
+</clipPath>
+</defs>
+</svg>
+
+      </div>
+      <div class="eyebrow">Spotflow Insights</div>
+      <h1>Jul 17, 2026 — Spotflow Insights</h1>
+      <p class="date-range">Jul 17, 2026 00:03 — Jul 17, 2026 23:59</p>
+    </div>
+  </header>
+  <main>
+    
+    <div class="kpi-strip">
+      <div class="kpi-card">
+        <span class="kpi-label">Total Transactions</span>
+        <span class="kpi-value">684</span>
+      </div>
+      <div class="kpi-card kpi-accent">
+        <span class="kpi-label">Success Volume</span>
+        <span class="kpi-value"><span class="vol-pill" style="font-size:inherit;padding:.2rem .8rem;">$1,928.84</span></span>
+        <span class="kpi-sub">244 successful transactions</span>
+      </div>
+      <div class="kpi-card kpi-green">
+        <span class="kpi-label">Success Rate</span>
+        <span class="kpi-value">35.7%</span>
+        <span class="kpi-sub">244 of 684 transactions</span>
+      </div>
+      <div class="kpi-card kpi-red">
+        <span class="kpi-label">Failed Volume</span>
+        <span class="kpi-value"><span class="vol-pill" style="font-size:inherit;padding:.2rem .8rem;background:rgba(255,122,122,.14);color:var(--red);">$617.47</span></span>
+        <span class="kpi-sub">88 failed transactions</span>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-label">Abandoned Volume</span>
+        <span class="kpi-value"><span class="vol-pill" style="font-size:inherit;padding:.2rem .8rem;background:rgba(242,194,97,.14);color:var(--amber);">$11,138.95</span></span>
+        <span class="kpi-sub">338 abandoned transactions</span>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-label">Cancelled Volume</span>
+        <span class="kpi-value"><span class="vol-pill" style="font-size:inherit;padding:.2rem .8rem;background:rgba(184,154,255,.16);color:#B89AFF;">$78.65</span></span>
+        <span class="kpi-sub">14 cancelled transactions</span>
+      </div>
+    </div>
+    
+
+    <section class="card anim">
+      <div class="section-header">
+        <div class="title-with-total"><h2>Merchant volume</h2><span class="badge">5 merchants</span></div>
+      </div>
+      <div class="panel-grid two">
+        <div class="chart-wrapper">
+          <canvas id="merchantChart"></canvas>
+        </div>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr><th>Merchant</th><th>Txns</th><th>Success</th><th>Failed</th><th>Volume</th><th>Failed $</th><th>Rate</th><th>Top Channel</th><th>Top Region</th></tr>
+            </thead>
+            <tbody><tr>
+          <td>Audiomack Inc.</td>
+          <td>586</td>
+          <td>191</td>
+          <td>65</td>
+          <td><span class='vol-pill'>$1,071.14</span></td>
+          <td><span class='vol-pill' style='background:rgba(255,122,122,.14);color:var(--red);'>$359.63</span></td>
+          <td>32.6%</td>
+          <td>Bank Transfer</td>
+          <td>Nigeria</td>
+        </tr><tr>
+          <td>Nestuge</td>
+          <td>85</td>
+          <td>46</td>
+          <td>17</td>
+          <td><span class='vol-pill'>$845.72</span></td>
+          <td><span class='vol-pill' style='background:rgba(255,122,122,.14);color:var(--red);'>$257.35</span></td>
+          <td>54.1%</td>
+          <td>Mobile Money</td>
+          <td>Ghana</td>
+        </tr><tr>
+          <td>Gadsfy</td>
+          <td>2</td>
+          <td>2</td>
+          <td>0</td>
+          <td><span class='vol-pill'>$11.55</span></td>
+          <td><span class='vol-pill' style='background:rgba(255,122,122,.14);color:var(--red);'>$0.00</span></td>
+          <td>100.0%</td>
+          <td>Mobile Money</td>
+          <td>Ghana</td>
+        </tr><tr>
+          <td>DEE LLC</td>
+          <td>7</td>
+          <td>1</td>
+          <td>6</td>
+          <td><span class='vol-pill'>$0.16</span></td>
+          <td><span class='vol-pill' style='background:rgba(255,122,122,.14);color:var(--red);'>$0.48</span></td>
+          <td>14.3%</td>
+          <td>Mobile Money</td>
+          <td>Ghana</td>
+        </tr><tr>
+          <td>Spotflow Demo</td>
+          <td>4</td>
+          <td>4</td>
+          <td>0</td>
+          <td><span class='vol-pill'>$0.28</span></td>
+          <td><span class='vol-pill' style='background:rgba(255,122,122,.14);color:var(--red);'>$0.00</span></td>
+          <td>100.0%</td>
+          <td>Card</td>
+          <td>Nigeria</td>
+        </tr></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="card anim2">
+      <div class="section-header">
+        <div class="title-with-total"><h2>Aggregate overview</h2><span class="badge">684 txns</span></div>
+      </div>
+      <div class="panel-grid two">
+        <div class="metric-card">
+          <h3>Status mix</h3>
+          <ul class='data-list'><li>Successful — 244</li><li>Failed — 88</li><li>Abandoned — 338</li><li>Cancelled — 14</li></ul>
+          <h3>Channel distribution</h3>
+          <ul class='data-list'><li>Card — 43</li><li>Bank Transfer — 413</li><li>Mobile Money — 219</li><li>Eft — 9</li></ul>
+        </div>
+        <div class="metric-card">
+          <h3>Top success messages</h3>
+          <ul class='data-list'><li>No provider message (blank) — 140</li><li>Success — 94</li><li>Payment completed — 6</li><li>Transaction successfully found — 3</li><li>Payment processed — 1</li></ul>
+          <h3>Top failure messages</h3>
+          <ul class='data-list'><li>Transaction failed — 21</li><li>The MTN mobile money user has reached counter or balance limits — 19</li><li>Error processing payment — 17</li><li>No provider message (blank) — 13</li><li>Merchant is not enabled for international transactions — 7</li><li>Insufficient funds — 4</li><li>Request to generate token is successful — 2</li><li>MTN exception: account validation failed => internal error — 2</li><li>Authorized successful — 1</li><li>Exception happened with upstream provider — 1</li><div id='more-d03bf92b' style='display:none;'><li>Fellback-bnf — 1</li></div></ul><button class='btn' style='margin-top:.5rem;' onclick="var el=document.getElementById('more-d03bf92b');if(el.style.display==='none'){el.style.display='block';this.textContent='Show less'}else{el.style.display='none';this.textContent='See all 11 messages'}">See all 11 messages</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="card anim2">
+      <div class="section-header">
+        <div class="title-with-total"><h2>Provider contribution</h2><span class="badge">8 providers</span></div>
+      </div>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr><th>Provider</th><th>Total</th><th>Success</th><th>Failed</th><th>Abandoned</th><th>Cancelled</th><th>Success %</th><th>Fail %</th><th>Volume</th><th>Top success</th><th>Top failure</th></tr>
+          </thead>
+          <tbody><tr>
+          <td>cellulant</td>
+          <td>5</td>
+          <td>3</td>
+          <td>0</td>
+          <td>2</td>
+          <td>0</td>
+          <td>60.0%</td>
+          <td>0.0%</td>
+          <td><span class='vol-pill'>$12.97</span></td>
+          <td><ul class='table-list'><li>Transaction successfully found (3)</li></ul></td>
+          <td><ul class='table-list'><li>—</li></ul></td>
+        </tr><tr>
+          <td>hub2</td>
+          <td>1</td>
+          <td>0</td>
+          <td>1</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0.0%</td>
+          <td>100.0%</td>
+          <td><span class='vol-pill'>$0.00</span></td>
+          <td><ul class='table-list'><li>—</li></ul></td>
+          <td><ul class='table-list'><li>Authorized successful (1)</li></ul></td>
+        </tr><tr>
+          <td>hubtel</td>
+          <td>185</td>
+          <td>94</td>
+          <td>62</td>
+          <td>20</td>
+          <td>9</td>
+          <td>50.8%</td>
+          <td>33.5%</td>
+          <td><span class='vol-pill'>$787.94</span></td>
+          <td><ul class='table-list'><li>Success (94)</li></ul></td>
+          <td><ul class='table-list'><li>Transaction failed (21)</li><li>The MTN mobile money user has reached counter or balance limits (19)</li><li>Error processing payment (17)</li></ul></td>
+        </tr><tr>
+          <td>ozow</td>
+          <td>9</td>
+          <td>0</td>
+          <td>3</td>
+          <td>4</td>
+          <td>2</td>
+          <td>0.0%</td>
+          <td>33.3%</td>
+          <td><span class='vol-pill'>$0.00</span></td>
+          <td><ul class='table-list'><li>—</li></ul></td>
+          <td><ul class='table-list'><li>No provider message (blank) (3)</li></ul></td>
+        </tr><tr>
+          <td>pawapay</td>
+          <td>14</td>
+          <td>11</td>
+          <td>3</td>
+          <td>0</td>
+          <td>0</td>
+          <td>78.6%</td>
+          <td>21.4%</td>
+          <td><span class='vol-pill'>$238.16</span></td>
+          <td><ul class='table-list'><li>No provider message (blank) (11)</li></ul></td>
+          <td><ul class='table-list'><li>No provider message (blank) (3)</li></ul></td>
+        </tr><tr>
+          <td>paystack</td>
+          <td>43</td>
+          <td>12</td>
+          <td>16</td>
+          <td>12</td>
+          <td>3</td>
+          <td>27.9%</td>
+          <td>37.2%</td>
+          <td><span class='vol-pill'>$98.51</span></td>
+          <td><ul class='table-list'><li>No provider message (blank) (12)</li></ul></td>
+          <td><ul class='table-list'><li>Merchant is not enabled for international transactions (7)</li><li>No provider message (blank) (5)</li><li>Request to generate token is successful (2)</li></ul></td>
+        </tr><tr>
+          <td>spotflow_accounts</td>
+          <td>413</td>
+          <td>117</td>
+          <td>0</td>
+          <td>296</td>
+          <td>0</td>
+          <td>28.3%</td>
+          <td>0.0%</td>
+          <td><span class='vol-pill'>$703.73</span></td>
+          <td><ul class='table-list'><li>No provider message (blank) (117)</li></ul></td>
+          <td><ul class='table-list'><li>—</li></ul></td>
+        </tr><tr>
+          <td>tembo_plus</td>
+          <td>14</td>
+          <td>7</td>
+          <td>3</td>
+          <td>4</td>
+          <td>0</td>
+          <td>50.0%</td>
+          <td>21.4%</td>
+          <td><span class='vol-pill'>$87.54</span></td>
+          <td><ul class='table-list'><li>Payment completed (6)</li><li>Payment processed (1)</li></ul></td>
+          <td><ul class='table-list'><li>Insufficient funds (3)</li></ul></td>
+        </tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    
+    <section class="card anim3">
+      <div class="section-header">
+        <div class="title-with-total"><h2>Nigeria</h2><span class="badge">449 txns · <span class='vol-pill'>$734.55</span></span></div>
+      </div>
+      <div class="panel-grid two">
+        <div class="metric-card">
+          <h3>Status mix</h3>
+          <ul class='data-list'><li>Successful — 126</li><li>Failed — 16</li><li>Abandoned — 304</li><li>Cancelled — 3</li></ul>
+          <h3>Channel distribution</h3>
+          <ul class='data-list'><li>Card — 36</li><li>Bank Transfer — 413</li></ul>
+        </div>
+        <div class="metric-card">
+          <h3>Top success reasons</h3>
+          <ul class='data-list'><li>No provider message (blank) — 126</li></ul>
+          <h3>Top failure reasons</h3>
+          <ul class='data-list'><li>Merchant is not enabled for international transactions — 7</li><li>No provider message (blank) — 5</li><li>Request to generate token is successful — 2</li><li>Insufficient funds — 1</li><li>Fellback-bnf — 1</li></ul>
+        </div>
+      </div>
+      <details class='details-panel'><summary>Provider breakdown</summary><div class='details-grid'><div class='sub-card'>
+              <h4>paystack</h4>
+              <p class='muted-text'>Total: 36 · <span class='vol-pill'>$30.83</span></p>
+              <ul class='stat-list'><li>Successful — 9</li><li>Failed — 16</li><li>Abandoned — 8</li><li>Cancelled — 3</li></ul><h5 class='subtle-heading'>Provider message highlights</h5><ul class='mini-list'><li>No provider message (blank) — 9</li></ul><ul class='mini-list'><li>Merchant is not enabled for international transactions — 7</li><li>No provider message (blank) — 5</li><li>Request to generate token is successful — 2</li><li>Insufficient funds — 1</li><li>Fellback-bnf — 1</li></ul></div><div class='sub-card'>
+              <h4>spotflow_accounts</h4>
+              <p class='muted-text'>Total: 413 · <span class='vol-pill'>$703.73</span></p>
+              <ul class='stat-list'><li>Successful — 117</li><li>Abandoned — 296</li></ul><h5 class='subtle-heading'>Provider message highlights</h5><ul class='mini-list'><li>No provider message (blank) — 117</li></ul></div></div></details>
+      <details class='details-panel'><summary>Merchant breakdown</summary><div class='details-grid'><div class='sub-card'>
+              <h4>Audiomack Inc.</h4>
+              <p class='muted-text'>445 txns · <span class='vol-pill'>$734.28</span> · Success: 27.4% · Top channel: Bank Transfer</p>
+              <ul class='stat-list'><li>Successful — 122</li><li>Failed — 16</li><li>Abandoned — 304</li><li>Cancelled — 3</li></ul>
+            </div><div class='sub-card'>
+              <h4>Spotflow Demo</h4>
+              <p class='muted-text'>4 txns · <span class='vol-pill'>$0.28</span> · Success: 100.0% · Top channel: Card</p>
+              <ul class='stat-list'><li>Successful — 4</li></ul>
+            </div></div></details>
+    </section>
+
+    <section class="card anim3">
+      <div class="section-header">
+        <div class="title-with-total"><h2>Ghana</h2><span class="badge">192 txns · <span class='vol-pill'>$855.63</span></span></div>
+      </div>
+      <div class="panel-grid two">
+        <div class="metric-card">
+          <h3>Status mix</h3>
+          <ul class='data-list'><li>Successful — 97</li><li>Failed — 62</li><li>Abandoned — 24</li><li>Cancelled — 9</li></ul>
+          <h3>Channel distribution</h3>
+          <ul class='data-list'><li>Card — 7</li><li>Mobile Money — 185</li></ul>
+        </div>
+        <div class="metric-card">
+          <h3>Top success reasons</h3>
+          <ul class='data-list'><li>Success — 94</li><li>No provider message (blank) — 3</li></ul>
+          <h3>Top failure reasons</h3>
+          <ul class='data-list'><li>Transaction failed — 21</li><li>The MTN mobile money user has reached counter or balance limits — 19</li><li>Error processing payment — 17</li><li>No provider message (blank) — 2</li><li>MTN exception: account validation failed => internal error — 2</li><li>Exception happened with upstream provider — 1</li></ul>
+        </div>
+      </div>
+      <details class='details-panel'><summary>Provider breakdown</summary><div class='details-grid'><div class='sub-card'>
+              <h4>hubtel</h4>
+              <p class='muted-text'>Total: 185 · <span class='vol-pill'>$787.94</span></p>
+              <ul class='stat-list'><li>Successful — 94</li><li>Failed — 62</li><li>Abandoned — 20</li><li>Cancelled — 9</li></ul><h5 class='subtle-heading'>Provider message highlights</h5><ul class='mini-list'><li>Success — 94</li></ul><ul class='mini-list'><li>Transaction failed — 21</li><li>The MTN mobile money user has reached counter or balance limits — 19</li><li>Error processing payment — 17</li><li>No provider message (blank) — 2</li><li>MTN exception: account validation failed => internal error — 2</li><li>Exception happened with upstream provider — 1</li></ul></div><div class='sub-card'>
+              <h4>paystack</h4>
+              <p class='muted-text'>Total: 7 · <span class='vol-pill'>$67.68</span></p>
+              <ul class='stat-list'><li>Successful — 3</li><li>Abandoned — 4</li></ul><h5 class='subtle-heading'>Provider message highlights</h5><ul class='mini-list'><li>No provider message (blank) — 3</li></ul></div></div></details>
+      <details class='details-panel'><summary>Merchant breakdown</summary><div class='details-grid'><div class='sub-card'>
+              <h4>Nestuge</h4>
+              <p class='muted-text'>63 txns · <span class='vol-pill'>$530.02</span> · Success: 47.6% · Top channel: Mobile Money</p>
+              <ul class='stat-list'><li>Successful — 30</li><li>Failed — 13</li><li>Abandoned — 15</li><li>Cancelled — 5</li></ul>
+            </div><div class='sub-card'>
+              <h4>Audiomack Inc.</h4>
+              <p class='muted-text'>121 txns · <span class='vol-pill'>$319.81</span> · Success: 53.7% · Top channel: Mobile Money</p>
+              <ul class='stat-list'><li>Successful — 65</li><li>Failed — 43</li><li>Abandoned — 9</li><li>Cancelled — 4</li></ul>
+            </div><div class='sub-card'>
+              <h4>Gadsfy</h4>
+              <p class='muted-text'>1 txns · <span class='vol-pill'>$5.64</span> · Success: 100.0% · Top channel: Mobile Money</p>
+              <ul class='stat-list'><li>Successful — 1</li></ul>
+            </div><div class='sub-card'>
+              <h4>DEE LLC</h4>
+              <p class='muted-text'>7 txns · <span class='vol-pill'>$0.16</span> · Success: 14.3% · Top channel: Mobile Money</p>
+              <ul class='stat-list'><li>Successful — 1</li><li>Failed — 6</li></ul>
+            </div></div></details>
+    </section>
+
+    <section class="card anim3">
+      <div class="section-header">
+        <div class="title-with-total"><h2>South Africa</h2><span class="badge">9 txns · <span class='vol-pill'>$0.00</span></span></div>
+      </div>
+      <div class="panel-grid two">
+        <div class="metric-card">
+          <h3>Status mix</h3>
+          <ul class='data-list'><li>Failed — 3</li><li>Abandoned — 4</li><li>Cancelled — 2</li></ul>
+          <h3>Channel distribution</h3>
+          <ul class='data-list'><li>Eft — 9</li></ul>
+        </div>
+        <div class="metric-card">
+          <h3>Top success reasons</h3>
+          <ul class='data-list'><li>—</li></ul>
+          <h3>Top failure reasons</h3>
+          <ul class='data-list'><li>No provider message (blank) — 3</li></ul>
+        </div>
+      </div>
+      <details class='details-panel'><summary>Provider breakdown</summary><div class='details-grid'><div class='sub-card'>
+              <h4>ozow</h4>
+              <p class='muted-text'>Total: 9 · <span class='vol-pill'>$0.00</span></p>
+              <ul class='stat-list'><li>Failed — 3</li><li>Abandoned — 4</li><li>Cancelled — 2</li></ul><h5 class='subtle-heading'>Provider message highlights</h5><ul class='mini-list'><li>No provider message (blank) — 3</li></ul></div></div></details>
+      <details class='details-panel'><summary>Merchant breakdown</summary><div class='details-grid'><div class='sub-card'>
+              <h4>Audiomack Inc.</h4>
+              <p class='muted-text'>8 txns · <span class='vol-pill'>$0.00</span> · Success: 0.0% · Top channel: Eft</p>
+              <ul class='stat-list'><li>Failed — 3</li><li>Abandoned — 3</li><li>Cancelled — 2</li></ul>
+            </div><div class='sub-card'>
+              <h4>Nestuge</h4>
+              <p class='muted-text'>1 txns · <span class='vol-pill'>$0.00</span> · Success: 0.0% · Top channel: Eft</p>
+              <ul class='stat-list'><li>Abandoned — 1</li></ul>
+            </div></div></details>
+    </section>
+
+    <section class="card anim3">
+      <div class="section-header">
+        <div class="title-with-total"><h2>Kenya</h2><span class="badge">5 txns · <span class='vol-pill'>$12.97</span></span></div>
+      </div>
+      <div class="panel-grid two">
+        <div class="metric-card">
+          <h3>Status mix</h3>
+          <ul class='data-list'><li>Successful — 3</li><li>Abandoned — 2</li></ul>
+          <h3>Channel distribution</h3>
+          <ul class='data-list'><li>Mobile Money — 5</li></ul>
+        </div>
+        <div class="metric-card">
+          <h3>Top success reasons</h3>
+          <ul class='data-list'><li>Transaction successfully found — 3</li></ul>
+          <h3>Top failure reasons</h3>
+          <ul class='data-list'><li>—</li></ul>
+        </div>
+      </div>
+      <details class='details-panel'><summary>Provider breakdown</summary><div class='details-grid'><div class='sub-card'>
+              <h4>cellulant</h4>
+              <p class='muted-text'>Total: 5 · <span class='vol-pill'>$12.97</span></p>
+              <ul class='stat-list'><li>Successful — 3</li><li>Abandoned — 2</li></ul><h5 class='subtle-heading'>Provider message highlights</h5><ul class='mini-list'><li>Transaction successfully found — 3</li></ul></div></div></details>
+      <details class='details-panel'><summary>Merchant breakdown</summary><div class='details-grid'><div class='sub-card'>
+              <h4>Audiomack Inc.</h4>
+              <p class='muted-text'>4 txns · <span class='vol-pill'>$7.05</span> · Success: 50.0% · Top channel: Mobile Money</p>
+              <ul class='stat-list'><li>Successful — 2</li><li>Abandoned — 2</li></ul>
+            </div><div class='sub-card'>
+              <h4>Gadsfy</h4>
+              <p class='muted-text'>1 txns · <span class='vol-pill'>$5.91</span> · Success: 100.0% · Top channel: Mobile Money</p>
+              <ul class='stat-list'><li>Successful — 1</li></ul>
+            </div></div></details>
+    </section>
+
+    <section class="card anim3">
+      <div class="section-header">
+        <div class="title-with-total"><h2>Tanzania</h2><span class="badge">14 txns · <span class='vol-pill'>$87.54</span></span></div>
+      </div>
+      <div class="panel-grid two">
+        <div class="metric-card">
+          <h3>Status mix</h3>
+          <ul class='data-list'><li>Successful — 7</li><li>Failed — 3</li><li>Abandoned — 4</li></ul>
+          <h3>Channel distribution</h3>
+          <ul class='data-list'><li>Mobile Money — 14</li></ul>
+        </div>
+        <div class="metric-card">
+          <h3>Top success reasons</h3>
+          <ul class='data-list'><li>Payment completed — 6</li><li>Payment processed — 1</li></ul>
+          <h3>Top failure reasons</h3>
+          <ul class='data-list'><li>Insufficient funds — 3</li></ul>
+        </div>
+      </div>
+      <details class='details-panel'><summary>Provider breakdown</summary><div class='details-grid'><div class='sub-card'>
+              <h4>tembo_plus</h4>
+              <p class='muted-text'>Total: 14 · <span class='vol-pill'>$87.54</span></p>
+              <ul class='stat-list'><li>Successful — 7</li><li>Failed — 3</li><li>Abandoned — 4</li></ul><h5 class='subtle-heading'>Provider message highlights</h5><ul class='mini-list'><li>Payment completed — 6</li><li>Payment processed — 1</li></ul><ul class='mini-list'><li>Insufficient funds — 3</li></ul></div></div></details>
+      <details class='details-panel'><summary>Merchant breakdown</summary><div class='details-grid'><div class='sub-card'>
+              <h4>Nestuge</h4>
+              <p class='muted-text'>7 txns · <span class='vol-pill'>$77.54</span> · Success: 71.4% · Top channel: Mobile Money</p>
+              <ul class='stat-list'><li>Successful — 5</li><li>Failed — 1</li><li>Abandoned — 1</li></ul>
+            </div><div class='sub-card'>
+              <h4>Audiomack Inc.</h4>
+              <p class='muted-text'>7 txns · <span class='vol-pill'>$10.00</span> · Success: 28.6% · Top channel: Mobile Money</p>
+              <ul class='stat-list'><li>Successful — 2</li><li>Failed — 2</li><li>Abandoned — 3</li></ul>
+            </div></div></details>
+    </section>
+
+    <section class="card anim3">
+      <div class="section-header">
+        <div class="title-with-total"><h2>Benin</h2><span class="badge">1 txns · <span class='vol-pill'>$0.00</span></span></div>
+      </div>
+      <div class="panel-grid two">
+        <div class="metric-card">
+          <h3>Status mix</h3>
+          <ul class='data-list'><li>Failed — 1</li></ul>
+          <h3>Channel distribution</h3>
+          <ul class='data-list'><li>Mobile Money — 1</li></ul>
+        </div>
+        <div class="metric-card">
+          <h3>Top success reasons</h3>
+          <ul class='data-list'><li>—</li></ul>
+          <h3>Top failure reasons</h3>
+          <ul class='data-list'><li>Authorized successful — 1</li></ul>
+        </div>
+      </div>
+      <details class='details-panel'><summary>Provider breakdown</summary><div class='details-grid'><div class='sub-card'>
+              <h4>hub2</h4>
+              <p class='muted-text'>Total: 1 · <span class='vol-pill'>$0.00</span></p>
+              <ul class='stat-list'><li>Failed — 1</li></ul><h5 class='subtle-heading'>Provider message highlights</h5><ul class='mini-list'><li>Authorized successful — 1</li></ul></div></div></details>
+      <details class='details-panel'><summary>Merchant breakdown</summary><div class='details-grid'><div class='sub-card'>
+              <h4>Audiomack Inc.</h4>
+              <p class='muted-text'>1 txns · <span class='vol-pill'>$0.00</span> · Success: 0.0% · Top channel: Mobile Money</p>
+              <ul class='stat-list'><li>Failed — 1</li></ul>
+            </div></div></details>
+    </section>
+
+    <section class="card anim3">
+      <div class="section-header">
+        <div class="title-with-total"><h2>Cameroon</h2><span class="badge">14 txns · <span class='vol-pill'>$238.16</span></span></div>
+      </div>
+      <div class="panel-grid two">
+        <div class="metric-card">
+          <h3>Status mix</h3>
+          <ul class='data-list'><li>Successful — 11</li><li>Failed — 3</li></ul>
+          <h3>Channel distribution</h3>
+          <ul class='data-list'><li>Mobile Money — 14</li></ul>
+        </div>
+        <div class="metric-card">
+          <h3>Top success reasons</h3>
+          <ul class='data-list'><li>No provider message (blank) — 11</li></ul>
+          <h3>Top failure reasons</h3>
+          <ul class='data-list'><li>No provider message (blank) — 3</li></ul>
+        </div>
+      </div>
+      <details class='details-panel'><summary>Provider breakdown</summary><div class='details-grid'><div class='sub-card'>
+              <h4>pawapay</h4>
+              <p class='muted-text'>Total: 14 · <span class='vol-pill'>$238.16</span></p>
+              <ul class='stat-list'><li>Successful — 11</li><li>Failed — 3</li></ul><h5 class='subtle-heading'>Provider message highlights</h5><ul class='mini-list'><li>No provider message (blank) — 11</li></ul><ul class='mini-list'><li>No provider message (blank) — 3</li></ul></div></div></details>
+      <details class='details-panel'><summary>Merchant breakdown</summary><div class='details-grid'><div class='sub-card'>
+              <h4>Nestuge</h4>
+              <p class='muted-text'>14 txns · <span class='vol-pill'>$238.16</span> · Success: 78.6% · Top channel: Mobile Money</p>
+              <ul class='stat-list'><li>Successful — 11</li><li>Failed — 3</li></ul>
+            </div></div></details>
+    </section>
+
+
+
+
+    <section class="card anim4">
+      <div class="section-header">
+        <div class="title-with-total"><h2>Failure causes by region</h2><span class="badge">Customer pain points</span></div>
+      </div>
+      <div class="panel-grid two">
+        <div class='sub-card'>
+  <h3>Nigeria</h3>
+  <p class='muted-text'>Total failed: 16</p>
+  <ul class='mini-list'><li>Merchant is not enabled for international transactions — 7 (43.8%)</li><li>No provider message (blank) — 5 (31.2%)</li><li>Request to generate token is successful — 2 (12.5%)</li><li>Insufficient funds — 1 (6.2%)</li><li>Fellback-bnf — 1 (6.2%)</li></ul>
+</div><div class='sub-card'>
+  <h3>Ghana</h3>
+  <p class='muted-text'>Total failed: 62</p>
+  <ul class='mini-list'><li>Transaction failed — 21 (33.9%)</li><li>The MTN mobile money user has reached counter or balance limits — 19 (30.6%)</li><li>Error processing payment — 17 (27.4%)</li><li>No provider message (blank) — 2 (3.2%)</li><li>MTN exception: account validation failed => internal error — 2 (3.2%)</li><li>Exception happened with upstream provider — 1 (1.6%)</li></ul>
+</div><div class='sub-card'>
+  <h3>South Africa</h3>
+  <p class='muted-text'>Total failed: 3</p>
+  <ul class='mini-list'><li>No provider message (blank) — 3 (100.0%)</li></ul>
+</div><div class='sub-card'><h3>Kenya</h3><p class='muted-text'>No recorded failures.</p></div><div class='sub-card'>
+  <h3>Tanzania</h3>
+  <p class='muted-text'>Total failed: 3</p>
+  <ul class='mini-list'><li>Insufficient funds — 3 (100.0%)</li></ul>
+</div><div class='sub-card'>
+  <h3>Benin</h3>
+  <p class='muted-text'>Total failed: 1</p>
+  <ul class='mini-list'><li>Authorized successful — 1 (100.0%)</li></ul>
+</div><div class='sub-card'>
+  <h3>Cameroon</h3>
+  <p class='muted-text'>Total failed: 3</p>
+  <ul class='mini-list'><li>No provider message (blank) — 3 (100.0%)</li></ul>
+</div>
+      </div>
+    </section>
+
+    
+    <section class="card anim4">
+      <div class="section-header">
+        <div class="title-with-total"><h2>Customer retry behaviour</h2><span class="badge">103 retriers</span></div>
+      </div>
+      <div class="panel-grid two">
+        <div class="metric-card">
+          <h3>Retry outcomes</h3>
+          <ul class='data-list'><li>Customers who retried — 103</li><li>Ever completed after retry — 60</li><li>Still unresolved — 86</li></ul>
+          <h3>Final attempt statuses</h3>
+          <ul class='data-list'><li>Successful — 58</li><li>Abandoned — 31</li><li>Failed — 12</li><li>Cancelled — 2</li></ul>
+        </div>
+        <div class="metric-card">
+          <h3>Retry depth</h3>
+          <ul class='data-list'><li>2 attempts — 67 customers</li><li>3 attempts — 19 customers</li><li>4 attempts — 10 customers</li><li>5 attempts — 3 customers</li><li>6 attempts — 2 customers</li><li>7 attempts — 2 customers</li></ul>
+          <h3>Timing signals</h3>
+          <ul class='data-list'><li>Average gap — 0.50h (~30m)</li><li>Median gap — 0.05h (~3m)</li></ul>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="card anim4">
+      <div class="section-header">
+        <div class="title-with-total"><h2>Regional success vs failure</h2><span class="badge">Comparison</span></div>
+        <button class="btn" id="toggleChart">Toggle view</button>
+      </div>
+      <div class="chart-wrapper">
+        <canvas id="regionChart"></canvas>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>◆ Spotflow &middot; Transaction Intelligence</p>
+  </footer>
+
+  <script>
+    Chart.defaults.color = '#93A0AD';
+    Chart.defaults.borderColor = 'rgba(255,255,255,.06)';
+    Chart.defaults.font.family = "'IBM Plex Sans', sans-serif";
+
+    // Merchant chart
+    const mData = {"labels": ["Audiomack Inc.", "Nestuge", "Gadsfy", "DEE LLC", "Spotflow Demo"], "volume": [1071.14, 845.72, 11.55, 0.16, 0.28], "success": [191, 46, 2, 1, 4], "failed": [65, 17, 0, 6, 0]};
+    new Chart(document.getElementById('merchantChart'), {
+      type: 'bar',
+      data: {
+        labels: mData.labels,
+        datasets: [
+          { label: 'Volume (USD)', data: mData.volume, backgroundColor: 'rgba(77,182,255,.5)', borderColor: '#4DB6FF', borderWidth: 1, borderRadius: 6, yAxisID: 'y' },
+        ]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { grid: { color: 'rgba(255,255,255,.04)' }, ticks: { callback: v => '$' + v.toLocaleString() } },
+          y: { grid: { display: false } }
+        }
+      }
+    });
+
+
+
+
+
+    // Region chart
+    const rData = {"labels": ["Nigeria", "Ghana", "South Africa", "Kenya", "Tanzania", "Benin", "Cameroon"], "success": [126, 97, 0, 3, 7, 0, 11], "failed": [16, 62, 3, 0, 3, 1, 3], "volume": [11601.13, 1602.54, 41.6, 22.97, 199.71, 1.56, 294.41]};
+    const rCtx = document.getElementById('regionChart').getContext('2d');
+    let rType = 'bar';
+    function createRegionChart(type) {
+      return new Chart(rCtx, {
+        type,
+        data: {
+          labels: rData.labels,
+          datasets: [
+            { label: 'Successful', data: rData.success, backgroundColor: '#5FD08A', borderColor: '#5FD08A', borderWidth: 2, borderRadius: 6, tension: .35 },
+            { label: 'Failed', data: rData.failed, backgroundColor: '#FF7A7A', borderColor: '#FF7A7A', borderWidth: 2, borderRadius: 6, tension: .35 }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, padding: 14 } } },
+          scales: {
+            x: { grid: { color: 'rgba(255,255,255,.04)' } },
+            y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,.04)' } }
+          }
+        }
+      });
+    }
+    let regionChart = createRegionChart(rType);
+    document.getElementById('toggleChart').addEventListener('click', () => {
+      rType = rType === 'bar' ? 'line' : 'bar';
+      regionChart.destroy();
+      regionChart = createRegionChart(rType);
+    });
+  </script>
+</body>
+</html>
