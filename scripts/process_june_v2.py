@@ -184,6 +184,8 @@ def strip_columns(raw: Path, dest: Path) -> None:
                 # Simple row: just pick the KEEP columns
                 block = row + [""] * max(0, len(raw_header) - len(row))
                 stripped = [block[i].strip() for i in keep_indices]
+                if stripped[-1] and not ISO_RE.match(stripped[-1]):
+                    stripped[-1] = ""
                 if any(v for v in stripped):
                     output_rows.append(stripped)
             else:
@@ -191,6 +193,8 @@ def strip_columns(raw: Path, dest: Path) -> None:
                 # then each additional transaction via provider scanning
                 block = row + [""] * max(0, len(raw_header) - len(row))
                 stripped = [block[i].strip() for i in keep_indices]
+                if stripped[-1] and not ISO_RE.match(stripped[-1]):
+                    stripped[-1] = ""
                 if any(v for v in stripped):
                     output_rows.append(stripped)
 
