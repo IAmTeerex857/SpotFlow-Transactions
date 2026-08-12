@@ -34,6 +34,7 @@ REGIONS = [
     "Egypt",
     "Cameroon",
     "Uganda",
+    "RWANDA",
 ]
 REGION_SET = set(REGIONS)
 PROVIDERS = {
