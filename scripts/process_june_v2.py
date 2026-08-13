@@ -65,7 +65,7 @@ PROVIDERS = {"cellulant", "hubtel", "interswitch", "ozow", "paystack",
              "spotflow_accounts", "tembo_plus", "precium", "hub2", "kashier", "pawapay"}
 REGIONS   = {"Nigeria", "Ghana", "South Africa", "Kenya", "Tanzania",
              "Côte d'Ivoire", "Benin", "Togo", "Egypt", "Cameroon", "Uganda",
-             "RWANDA"}
+             "RWANDA", "Congo"}
 STATUSES  = {"successful", "failed", "abandoned", "cancelled", "inprogress"}
 CHANNELS  = {"card", "bank_transfer", "mobile_money", "eft"}
 ISO_RE    = re.compile(r"^\d{4}-\d{2}-\d{2}T")
