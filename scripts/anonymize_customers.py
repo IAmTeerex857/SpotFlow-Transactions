@@ -17,7 +17,8 @@ from typing import Dict, Iterable, List, Optional, Tuple
 PROVIDERS = {"cellulant", "hubtel", "interswitch", "ozow", "paystack", "spotflow_accounts", "tembo_plus", "precium", "hub2", "kashier", "pawapay"}
 REGIONS = {"Nigeria", "Ghana", "South Africa", "Kenya", "Tanzania",
            "Côte d'Ivoire", "Benin", "Togo", "Egypt", "Cameroon", "Uganda",
-           "RWANDA", "Congo", "Sierra Leone", "Democratic Republic of the Congo"}
+           "RWANDA", "Congo", "Sierra Leone", "Democratic Republic of the Congo",
+           "Zambia"}
 STATUSES = {"successful", "failed", "abandoned", "cancelled", "inprogress"}
 CHANNELS = {"card", "bank_transfer", "eft", "mobile_money"}
 ISO_PREFIXES = ("202", "201")

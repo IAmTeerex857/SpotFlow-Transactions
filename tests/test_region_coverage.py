@@ -14,7 +14,7 @@ from process_june_v2 import REGIONS as CLEANER_REGIONS  # noqa: E402
 
 class RegionCoverageTest(unittest.TestCase):
     def test_new_regions_are_supported_throughout_pipeline(self):
-        required = {"Sierra Leone", "Democratic Republic of the Congo"}
+        required = {"Sierra Leone", "Democratic Republic of the Congo", "Zambia"}
 
         self.assertTrue(required <= CLEANER_REGIONS)
         self.assertTrue(required <= ANONYMIZER_REGIONS)
