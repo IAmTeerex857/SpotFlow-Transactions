@@ -72,11 +72,18 @@ CHANNELS  = {"card", "bank_transfer", "mobile_money", "eft"}
 ISO_RE    = re.compile(r"^\d{4}-\d{2}-\d{2}T")
 
 
+def _normalise_region(value: str) -> str:
+    if value == "C\ufffd\ufffdte d'Ivoire":
+        return "Côte d'Ivoire"
+    return value
+
+
 def _find_providers(row: list[str]) -> list[int]:
     """Return column indices where a provider+region pair starts."""
     hits = []
     for i in range(len(row) - 1):
-        if row[i].strip().lower() in PROVIDERS and row[i + 1].strip() in REGIONS:
+        if (row[i].strip().lower() in PROVIDERS
+                and _normalise_region(row[i + 1].strip()) in REGIONS):
             hits.append(i)
     return hits
 
@@ -106,7 +113,7 @@ def _extract_txn(row: list[str], prov_idx: int, header: list[str],
     currency = safe(prov_idx - 2)
     rate     = safe(prov_idx - 1)
     provider = safe(prov_idx)
-    region   = safe(prov_idx + 1)
+    region   = _normalise_region(safe(prov_idx + 1))
     customer = safe(prov_idx + 2)
     status   = safe(prov_idx + 3)
 
@@ -174,6 +181,7 @@ def strip_columns(raw: Path, dest: Path) -> None:
 
         # Column indices in the raw header (for the primary/first transaction)
         keep_indices = [raw_header.index(c) for c in KEEP]
+        region_idx = KEEP.index("Region")
 
         output_rows: list[list[str]] = []
         for row in reader:
@@ -186,6 +194,7 @@ def strip_columns(raw: Path, dest: Path) -> None:
                 # Simple row: just pick the KEEP columns
                 block = row + [""] * max(0, len(raw_header) - len(row))
                 stripped = [block[i].strip() for i in keep_indices]
+                stripped[region_idx] = _normalise_region(stripped[region_idx])
                 if stripped[-1] and not ISO_RE.match(stripped[-1]):
                     stripped[-1] = ""
                 if any(v for v in stripped):
@@ -195,6 +204,7 @@ def strip_columns(raw: Path, dest: Path) -> None:
                 # then each additional transaction via provider scanning
                 block = row + [""] * max(0, len(raw_header) - len(row))
                 stripped = [block[i].strip() for i in keep_indices]
+                stripped[region_idx] = _normalise_region(stripped[region_idx])
                 if stripped[-1] and not ISO_RE.match(stripped[-1]):
                     stripped[-1] = ""
                 if any(v for v in stripped):
