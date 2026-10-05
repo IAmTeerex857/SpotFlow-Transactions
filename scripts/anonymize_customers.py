@@ -19,7 +19,7 @@ REGIONS = {"Nigeria", "Ghana", "South Africa", "Kenya", "Tanzania",
            "Côte d'Ivoire", "Benin", "Togo", "Egypt", "Cameroon", "Uganda",
            "RWANDA", "Congo", "Sierra Leone", "Democratic Republic of the Congo",
            "Zambia"}
-STATUSES = {"successful", "failed", "abandoned", "cancelled", "inprogress"}
+STATUSES = {"successful", "failed", "abandoned", "cancelled", "refunded", "inprogress"}
 CHANNELS = {"card", "bank_transfer", "eft", "mobile_money"}
 ISO_PREFIXES = ("202", "201")
 

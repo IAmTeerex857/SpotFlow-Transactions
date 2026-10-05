@@ -67,7 +67,7 @@ REGIONS   = {"Nigeria", "Ghana", "South Africa", "Kenya", "Tanzania",
              "Côte d'Ivoire", "Benin", "Togo", "Egypt", "Cameroon", "Uganda",
              "RWANDA", "Congo", "Sierra Leone", "Democratic Republic of the Congo",
              "Zambia"}
-STATUSES  = {"successful", "failed", "abandoned", "cancelled", "inprogress"}
+STATUSES  = {"successful", "failed", "abandoned", "cancelled", "refunded", "inprogress"}
 CHANNELS  = {"card", "bank_transfer", "mobile_money", "eft"}
 ISO_RE    = re.compile(r"^\d{4}-\d{2}-\d{2}T")
 

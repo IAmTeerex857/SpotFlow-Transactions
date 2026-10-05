@@ -54,7 +54,7 @@ PROVIDERS = {
     "kashier",
     "pawapay",
 }
-STATUSES = {"successful", "failed", "abandoned", "cancelled", "inprogress"}
+STATUSES = {"successful", "failed", "abandoned", "cancelled", "refunded", "inprogress"}
 CHANNELS = {"card", "bank_transfer", "eft", "mobile_money"}
 ISO_PATTERN = re.compile(r"^\d{4}-\d{2}-\d{2}T")
 DEFAULT_TZ_SUFFIX = "+00:00"
@@ -212,7 +212,7 @@ def extract_transactions(row: List[str], default_dt: str) -> Iterable[Tuple[str,
                 break
             if lower in PROVIDERS or stripped in REGION_SET:
                 break
-            if "@" in stripped or lower in STATUSES or lower in CHANNELS:
+            if "@" in stripped:
                 break
             next_token = row[idx + 1].strip() if idx + 1 < n else ""
             def _is_number(token: str) -> bool:
@@ -322,7 +322,7 @@ def parse_csv(path: Path) -> Tuple[List[Tuple[str, str, str, str, str, datetime,
 def _print_status_block(status_counts: Counter) -> None:
     total = sum(status_counts.values())
     print(f"  Total transactions: {total}")
-    for status in ["successful", "failed", "abandoned", "cancelled", "inprogress"]:
+    for status in ["successful", "failed", "abandoned", "cancelled", "refunded", "inprogress"]:
         if status in status_counts:
             print(f"    {status.title():<12}: {status_counts[status]}")
 
