@@ -60,6 +60,13 @@ ISO_PATTERN = re.compile(r"^\d{4}-\d{2}-\d{2}T")
 DEFAULT_TZ_SUFFIX = "+00:00"
 DEFAULT_DATE_PLACEHOLDER = "<missing-date>"
 BLANK_MESSAGE = "<blank>"
+REDACTED_SECRET = "[redacted]"
+
+SECRET_PATTERNS = (
+    re.compile(r"(?i)\b(bearer)\s+[A-Za-z0-9._~+/=-]{20,}"),
+    re.compile(r"(?i)\b(token|authorization|access[_ -]?token|api[_ -]?key)\s*[:=]?\s+[A-Za-z0-9._~+/=-]{20,}"),
+    re.compile(r"\beyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\b"),
+)
 
 
 @dataclass
@@ -99,6 +106,12 @@ def _normalise_message(message: str) -> str:
 
     first_line = first_line.replace("\xa0", " ")
     first_line = re.sub(r"\s+", " ", first_line).strip()
+
+    for pattern in SECRET_PATTERNS:
+        if pattern.groups:
+            first_line = pattern.sub(lambda match: f"{match.group(1)} {REDACTED_SECRET}", first_line)
+        else:
+            first_line = pattern.sub(REDACTED_SECRET, first_line)
 
     # Handle cases where malformed CSV rows append additional fragments such as
     # `",has insufficient funds...` to an otherwise valid message.

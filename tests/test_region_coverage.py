@@ -10,6 +10,7 @@ sys.path.insert(0, str(ROOT / "Spotflow transactions data"))
 from analyze_transactions import (  # noqa: E402
     REGION_SET as REPORT_REGIONS,
     STATUSES as REPORT_STATUSES,
+    _normalise_message,
     extract_transactions,
 )
 from anonymize_customers import REGIONS as ANONYMIZER_REGIONS, STATUSES as ANONYMIZER_STATUSES  # noqa: E402
@@ -41,6 +42,15 @@ class RegionCoverageTest(unittest.TestCase):
 
         self.assertEqual(transaction[4], "successful")
         self.assertEqual(transaction[5], "2026-10-01T12:34:56Z")
+
+    def test_provider_message_secrets_are_redacted(self):
+        token = "-".join(("12345678", "1234", "1234", "1234", "123456789abc"))
+
+        self.assertEqual(
+            _normalise_message(f"Token {token} is locked"),
+            "Token [redacted] is locked",
+        )
+        self.assertNotIn(token, _normalise_message(f"Authorization: Bearer {token}"))
 
 
 if __name__ == "__main__":
