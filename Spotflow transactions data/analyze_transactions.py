@@ -153,6 +153,85 @@ def _normalise_message(message: str) -> str:
 
     first_line = first_line_lower[:1].upper() + first_line_lower[1:] if first_line_lower else first_line_lower
 
+    # Provider wording varies for the same underlying failure. Keep these
+    # buckets conservative so monthly totals combine equivalent errors without
+    # hiding materially different causes.
+    grouped_patterns = (
+        ("Insufficient funds", (
+            r"insufficient funds",
+            r"payment failed\. the customer doesn't have enough funds",
+            r"the customer does not have enough funds to complete the payment",
+        )),
+        ("Insufficient funds or payment limit reached", (
+            r"the customer does not have enough funds to complete the payment or has reached a payment limit",
+            r"low balance or payee limit reached or not allowed",
+            r"the MTN mobile money user has reached counter or balance limits",
+        )),
+        ("Payment authorization timed out", (
+            r"payment failed\. the waiting period for payment execution has expired",
+            r"the customer did not authorize the payment in time or the transaction timed out at the mobile network operator",
+            r"your payment has exceeded the time required to pay",
+            r"authorization not approved in time",
+            r"timed out",
+        )),
+        ("Provider returned no failure reason", (
+            r"payment failed\. no reason was provided by the provider",
+            r"the provider '.+' did not specify a reason for this failure",
+        )),
+        ("Transaction failed", (
+            r"transaction failed",
+            r"payment failed",
+            r"provider failed",
+            r"generic failure",
+            r"the vodafone cash failed",
+            r"failed",
+            r"failure",
+        )),
+        ("Unable to process transaction", (
+            r"error processing payment",
+            r"unable to process transaction(?: at this time)?",
+            r"unable to perform transaction",
+            r"transaction error",
+            r"card could not be processed at this time",
+            r"provider can't process merchant's payment",
+        )),
+        ("Provider temporarily unavailable", (
+            r"payment failed\. provider is currently unavailable",
+            r"payment failed\. the service is temporarily disabled due to an ongoing incident\. our technical service is aware and is working on its resolution",
+            r"the provider '.+' is currently not able to process payments\. please consult our status page for downtime information on all providers\. programmatic access is also available",
+            r"exception happened with upstream provider",
+        )),
+        ("OTP verification required", (
+            r"OTP verification required",
+            r"OTP is required when .+ provider is selected",
+        )),
+        ("Incorrect PIN", (
+            r"incorrect PIN",
+            r"you entered the wrong PIN\. please try again",
+        )),
+        ("Payer account not found or inactive", (
+            r"the payer does not have an account with '.+' or it is not active",
+            r"your account is not a valid vodafone cash account",
+            r"inactive or dormant account\. please contact issuer",
+        )),
+        ("Payment rejected by provider", (
+            r"payment rejected",
+            r"transaction declined",
+            r"payment failed\. the payment was forbidden by the provider",
+        )),
+        ("Invalid phone number", (
+            r"payment failed\. incorrect phone number",
+            r"the msisdn is too (?:short|long) for the identified country .+",
+            r"country code resolved from msisdn is not valid",
+        )),
+        ("Amount precision not supported", (
+            r"the provider '.+' only supports up to '\d+' decimal places in amount",
+        )),
+    )
+    for label, patterns in grouped_patterns:
+        if any(re.fullmatch(pattern, first_line, flags=re.IGNORECASE) for pattern in patterns):
+            return label
+
     return first_line
 
 

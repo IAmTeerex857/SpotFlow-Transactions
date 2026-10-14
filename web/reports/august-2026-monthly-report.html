@@ -2,59 +2,431 @@
 <html lang='en'>
 <head>
   <meta charset='utf-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
   <title>August 2026 Transaction Insights</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/icon.svg">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <script src='https://cdn.jsdelivr.net/npm/chart.js'></script>
   <style>
-    :root { color-scheme: light; font-size: 16px; }
-    * { box-sizing: border-box; }
-    body { font-family: "Inter", "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif; margin: 0; background: #f4f6fb; color: #1f2937; line-height: 1.65; }
-    header { background: #0f172a; color: #f8fafc; padding: 3rem 0; margin-bottom: 2.4rem; position: relative; }
-    header .header-inner { width: min(1400px, 92vw); margin: 0 auto; padding: 0 1.5rem; text-align: center; position: relative; }
-    header .logo-wrapper { position: absolute; top: 1.3rem; left: 1.5rem; }
-    header svg { width: 170px; height: auto; }
-    header svg [fill] { fill: #f8fafc !important; }
-    header h1 { margin: 0; font-size: 2.8rem; letter-spacing: -0.02em; }
-    header p.coverage { margin: 0.9rem 0 0; font-size: 1.05rem; opacity: 0.92; }
-    main { width: min(1400px, 95vw); margin: 0 auto 3.5rem; display: grid; gap: 2rem; padding: 0 1rem; }
-    section { background: #fff; border-radius: 22px; padding: 2.2rem 2.6rem; box-shadow: 0 22px 40px rgba(15, 23, 42, 0.08); display: grid; gap: 1.6rem; }
-    .section-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: .8rem; margin-bottom: .3rem; }
-    .title-with-total { display: inline-flex; align-items: baseline; gap: .8rem; }
-    h2 { margin: 0; font-size: 1.5rem; color: #0f172a; text-transform: capitalize; }
-    h3 { margin: 1.2rem 0 .8rem; font-size: 1.05rem; color: #0f172a; }
-    h4 { margin: 0 0 .4rem; font-size: 1rem; color: #0f172a; text-transform: capitalize; }
-    h5.subtle-heading { margin: .6rem 0 .4rem; font-size: .9rem; font-weight: 600; color: #475569; letter-spacing: .06em; text-transform: none; }
-    .badge { background: #e0e7ff; color: #3730a3; padding: .35rem .9rem; border-radius: 999px; font-weight: 600; font-size: .82rem; }
-    .panel-grid.two { display: grid; gap: 1.6rem; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
-    .metric-card { background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%); border-radius: 18px; padding: 1.4rem 1.6rem; box-shadow: inset 0 0 0 1px #e2e8f0; }
-    ul { list-style: disc; padding-left: 1.3rem; margin: 0 0 1.2rem; }
-    .data-list li, .stat-list li, .mini-list li, .table-list li { margin-bottom: .45rem; line-height: 1.55; word-break: break-word; }
-    .stat-list { margin-bottom: 1rem; }
-    .mini-list { list-style: disc inside; margin-bottom: 0; padding-left: 1rem; }
-    .table-container { overflow-x: auto; border-radius: 20px; border: 1px solid #dce3ef; background: #f8fafc; padding: 1rem 1.2rem; }
-    .table-container.extra-wide table { min-width: 1320px; }
-    table { width: 100%; border-collapse: collapse; min-width: 1100px; background: #fff; border-radius: 16px; overflow: hidden; }
-    th, td { padding: 1rem 1.15rem; border-bottom: 1px solid #e2e8f0; text-align: left; vertical-align: top; font-size: .95rem; }
-    th { background: #eef2ff; font-weight: 600; color: #0f172a; }
-    tbody tr:nth-child(even) { background: #f9fbff; }
-    .table-list { list-style: disc inside; margin: 0; padding-left: 1rem; }
-    details.details-panel { background: #f8fafc; border-radius: 18px; padding: 1rem 1.3rem; box-shadow: inset 0 0 0 1px #e2e8f0; }
-    details summary { cursor: pointer; font-weight: 600; font-size: 1.02rem; list-style: none; }
-    details summary::marker { display: none; }
-    details summary::after { content: '▾'; display: inline-block; margin-left: .6rem; transition: transform .2s ease; }
-    details[open] summary::after { transform: rotate(180deg); }
-    .details-grid { display: grid; gap: 1.2rem; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); margin-top: 1rem; }
-    .sub-card { background: #fff; border-radius: 16px; padding: 1.1rem 1.3rem; box-shadow: inset 0 0 0 1px #e2e8f0; }
-    .muted { color: #64748b; margin: 0 0 .8rem; }
-    .chart-wrapper { background: #fff; border-radius: 20px; padding: 1.8rem; box-shadow: inset 0 0 0 1px #e2e8f0; min-height: 380px; }
-    canvas { width: 100%; height: 100%; }
-    @media (max-width: 768px) {
-      header { padding: 2.4rem 0; }
-      header .logo-wrapper { position: static; margin-bottom: 1rem; }
-      header svg { width: 140px; }
+    :root {
+      --bg: #0A0C0F;
+      --bg-alt: #0C1019;
+      --ink: #EBEFF4;
+      --muted: #93A0AD;
+      --faint: #5A6675;
+      --line: rgba(255,255,255,.10);
+      --line-soft: rgba(255,255,255,.06);
+      --surface: rgba(255,255,255,.035);
+      --surface-2: rgba(255,255,255,.06);
+      --accent: #4DB6FF;
+      --accent-dim: rgba(77,182,255,.14);
+      --accent-line: rgba(77,182,255,.40);
+      --green: #5FD08A;
+      --amber: #F2C261;
+      --red: #FF7A7A;
+      --magenta: #E26BD6;
+      --font-display: 'Space Grotesk', system-ui, sans-serif;
+      --font-body: 'IBM Plex Sans', system-ui, sans-serif;
+      --font-mono: 'JetBrains Mono', ui-monospace, monospace;
     }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-body);
+      background: radial-gradient(1200px 800px at 82% -8%, rgba(77,182,255,.07), transparent 60%), var(--bg);
+      color: var(--ink);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Header */
+    header {
+      padding: 3.5rem 0 2.5rem;
+      text-align: center;
+      position: relative;
+      border-bottom: 1px solid var(--line-soft);
+    }
+    header .header-inner {
+      width: min(1400px, 92vw);
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      position: relative;
+    }
+    header .logo-wrapper {
+      position: absolute;
+      top: 0;
+      left: 1.5rem;
+    }
+    header svg { width: 160px; height: auto; }
+    header svg [fill] { fill: var(--ink) !important; }
+    .eyebrow {
+      font-family: var(--font-mono);
+      font-size: .75rem;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      display: inline-flex;
+      align-items: center;
+      gap: .8rem;
+      margin-bottom: .6rem;
+    }
+    .eyebrow::before {
+      content: '';
+      width: 30px;
+      height: 2px;
+      background: var(--accent);
+    }
+    header h1 {
+      font-family: var(--font-display);
+      font-size: 2.4rem;
+      font-weight: 600;
+      letter-spacing: -.015em;
+      line-height: 1.1;
+      color: var(--ink);
+      margin: .4rem 0 .3rem;
+    }
+    header .date-range {
+      font-family: var(--font-mono);
+      font-size: .8rem;
+      color: var(--muted);
+    }
+
+    /* Main */
+    main {
+      width: min(1400px, 95vw);
+      margin: 2rem auto 4rem;
+      display: grid;
+      gap: 1.6rem;
+      padding: 0 1rem;
+    }
+
+    /* KPI Strip */
+    .kpi-strip {
+      display: flex;
+      gap: 1rem;
+      overflow-x: auto;
+      scroll-snap-type: x proximity;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    .kpi-strip::-webkit-scrollbar { display: none; }
+    .kpi-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 1.4rem 1.6rem;
+      display: flex;
+      flex-direction: column;
+      gap: .3rem;
+      flex: 0 0 220px;
+      scroll-snap-align: start;
+    }
+    .kpi-label {
+      font-family: var(--font-mono);
+      font-size: .7rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .kpi-value {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -.02em;
+      color: var(--ink);
+    }
+    .kpi-sub {
+      font-size: .78rem;
+      color: var(--faint);
+    }
+    .kpi-accent .kpi-value { color: var(--accent); }
+    .kpi-green .kpi-value { color: var(--green); }
+    .kpi-red .kpi-value { color: var(--red); }
+
+    /* Cards / Sections */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 2rem 2.2rem;
+      display: grid;
+      gap: 1.4rem;
+    }
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: .6rem;
+    }
+    .title-with-total {
+      display: inline-flex;
+      align-items: baseline;
+      gap: .8rem;
+    }
+    h2 {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 600;
+      letter-spacing: -.01em;
+      color: var(--ink);
+      text-transform: capitalize;
+    }
+    h3 {
+      font-family: var(--font-display);
+      font-size: .95rem;
+      font-weight: 600;
+      color: var(--ink);
+      margin: 1rem 0 .6rem;
+    }
+    h4 {
+      font-family: var(--font-display);
+      font-size: .9rem;
+      font-weight: 600;
+      color: var(--ink);
+      text-transform: capitalize;
+    }
+    h5.subtle-heading {
+      font-family: var(--font-mono);
+      font-size: .72rem;
+      font-weight: 500;
+      color: var(--faint);
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      margin: .6rem 0 .4rem;
+    }
+    .badge {
+      font-family: var(--font-mono);
+      background: var(--accent-dim);
+      color: var(--accent);
+      padding: .3rem .8rem;
+      border-radius: 999px;
+      font-weight: 500;
+      font-size: .72rem;
+      letter-spacing: .04em;
+    }
+    .panel-grid.two {
+      display: grid;
+      gap: 1.2rem;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+    .panel-grid.three {
+      display: grid;
+      gap: 1.2rem;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    }
+    .metric-card {
+      background: var(--surface-2);
+      border: 1px solid var(--line-soft);
+      border-radius: 14px;
+      padding: 1.2rem 1.4rem;
+    }
+
+    /* Lists */
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 .8rem;
+    }
+    .data-list li, .stat-list li, .mini-list li, .table-list li {
+      font-size: .85rem;
+      color: var(--muted);
+      padding: .3rem 0;
+      line-height: 1.45;
+      border-bottom: 1px solid var(--line-soft);
+      word-break: break-word;
+    }
+    .data-list li::before {
+      content: '◆';
+      font-size: .5rem;
+      color: var(--accent);
+      margin-right: .6rem;
+      vertical-align: middle;
+    }
+    .stat-list { margin-bottom: .8rem; }
+    .mini-list { padding-left: .8rem; }
+    .mini-list li::before {
+      content: '·';
+      color: var(--faint);
+      margin-right: .5rem;
+    }
+    .table-list { margin: 0; }
+    .table-list li { border: none; padding: .15rem 0; font-size: .78rem; }
+    .table-list li::before {
+      content: '–';
+      color: var(--faint);
+      margin-right: .4rem;
+    }
+
+    /* Tables */
+    .table-container {
+      overflow-x: auto;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: var(--surface);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 900px;
+    }
+    th, td {
+      padding: .85rem 1rem;
+      text-align: left;
+      vertical-align: top;
+      font-size: .82rem;
+      border-bottom: 1px solid var(--line-soft);
+      color: var(--muted);
+    }
+    th {
+      font-family: var(--font-mono);
+      font-size: .7rem;
+      font-weight: 500;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--faint);
+      background: var(--surface-2);
+    }
+    tbody tr:hover { background: var(--accent-dim); }
+    .muted-text { color: var(--faint); font-size: .82rem; margin: 0 0 .6rem; }
+
+    /* Details / Accordion */
+    details.details-panel {
+      background: var(--surface-2);
+      border: 1px solid var(--line-soft);
+      border-radius: 14px;
+      padding: .8rem 1.2rem;
+    }
+    details summary {
+      cursor: pointer;
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: .9rem;
+      color: var(--ink);
+      list-style: none;
+    }
+    details summary::marker { display: none; }
+    details summary::after {
+      content: '▾';
+      display: inline-block;
+      margin-left: .5rem;
+      transition: transform .2s ease;
+      color: var(--accent);
+    }
+    details[open] summary::after { transform: rotate(180deg); }
+    .details-grid {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      margin-top: .8rem;
+    }
+    .sub-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 1rem 1.2rem;
+    }
+    .sub-card h3 { font-size: .88rem; margin: .6rem 0 .4rem; }
+
+    /* Chart */
+    .chart-wrapper {
+      background: var(--surface-2);
+      border: 1px solid var(--line-soft);
+      border-radius: 14px;
+      padding: 1.5rem;
+      min-height: 280px;
+      position: relative;
+    }
+    .vol-pill {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: .72rem;
+      font-weight: 500;
+      background: rgba(95,208,138,.14);
+      color: var(--green);
+      padding: .2rem .6rem;
+      border-radius: 999px;
+      letter-spacing: .03em;
+    }
+    .btn {
+      font-family: var(--font-mono);
+      font-size: .72rem;
+      padding: .4rem .8rem;
+      border-radius: 999px;
+      border: 1px solid var(--accent-line);
+      background: var(--accent-dim);
+      color: var(--accent);
+      cursor: pointer;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      transition: all .15s ease;
+    }
+    .btn:hover {
+      background: rgba(77,182,255,.22);
+      transform: translateY(-1px);
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      border-top: 1px solid var(--line-soft);
+    }
+    footer p {
+      font-family: var(--font-mono);
+      font-size: .7rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--faint);
+    }
+
+    /* Animations */
+    @media (prefers-reduced-motion: no-preference) {
+      .anim  { animation: rise .55s cubic-bezier(.2,.7,.2,1) both; }
+      .anim2 { animation: rise .55s cubic-bezier(.2,.7,.2,1) .08s both; }
+      .anim3 { animation: rise .55s cubic-bezier(.2,.7,.2,1) .16s both; }
+      .anim4 { animation: rise .55s cubic-bezier(.2,.7,.2,1) .24s both; }
+      @keyframes rise {
+        from { opacity: 0; transform: translateY(16px); }
+        to   { opacity: 1; transform: none; }
+      }
+    }
+    @media print {
+      .anim,.anim2,.anim3,.anim4 { animation: none !important; opacity: 1 !important; transform: none !important; }
+      body { background: #fff; color: #1a1a1a; }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      header { padding: 2.4rem 0 1.8rem; }
+      header .logo-wrapper { position: static; margin-bottom: .8rem; }
+      header h1 { font-size: 1.8rem; }
+      .kpi-card { flex-basis: 180px; padding: 1.2rem 1.3rem; }
+      .kpi-value { font-size: 1.5rem; }
+      .card { padding: 1.4rem 1.2rem; }
+    }
+
+    /* Back nav */
+    .back-nav {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      padding: .75rem 1.5rem;
+      font-family: var(--font-mono);
+      font-size: .72rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      border-bottom: 1px solid var(--line-soft);
+      width: 100%;
+      transition: color .15s;
+    }
+    .back-nav:hover { color: var(--accent); }
+    .back-nav::before { content: '←'; font-size: .9rem; letter-spacing: 0; }
   </style>
 </head>
 <body>
+  <a class="back-nav" href="../reports.html">All reports</a>
   <header>
     <div class='header-inner'>
       <div class='logo-wrapper'>
@@ -78,468 +450,1003 @@
 </svg>
 
       </div>
+      <div class="eyebrow">Spotflow Insights</div>
       <h1>August 2026 Transaction Insights</h1>
-      <p class='coverage'>Data coverage: August 01 – August 31, 2026</p>
+      <p class="date-range">Aug 01, 2026 00:00 — Aug 31, 2026 23:59</p>
+      <p class="date-range">Source coverage: August 1–31, 2026 · 1,031 transactions lack a valid timestamp</p>
     </div>
   </header>
   <main>
-    <section>
-      <div class='section-header'>
-        <div class='title-with-total'><h2>Executive summary</h2><span class='badge'>Total transactions: 38378</span></div>
+
+    <div class="kpi-strip">
+      <div class="kpi-card">
+        <span class="kpi-label">Total Transactions</span>
+        <span class="kpi-value">38,378</span>
       </div>
-      <div class='panel-grid two'>
-        <div class='metric-card'>
+      <div class="kpi-card kpi-accent">
+        <span class="kpi-label">Success Volume</span>
+        <span class="kpi-value"><span class="vol-pill" style="font-size:inherit;padding:.2rem .8rem;">$93,183.43</span></span>
+        <span class="kpi-sub">11,079 successful transactions</span>
+      </div>
+      <div class="kpi-card kpi-green">
+        <span class="kpi-label">Success Rate</span>
+        <span class="kpi-value">28.9%</span>
+        <span class="kpi-sub">11,079 of 38,378 transactions</span>
+      </div>
+      <div class="kpi-card kpi-red">
+        <span class="kpi-label">Failed Volume</span>
+        <span class="kpi-value"><span class="vol-pill" style="font-size:inherit;padding:.2rem .8rem;background:rgba(255,122,122,.14);color:var(--red);">$188,122.74</span></span>
+        <span class="kpi-sub">12,770 failed transactions</span>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-label">Abandoned Volume</span>
+        <span class="kpi-value"><span class="vol-pill" style="font-size:inherit;padding:.2rem .8rem;background:rgba(242,194,97,.14);color:var(--amber);">$394,146.77</span></span>
+        <span class="kpi-sub">13,837 abandoned transactions</span>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-label">Cancelled Volume</span>
+        <span class="kpi-value"><span class="vol-pill" style="font-size:inherit;padding:.2rem .8rem;background:rgba(184,154,255,.16);color:#B89AFF;">$9,210.42</span></span>
+        <span class="kpi-sub">692 cancelled transactions</span>
+      </div>
+
+    </div>
+
+
+    <section class="card anim">
+      <div class="section-header">
+        <div class="title-with-total"><h2>Merchant volume</h2><span class="badge">10 merchants</span></div>
+      </div>
+      <div class="panel-grid two">
+        <div class="chart-wrapper">
+          <canvas id="merchantChart"></canvas>
+        </div>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr><th>Merchant</th><th>Txns</th><th>Success</th><th>Failed</th><th>Volume</th><th>Failed $</th><th>Rate</th><th>Top Channel</th><th>Top Region</th></tr>
+            </thead>
+            <tbody><tr>
+          <td>Audiomack Inc.</td>
+          <td>20,099</td>
+          <td>5,483</td>
+          <td>2,281</td>
+          <td><span class='vol-pill'>$28,278.00</span></td>
+          <td><span class='vol-pill' style='background:rgba(255,122,122,.14);color:var(--red);'>$66,580.31</span></td>
+          <td>27.3%</td>
+          <td>Bank Transfer</td>
+          <td>Nigeria</td>
+        </tr><tr>
+          <td>Gadsfy</td>
+          <td>11,756</td>
+          <td>2,451</td>
+          <td>8,991</td>
+          <td><span class='vol-pill'>$22,961.55</span></td>
+          <td><span class='vol-pill' style='background:rgba(255,122,122,.14);color:var(--red);'>$95,685.00</span></td>
+          <td>20.8%</td>
+          <td>Mobile Money</td>
+          <td>Cameroon</td>
+        </tr><tr>
+          <td>Nestuge</td>
+          <td>3,001</td>
+          <td>1,587</td>
+          <td>767</td>
+          <td><span class='vol-pill'>$28,861.64</span></td>
+          <td><span class='vol-pill' style='background:rgba(255,122,122,.14);color:var(--red);'>$15,928.64</span></td>
+          <td>52.9%</td>
+          <td>Mobile Money</td>
+          <td>Ghana</td>
+        </tr><tr>
+          <td>MiMo Global</td>
+          <td>3,465</td>
+          <td>1,540</td>
+          <td>698</td>
+          <td><span class='vol-pill'>$12,380.26</span></td>
+          <td><span class='vol-pill' style='background:rgba(255,122,122,.14);color:var(--red);'>$9,696.54</span></td>
+          <td>44.4%</td>
+          <td>Mobile Money</td>
+          <td>Ghana</td>
+        </tr><tr>
+          <td>Accra Polo Club</td>
+          <td>1</td>
+          <td>1</td>
+          <td>0</td>
+          <td><span class='vol-pill'>$465.32</span></td>
+          <td><span class='vol-pill' style='background:rgba(255,122,122,.14);color:var(--red);'>$0.00</span></td>
+          <td>100.0%</td>
+          <td>Card</td>
+          <td>Ghana</td>
+        </tr><tr>
+          <td>UduTech</td>
+          <td>16</td>
+          <td>7</td>
+          <td>6</td>
+          <td><span class='vol-pill'>$225.50</span></td>
+          <td><span class='vol-pill' style='background:rgba(255,122,122,.14);color:var(--red);'>$15.00</span></td>
+          <td>43.8%</td>
+          <td>Card</td>
+          <td>Nigeria</td>
+        </tr><tr>
+          <td>Spotflow Demo</td>
+          <td>23</td>
+          <td>2</td>
+          <td>18</td>
+          <td><span class='vol-pill'>$0.23</span></td>
+          <td><span class='vol-pill' style='background:rgba(255,122,122,.14);color:var(--red);'>$181.78</span></td>
+          <td>8.7%</td>
+          <td>Mobile Money</td>
+          <td>Ghana</td>
+        </tr><tr>
+          <td>Bloper</td>
+          <td>11</td>
+          <td>2</td>
+          <td>9</td>
+          <td><span class='vol-pill'>$0.79</span></td>
+          <td><span class='vol-pill' style='background:rgba(255,122,122,.14);color:var(--red);'>$35.47</span></td>
+          <td>18.2%</td>
+          <td>Mobile Money</td>
+          <td>Ghana</td>
+        </tr><tr>
+          <td>Chune.xyz</td>
+          <td>1</td>
+          <td>1</td>
+          <td>0</td>
+          <td><span class='vol-pill'>$7.00</span></td>
+          <td><span class='vol-pill' style='background:rgba(255,122,122,.14);color:var(--red);'>$0.00</span></td>
+          <td>100.0%</td>
+          <td>Bank Transfer</td>
+          <td>Nigeria</td>
+        </tr><tr>
+          <td>Stranerd</td>
+          <td>5</td>
+          <td>5</td>
+          <td>0</td>
+          <td><span class='vol-pill'>$3.13</span></td>
+          <td><span class='vol-pill' style='background:rgba(255,122,122,.14);color:var(--red);'>$0.00</span></td>
+          <td>100.0%</td>
+          <td>Bank Transfer</td>
+          <td>Nigeria</td>
+        </tr></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="card anim2">
+      <div class="section-header">
+        <div class="title-with-total"><h2>Aggregate overview</h2><span class="badge">38,378 txns</span></div>
+      </div>
+      <div class="panel-grid two">
+        <div class="metric-card">
           <h3>Status mix</h3>
           <ul class='data-list'><li>Successful — 11079</li><li>Failed — 12770</li><li>Abandoned — 13837</li><li>Cancelled — 692</li></ul>
           <h3>Channel distribution</h3>
           <ul class='data-list'><li>Card — 1797</li><li>Bank Transfer — 15350</li><li>Mobile Money — 20897</li><li>Eft — 334</li></ul>
         </div>
-        <div class='metric-card'>
+        <div class="metric-card">
           <h3>Top success messages</h3>
-          <ul class='data-list'><li>Success — 4039</li><li>Successful — 3666</li><li>No provider message (blank) — 3021</li><li>Approved by financial institution — 135</li><li>Payment completed — 131</li><li>Transaction successfully found — 56</li><li>Payment processed — 15</li><li>Complete payment process — 10</li><li>Authorized successful — 5</li><li>The customer does not have enough funds to complete the payment or has reached a payment limit — 1</li></ul>
+          <ul class='data-list'><li>Success — 4039</li><li>Successful — 3666</li><li>No provider message (blank) — 3021</li><li>Approved by financial institution — 135</li><li>Payment completed — 131</li><li>Transaction successfully found — 56</li><li>Payment processed — 15</li><li>Complete payment process — 10</li><li>Authorized successful — 5</li><li>Insufficient funds or payment limit reached — 1</li></ul>
           <h3>Top failure messages</h3>
-          <ul class='data-list'><li>The customer does not have enough funds to complete the payment — 5355</li><li>The customer did not authorize the payment in time or the transaction timed out at the mobile network operator — 1258</li><li>No provider message (blank) — 1107</li><li>The customer does not have enough funds to complete the payment or has reached a payment limit — 1066</li><li>The MTN mobile money user has reached counter or balance limits — 956</li><li>Transaction failed — 680</li><li>Error processing payment — 379</li><li>The provider 'airtel OAPI UGA' did not specify a reason for this failure — 320</li><li>Insufficient funds — 137</li><li>No payment methods configured for service — 128</li><li>Failed — 121</li><li>The vodafone cash failed — 114</li><li>The payer does not have an account with 'MTN MOMO CMR' or it is not active — 112</li><li>Payment failed. the service is temporarily disabled due to an ongoing incident. our technical service is aware and is working on its resolution — 104</li><li>Merchant is not enabled for international transactions — 85</li><li>OTP verification required — 80</li><li>Request to generate token is successful — 72</li><li>Provider failed — 65</li><li>The customers mobile money wallet is locked — 62</li><li>Exception happened with upstream provider — 49</li><li>Unable to process transaction at this time — 34</li><li>The provider 'orange SLE' did not specify a reason for this failure — 34</li><li>The provider 'MTN MOMO CMR' is currently not able to process payments. please consult our status page for downtime information on all providers. programmatic access is also available — 33</li><li>The payer does not have an account with 'MTN MOMO UGA' or it is not active — 31</li><li>Please enter your pin — 26</li><li>Authorized successful — 25</li><li>Votre compte a été suspendu en raison d'inactivité ou de vérifications complémentaires — 22</li><li>The provider 'MTN MOMO RWA' did not specify a reason for this failure — 22</li><li>Transaction id is invalid — 19</li><li>The msisdn is too short for the identified country CIV — 18</li><li>The msisdn is too short for the identified country COG — 17</li><li>The provider 'MTN MOMO CMR' did not specify a reason for this failure — 15</li><li>The provider 'orange CIV' did not specify a reason for this failure — 13</li><li>Token authentication failed. incorrect token supplied — 12</li><li>Fellback-bnf — 12</li><li>Unable to process transaction — 11</li><li>Authorization not approved in time — 11</li><li>Payment rejected — 8</li><li>MTN exception: KYC timeout — 7</li><li>The provider 'airtel RWA' did not specify a reason for this failure — 7</li><li>The provider 'airtel COD' did not specify a reason for this failure — 7</li><li>You entered the wrong PIN. please try again — 6</li><li>Generic failure — 6</li><li>MTN exception: account holder with FRI not found — 6</li><li>Your account is not a valid vodafone cash account — 6</li><li>Transaction error — 6</li><li>The payer does not have an account with 'MTN MOMO COG' or it is not active — 6</li><li>Payment failed. the payment was forbidden by the provider — 5</li><li>The provider 'MTN MOMO UGA' did not specify a reason for this failure — 5</li><li>The request body is missing or is invalid — 5</li><li>Refer to card issuer — 5</li><li>The payer does not have an account with 'MTN MOMO CIV' or it is not active — 5</li><li>Your PIN has been locked. likely from entering it wrongly too many times — 4</li><li>The msisdn is too short for the identified country UGA — 4</li><li>The payer does not have an account with 'MTN MOMO BEN' or it is not active — 4</li><li>Your payment has exceeded the time required to pay — 4</li><li>The provider 'MOOV BEN' did not specify a reason for this failure — 4</li><li>Negative CAM — 4</li><li>OTP is required when orange provider is selected — 3</li><li>Invalid card number — 3</li><li>The payer does not have an account with 'airtel OAPI UGA' or it is not active — 3</li><li>Inactive or dormant account. please contact issuer — 3</li><li>No card record — 3</li><li>Verve cards can only pay NGN at this time — 3</li><li>Transaction declined — 3</li><li>The amount needs to be more than '5' and less than '2000000' for provider 'MTN MOMO RWA' — 3</li><li>Payment failed. no reason was provided by the provider — 2</li><li>The payer does not have an account with 'MTN MOMO GHA' or it is not active — 2</li><li>Unable to retrieve customer details — 2</li><li>The payer does not have an account with 'airtel RWA' or it is not active — 2</li><li>Account closed — 2</li><li>The payer does not have an account with 'orange COD' or it is not active — 2</li><li>Payment failed. internal error. our technical team has been notified — 1</li><li>The msisdn is too short for the identified country BEN — 1</li><li>The provider 'MTN MOMO UGA' is currently not able to process payments. please consult our status page for downtime information on all providers. programmatic access is also available — 1</li><li>The provider 'MTN MOMO BEN' is currently not able to process payments. please consult our status page for downtime information on all providers. programmatic access is also available — 1</li><li>Payment amount 5 is below the minimum allowed amount of 1000 for TZS — 1</li><li>The msisdn is too short for the identified country RWA — 1</li><li>Votre compte a ��t�� suspendu en raison d'inactivit�� ou de v��rifications compl��mentaires — 1</li><li>Card could not be processed at this time — 1</li><li>Incorrect PIN — 1</li><li>Lost card — 1</li><li>Timed out — 1</li><li>The amount needs to be more than '1' and less than '2000000' for provider 'MTN MOMO BEN' — 1</li><li>The payer does not have an account with 'MTN MOMO RWA' or it is not active — 1</li><li>The provider 'airtel OAPI UGA' is currently not able to process payments. please consult our status page for downtime information on all providers. programmatic access is also available — 1</li><li>The customer did not approve the payment. either the customer did not enter their PIN in time or incorrect PIN was entered — 1</li></ul>
+          <ul class='data-list'><li>Insufficient funds — 5492</li><li>Insufficient funds or payment limit reached — 2022</li><li>Payment authorization timed out — 1274</li><li>No provider message (blank) — 1107</li><li>Transaction failed — 986</li><li>Unable to process transaction — 431</li><li>Provider returned no failure reason — 429</li><li>Provider temporarily unavailable — 189</li><li>Payer account not found or inactive — 177</li><li>No payment methods configured for service — 128</li><div id='more-4c729045' style='display:none;'><li>Merchant is not enabled for international transactions — 85</li><li>OTP verification required — 83</li><li>Request to generate token is successful — 72</li><li>The customers mobile money wallet is locked — 62</li><li>Invalid phone number — 41</li><li>Please enter your pin — 26</li><li>Authorized successful — 25</li><li>Votre compte a été suspendu en raison d'inactivité ou de vérifications complémentaires — 22</li><li>Transaction id is invalid — 19</li><li>Payment rejected by provider — 16</li><li>Token authentication failed. incorrect token supplied — 12</li><li>Fellback-bnf — 12</li><li>Incorrect PIN — 7</li><li>MTN exception: KYC timeout — 7</li><li>MTN exception: account holder with FRI not found — 6</li><li>The request body is missing or is invalid — 5</li><li>Refer to card issuer — 5</li><li>Your PIN has been locked. likely from entering it wrongly too many times — 4</li><li>Negative CAM — 4</li><li>Invalid card number — 3</li><li>No card record — 3</li><li>Verve cards can only pay NGN at this time — 3</li><li>The amount needs to be more than '5' and less than '2000000' for provider 'MTN MOMO RWA' — 3</li><li>Unable to retrieve customer details — 2</li><li>Account closed — 2</li><li>Payment failed. internal error. our technical team has been notified — 1</li><li>Payment amount 5 is below the minimum allowed amount of 1000 for TZS — 1</li><li>Votre compte a ��t�� suspendu en raison d'inactivit�� ou de v��rifications compl��mentaires — 1</li><li>Lost card — 1</li><li>The amount needs to be more than '1' and less than '2000000' for provider 'MTN MOMO BEN' — 1</li><li>The customer did not approve the payment. either the customer did not enter their PIN in time or incorrect PIN was entered — 1</li></div></ul><button class='btn' style='margin-top:.5rem;' onclick="var el=document.getElementById('more-4c729045');if(el.style.display==='none'){el.style.display='block';this.textContent='Show less'}else{el.style.display='none';this.textContent='See all 41 messages'}">See all 41 messages</button>
         </div>
       </div>
     </section>
-    <section>
-      <div class='section-header'>
-        <div class='title-with-total'><h2>Provider contribution</h2><span class='badge'>Providers: 9</span></div>
+
+    <section class="card anim2">
+      <div class="section-header">
+        <div class="title-with-total"><h2>Provider contribution</h2><span class="badge">9 providers</span></div>
       </div>
-      <div class='table-container extra-wide'>
+      <div class="table-container">
         <table>
           <thead>
-            <tr>
-              <th>Provider</th><th>Total</th><th>Success</th><th>Failed</th><th>Abandoned</th><th>Cancelled</th><th>Success rate</th><th>Failure rate</th><th>Abandon rate</th><th>Top success reasons</th><th>Top failure reasons</th>
-            </tr>
+            <tr><th>Provider</th><th>Total</th><th>Success</th><th>Failed</th><th>Abandoned</th><th>Cancelled</th><th>Refunded</th><th>Success %</th><th>Fail %</th><th>Volume</th><th>Top success</th><th>Top failure</th></tr>
           </thead>
-          <tbody>
-            <tr><td>cellulant</td><td>255</td><td>56</td><td>134</td><td>65</td><td>0</td><td>22.0%</td><td>52.5%</td><td>25.5%</td><td><ul class='table-list'><li>Transaction successfully found (56)</li></ul></td><td><ul class='table-list'><li>No payment methods configured for service (128)</li><li>The request body is missing or is invalid (5)</li><li>No provider message (blank) (1)</li></ul></td></tr><tr><td>hub2</td><td>180</td><td>15</td><td>165</td><td>0</td><td>0</td><td>8.3%</td><td>91.7%</td><td>0.0%</td><td><ul class='table-list'><li>Complete payment process (10)</li><li>Authorized successful (5)</li></ul></td><td><ul class='table-list'><li>Payment failed. the service is temporarily disabled due to an ongoing incident. our technical service is aware and is working on its resolution (104)</li><li>Authorized successful (25)</li><li>Votre compte a été suspendu en raison d'inactivité ou de vérifications complémentaires (22)</li><li>Payment failed. the payment was forbidden by the provider (5)</li><li>OTP is required when orange provider is selected (3)</li><li>Payment failed. no reason was provided by the provider (2)</li><li>Unable to process transaction at this time (2)</li><li>Payment failed. internal error. our technical team has been notified (1)</li><li>Votre compte a ��t�� suspendu en raison d'inactivit�� ou de v��rifications compl��mentaires (1)</li></ul></td></tr><tr><td>hubtel</td><td>8153</td><td>4040</td><td>2215</td><td>1378</td><td>520</td><td>49.6%</td><td>27.2%</td><td>16.9%</td><td><ul class='table-list'><li>Success (4039)</li><li>Successful (1)</li></ul></td><td><ul class='table-list'><li>The MTN mobile money user has reached counter or balance limits (955)</li><li>Transaction failed (679)</li><li>Error processing payment (219)</li><li>Failed (121)</li><li>The vodafone cash failed (114)</li><li>Exception happened with upstream provider (48)</li><li>Unable to process transaction at this time (29)</li><li>Transaction id is invalid (19)</li><li>MTN exception: KYC timeout (7)</li><li>You entered the wrong PIN. please try again (6)</li><li>MTN exception: account holder with FRI not found (6)</li><li>Your account is not a valid vodafone cash account (6)</li><li>Your PIN has been locked. likely from entering it wrongly too many times (4)</li><li>No provider message (blank) (2)</li></ul></td></tr><tr><td>interswitch</td><td>619</td><td>135</td><td>275</td><td>160</td><td>49</td><td>21.8%</td><td>44.4%</td><td>25.8%</td><td><ul class='table-list'><li>Approved by financial institution (135)</li></ul></td><td><ul class='table-list'><li>Error processing payment (160)</li><li>No provider message (blank) (88)</li><li>Please enter your pin (26)</li><li>OTP verification required (1)</li></ul></td></tr><tr><td>ozow</td><td>334</td><td>16</td><td>137</td><td>106</td><td>75</td><td>4.8%</td><td>41.0%</td><td>31.7%</td><td><ul class='table-list'><li>No provider message (blank) (16)</li></ul></td><td><ul class='table-list'><li>No provider message (blank) (137)</li></ul></td></tr><tr><td>pawapay</td><td>11826</td><td>2622</td><td>9202</td><td>2</td><td>0</td><td>22.2%</td><td>77.8%</td><td>0.0%</td><td><ul class='table-list'><li>No provider message (blank) (2621)</li><li>The customer does not have enough funds to complete the payment or has reached a payment limit (1)</li></ul></td><td><ul class='table-list'><li>The customer does not have enough funds to complete the payment (5355)</li><li>The customer did not authorize the payment in time or the transaction timed out at the mobile network operator (1258)</li><li>The customer does not have enough funds to complete the payment or has reached a payment limit (1066)</li><li>No provider message (blank) (773)</li><li>The provider 'airtel OAPI UGA' did not specify a reason for this failure (320)</li><li>The payer does not have an account with 'MTN MOMO CMR' or it is not active (112)</li><li>The customers mobile money wallet is locked (62)</li><li>The provider 'orange SLE' did not specify a reason for this failure (34)</li><li>The provider 'MTN MOMO CMR' is currently not able to process payments. please consult our status page for downtime information on all providers. programmatic access is also available (33)</li><li>The payer does not have an account with 'MTN MOMO UGA' or it is not active (31)</li><li>The provider 'MTN MOMO RWA' did not specify a reason for this failure (22)</li><li>The msisdn is too short for the identified country CIV (18)</li><li>The msisdn is too short for the identified country COG (17)</li><li>The provider 'MTN MOMO CMR' did not specify a reason for this failure (15)</li><li>The provider 'orange CIV' did not specify a reason for this failure (13)</li><li>Authorization not approved in time (11)</li><li>The provider 'airtel RWA' did not specify a reason for this failure (7)</li><li>The provider 'airtel COD' did not specify a reason for this failure (7)</li><li>The payer does not have an account with 'MTN MOMO COG' or it is not active (6)</li><li>The provider 'MTN MOMO UGA' did not specify a reason for this failure (5)</li><li>The payer does not have an account with 'MTN MOMO CIV' or it is not active (5)</li><li>The msisdn is too short for the identified country UGA (4)</li><li>The payer does not have an account with 'MTN MOMO BEN' or it is not active (4)</li><li>The provider 'MOOV BEN' did not specify a reason for this failure (4)</li><li>The payer does not have an account with 'airtel OAPI UGA' or it is not active (3)</li><li>The amount needs to be more than '5' and less than '2000000' for provider 'MTN MOMO RWA' (3)</li><li>The payer does not have an account with 'MTN MOMO GHA' or it is not active (2)</li><li>The payer does not have an account with 'airtel RWA' or it is not active (2)</li><li>The payer does not have an account with 'orange COD' or it is not active (2)</li><li>The msisdn is too short for the identified country BEN (1)</li><li>The provider 'MTN MOMO UGA' is currently not able to process payments. please consult our status page for downtime information on all providers. programmatic access is also available (1)</li><li>The provider 'MTN MOMO BEN' is currently not able to process payments. please consult our status page for downtime information on all providers. programmatic access is also available (1)</li><li>The msisdn is too short for the identified country RWA (1)</li><li>The amount needs to be more than '1' and less than '2000000' for provider 'MTN MOMO BEN' (1)</li><li>The payer does not have an account with 'MTN MOMO RWA' or it is not active (1)</li><li>The provider 'airtel OAPI UGA' is currently not able to process payments. please consult our status page for downtime information on all providers. programmatic access is also available (1)</li><li>The customer did not approve the payment. either the customer did not enter their PIN in time or incorrect PIN was entered (1)</li></ul></td></tr><tr><td>paystack</td><td>1179</td><td>384</td><td>437</td><td>310</td><td>48</td><td>32.6%</td><td>37.1%</td><td>26.3%</td><td><ul class='table-list'><li>No provider message (blank) (382)</li><li>Successful (2)</li></ul></td><td><ul class='table-list'><li>No provider message (blank) (105)</li><li>Merchant is not enabled for international transactions (85)</li><li>OTP verification required (79)</li><li>Request to generate token is successful (72)</li><li>Insufficient funds (15)</li><li>Token authentication failed. incorrect token supplied (12)</li><li>Fellback-bnf (12)</li><li>Unable to process transaction (11)</li><li>Transaction error (6)</li><li>Refer to card issuer (5)</li><li>Your payment has exceeded the time required to pay (4)</li><li>Negative CAM (4)</li><li>Invalid card number (3)</li><li>Inactive or dormant account. please contact issuer (3)</li><li>No card record (3)</li><li>Verve cards can only pay NGN at this time (3)</li><li>Transaction declined (3)</li><li>Unable to retrieve customer details (2)</li><li>Account closed (2)</li><li>Unable to process transaction at this time (1)</li><li>The MTN mobile money user has reached counter or balance limits (1)</li><li>Card could not be processed at this time (1)</li><li>Incorrect PIN (1)</li><li>Lost card (1)</li><li>Timed out (1)</li><li>Exception happened with upstream provider (1)</li><li>Transaction failed (1)</li></ul></td></tr><tr><td>spotflow_accounts</td><td>15349</td><td>3665</td><td>1</td><td>11683</td><td>0</td><td>23.9%</td><td>0.0%</td><td>76.1%</td><td><ul class='table-list'><li>Successful (3663)</li><li>No provider message (blank) (2)</li></ul></td><td><ul class='table-list'><li>Unable to process transaction at this time (1)</li></ul></td></tr><tr><td>tembo_plus</td><td>483</td><td>146</td><td>204</td><td>133</td><td>0</td><td>30.2%</td><td>42.2%</td><td>27.5%</td><td><ul class='table-list'><li>Payment completed (131)</li><li>Payment processed (15)</li></ul></td><td><ul class='table-list'><li>Insufficient funds (122)</li><li>Provider failed (65)</li><li>Payment rejected (8)</li><li>Generic failure (6)</li><li>Unable to process transaction at this time (1)</li><li>Payment amount 5 is below the minimum allowed amount of 1000 for TZS (1)</li><li>No provider message (blank) (1)</li></ul></td></tr>
-          </tbody>
+          <tbody><tr>
+          <td>cellulant</td>
+          <td>255</td>
+          <td>56</td>
+          <td>134</td>
+          <td>65</td>
+          <td>0</td>
+          <td>0</td>
+          <td>22.0%</td>
+          <td>52.5%</td>
+          <td><span class='vol-pill'>$296.97</span></td>
+          <td><ul class='table-list'><li>Transaction successfully found (56)</li></ul></td>
+          <td><ul class='table-list'><li>No payment methods configured for service (128)</li><li>The request body is missing or is invalid (5)</li><li>No provider message (blank) (1)</li></ul></td>
+        </tr><tr>
+          <td>hub2</td>
+          <td>180</td>
+          <td>15</td>
+          <td>165</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>8.3%</td>
+          <td>91.7%</td>
+          <td><span class='vol-pill'>$88.14</span></td>
+          <td><ul class='table-list'><li>Complete payment process (10)</li><li>Authorized successful (5)</li></ul></td>
+          <td><ul class='table-list'><li>Provider temporarily unavailable (104)</li><li>Authorized successful (25)</li><li>Votre compte a été suspendu en raison d'inactivité ou de vérifications complémentaires (22)</li></ul></td>
+        </tr><tr>
+          <td>hubtel</td>
+          <td>8,153</td>
+          <td>4,040</td>
+          <td>2,215</td>
+          <td>1,378</td>
+          <td>520</td>
+          <td>0</td>
+          <td>49.6%</td>
+          <td>27.2%</td>
+          <td><span class='vol-pill'>$36,200.94</span></td>
+          <td><ul class='table-list'><li>Success (4039)</li><li>Successful (1)</li></ul></td>
+          <td><ul class='table-list'><li>Insufficient funds or payment limit reached (955)</li><li>Transaction failed (914)</li><li>Unable to process transaction (248)</li></ul></td>
+        </tr><tr>
+          <td>interswitch</td>
+          <td>619</td>
+          <td>135</td>
+          <td>275</td>
+          <td>160</td>
+          <td>49</td>
+          <td>0</td>
+          <td>21.8%</td>
+          <td>44.4%</td>
+          <td><span class='vol-pill'>$579.99</span></td>
+          <td><ul class='table-list'><li>Approved by financial institution (135)</li></ul></td>
+          <td><ul class='table-list'><li>Unable to process transaction (160)</li><li>No provider message (blank) (88)</li><li>Please enter your pin (26)</li></ul></td>
+        </tr><tr>
+          <td>ozow</td>
+          <td>334</td>
+          <td>16</td>
+          <td>137</td>
+          <td>106</td>
+          <td>75</td>
+          <td>0</td>
+          <td>4.8%</td>
+          <td>41.0%</td>
+          <td><span class='vol-pill'>$128.27</span></td>
+          <td><ul class='table-list'><li>No provider message (blank) (16)</li></ul></td>
+          <td><ul class='table-list'><li>No provider message (blank) (137)</li></ul></td>
+        </tr><tr>
+          <td>pawapay</td>
+          <td>11,826</td>
+          <td>2,622</td>
+          <td>9,202</td>
+          <td>2</td>
+          <td>0</td>
+          <td>0</td>
+          <td>22.2%</td>
+          <td>77.8%</td>
+          <td><span class='vol-pill'>$27,223.73</span></td>
+          <td><ul class='table-list'><li>No provider message (blank) (2621)</li><li>Insufficient funds or payment limit reached (1)</li></ul></td>
+          <td><ul class='table-list'><li>Insufficient funds (5355)</li><li>Payment authorization timed out (1269)</li><li>Insufficient funds or payment limit reached (1066)</li></ul></td>
+        </tr><tr>
+          <td>paystack</td>
+          <td>1,179</td>
+          <td>384</td>
+          <td>437</td>
+          <td>310</td>
+          <td>48</td>
+          <td>0</td>
+          <td>32.6%</td>
+          <td>37.1%</td>
+          <td><span class='vol-pill'>$4,130.95</span></td>
+          <td><ul class='table-list'><li>No provider message (blank) (382)</li><li>Successful (2)</li></ul></td>
+          <td><ul class='table-list'><li>No provider message (blank) (105)</li><li>Merchant is not enabled for international transactions (85)</li><li>OTP verification required (79)</li></ul></td>
+        </tr><tr>
+          <td>spotflow_accounts</td>
+          <td>15,349</td>
+          <td>3,665</td>
+          <td>1</td>
+          <td>11,683</td>
+          <td>0</td>
+          <td>0</td>
+          <td>23.9%</td>
+          <td>0.0%</td>
+          <td><span class='vol-pill'>$20,482.67</span></td>
+          <td><ul class='table-list'><li>Successful (3663)</li><li>No provider message (blank) (2)</li></ul></td>
+          <td><ul class='table-list'><li>Unable to process transaction (1)</li></ul></td>
+        </tr><tr>
+          <td>tembo_plus</td>
+          <td>483</td>
+          <td>146</td>
+          <td>204</td>
+          <td>133</td>
+          <td>0</td>
+          <td>0</td>
+          <td>30.2%</td>
+          <td>42.2%</td>
+          <td><span class='vol-pill'>$4,051.78</span></td>
+          <td><ul class='table-list'><li>Payment completed (131)</li><li>Payment processed (15)</li></ul></td>
+          <td><ul class='table-list'><li>Insufficient funds (122)</li><li>Transaction failed (71)</li><li>Payment rejected by provider (8)</li></ul></td>
+        </tr></tbody>
         </table>
       </div>
     </section>
-    
-<section>
-  <div class='section-header'>
-    <div class='title-with-total'><h2>Nigeria</h2><span class='badge'>Total: 16832</span></div>
-  </div>
-  <div class='panel-grid two'>
-    <div class='metric-card'>
-      <h3>Status mix</h3>
-      <ul class='data-list'><li>Successful — 4090</li><li>Failed — 677</li><li>Abandoned — 11968</li><li>Cancelled — 97</li></ul>
-      <h3>Channel breakdown</h3><ul class='data-list'><li>Card — 1482</li><li>Bank Transfer — 15350</li></ul>
-    </div>
-    <div class='metric-card'>
-      <h3>Top success reasons</h3>
-      <ul class='data-list'><li>Successful — 3665</li><li>No provider message (blank) — 290</li><li>Approved by financial institution — 135</li></ul>
-      <h3>Top failure reasons</h3>
-      <ul class='data-list'><li>No provider message (blank) — 165</li><li>Error processing payment — 160</li><li>Merchant is not enabled for international transactions — 85</li><li>OTP verification required — 80</li><li>Request to generate token is successful — 72</li><li>Please enter your pin — 26</li><li>Insufficient funds — 15</li><li>Token authentication failed. incorrect token supplied — 12</li><li>Fellback-bnf — 12</li><li>Unable to process transaction — 11</li><li>Transaction error — 6</li><li>Refer to card issuer — 5</li><li>Your payment has exceeded the time required to pay — 4</li><li>Negative CAM — 4</li><li>Inactive or dormant account. please contact issuer — 3</li><li>No card record — 3</li><li>Transaction declined — 3</li><li>Unable to retrieve customer details — 2</li><li>Invalid card number — 2</li><li>Account closed — 2</li><li>Card could not be processed at this time — 1</li><li>Incorrect PIN — 1</li><li>Lost card — 1</li><li>Timed out — 1</li><li>Unable to process transaction at this time — 1</li></ul>
-    </div>
-  </div>
-  <details class='details-panel'><summary>Provider breakdown</summary><div class='details-grid'><div class='sub-card'><h4>interswitch</h4><p class='muted'>Total: 619</p><ul class='stat-list'><li>Successful — 135</li><li>Failed — 275</li><li>Abandoned — 160</li><li>Cancelled — 49</li></ul><h5 class='subtle-heading'>provider message highlights</h5><ul class='mini-list'><li>Approved by financial institution — 135</li></ul><ul class='mini-list'><li>Error processing payment — 160</li><li>No provider message (blank) — 88</li><li>Please enter your pin — 26</li><li>OTP verification required — 1</li></ul></div><div class='sub-card'><h4>paystack</h4><p class='muted'>Total: 864</p><ul class='stat-list'><li>Successful — 290</li><li>Failed — 401</li><li>Abandoned — 125</li><li>Cancelled — 48</li></ul><h5 class='subtle-heading'>provider message highlights</h5><ul class='mini-list'><li>No provider message (blank) — 288</li><li>Successful — 2</li></ul><ul class='mini-list'><li>Merchant is not enabled for international transactions — 85</li><li>OTP verification required — 79</li><li>No provider message (blank) — 77</li><li>Request to generate token is successful — 72</li><li>Insufficient funds — 15</li><li>Token authentication failed. incorrect token supplied — 12</li><li>Fellback-bnf — 12</li><li>Unable to process transaction — 11</li><li>Transaction error — 6</li><li>Refer to card issuer — 5</li><li>Your payment has exceeded the time required to pay — 4</li><li>Negative CAM — 4</li><li>Inactive or dormant account. please contact issuer — 3</li><li>No card record — 3</li><li>Transaction declined — 3</li><li>Unable to retrieve customer details — 2</li><li>Invalid card number — 2</li><li>Account closed — 2</li><li>Card could not be processed at this time — 1</li><li>Incorrect PIN — 1</li><li>Lost card — 1</li><li>Timed out — 1</li></ul></div><div class='sub-card'><h4>spotflow_accounts</h4><p class='muted'>Total: 15349</p><ul class='stat-list'><li>Successful — 3665</li><li>Failed — 1</li><li>Abandoned — 11683</li></ul><h5 class='subtle-heading'>provider message highlights</h5><ul class='mini-list'><li>Successful — 3663</li><li>No provider message (blank) — 2</li></ul><ul class='mini-list'><li>Unable to process transaction at this time — 1</li></ul></div></div></details>
-</section>
 
-<section>
-  <div class='section-header'>
-    <div class='title-with-total'><h2>Ghana</h2><span class='badge'>Total: 8478</span></div>
-  </div>
-  <div class='panel-grid two'>
-    <div class='metric-card'>
-      <h3>Status mix</h3>
-      <ul class='data-list'><li>Successful — 4135</li><li>Failed — 2260</li><li>Abandoned — 1563</li><li>Cancelled — 520</li></ul>
-      <h3>Channel breakdown</h3><ul class='data-list'><li>Card — 315</li><li>Mobile Money — 8163</li></ul>
-    </div>
-    <div class='metric-card'>
-      <h3>Top success reasons</h3>
-      <ul class='data-list'><li>Success — 4039</li><li>No provider message (blank) — 95</li><li>Successful — 1</li></ul>
-      <h3>Top failure reasons</h3>
-      <ul class='data-list'><li>The MTN mobile money user has reached counter or balance limits — 956</li><li>Transaction failed — 680</li><li>Error processing payment — 219</li><li>Failed — 121</li><li>The vodafone cash failed — 114</li><li>Exception happened with upstream provider — 49</li><li>No provider message (blank) — 30</li><li>Unable to process transaction at this time — 30</li><li>Transaction id is invalid — 19</li><li>MTN exception: KYC timeout — 7</li><li>You entered the wrong PIN. please try again — 6</li><li>The customer did not authorize the payment in time or the transaction timed out at the mobile network operator — 6</li><li>MTN exception: account holder with FRI not found — 6</li><li>Your account is not a valid vodafone cash account — 6</li><li>Your PIN has been locked. likely from entering it wrongly too many times — 4</li><li>Verve cards can only pay NGN at this time — 3</li><li>The payer does not have an account with 'MTN MOMO GHA' or it is not active — 2</li><li>Invalid card number — 1</li><li>The customer does not have enough funds to complete the payment — 1</li></ul>
-    </div>
-  </div>
-  <details class='details-panel'><summary>Provider breakdown</summary><div class='details-grid'><div class='sub-card'><h4>hubtel</h4><p class='muted'>Total: 8153</p><ul class='stat-list'><li>Successful — 4040</li><li>Failed — 2215</li><li>Abandoned — 1378</li><li>Cancelled — 520</li></ul><h5 class='subtle-heading'>provider message highlights</h5><ul class='mini-list'><li>Success — 4039</li><li>Successful — 1</li></ul><ul class='mini-list'><li>The MTN mobile money user has reached counter or balance limits — 955</li><li>Transaction failed — 679</li><li>Error processing payment — 219</li><li>Failed — 121</li><li>The vodafone cash failed — 114</li><li>Exception happened with upstream provider — 48</li><li>Unable to process transaction at this time — 29</li><li>Transaction id is invalid — 19</li><li>MTN exception: KYC timeout — 7</li><li>You entered the wrong PIN. please try again — 6</li><li>MTN exception: account holder with FRI not found — 6</li><li>Your account is not a valid vodafone cash account — 6</li><li>Your PIN has been locked. likely from entering it wrongly too many times — 4</li><li>No provider message (blank) — 2</li></ul></div><div class='sub-card'><h4>pawapay</h4><p class='muted'>Total: 10</p><ul class='stat-list'><li>Successful — 1</li><li>Failed — 9</li></ul><h5 class='subtle-heading'>provider message highlights</h5><ul class='mini-list'><li>No provider message (blank) — 1</li></ul><ul class='mini-list'><li>The customer did not authorize the payment in time or the transaction timed out at the mobile network operator — 6</li><li>The payer does not have an account with 'MTN MOMO GHA' or it is not active — 2</li><li>The customer does not have enough funds to complete the payment — 1</li></ul></div><div class='sub-card'><h4>paystack</h4><p class='muted'>Total: 315</p><ul class='stat-list'><li>Successful — 94</li><li>Failed — 36</li><li>Abandoned — 185</li></ul><h5 class='subtle-heading'>provider message highlights</h5><ul class='mini-list'><li>No provider message (blank) — 94</li></ul><ul class='mini-list'><li>No provider message (blank) — 28</li><li>Verve cards can only pay NGN at this time — 3</li><li>Invalid card number — 1</li><li>Unable to process transaction at this time — 1</li><li>The MTN mobile money user has reached counter or balance limits — 1</li><li>Exception happened with upstream provider — 1</li><li>Transaction failed — 1</li></ul></div></div></details>
-</section>
 
-<section>
-  <div class='section-header'>
-    <div class='title-with-total'><h2>South Africa</h2><span class='badge'>Total: 334</span></div>
-  </div>
-  <div class='panel-grid two'>
-    <div class='metric-card'>
-      <h3>Status mix</h3>
-      <ul class='data-list'><li>Successful — 16</li><li>Failed — 137</li><li>Abandoned — 106</li><li>Cancelled — 75</li></ul>
-      <h3>Channel breakdown</h3><ul class='data-list'><li>Eft — 334</li></ul>
-    </div>
-    <div class='metric-card'>
-      <h3>Top success reasons</h3>
-      <ul class='data-list'><li>No provider message (blank) — 16</li></ul>
-      <h3>Top failure reasons</h3>
-      <ul class='data-list'><li>No provider message (blank) — 137</li></ul>
-    </div>
-  </div>
-  <details class='details-panel'><summary>Provider breakdown</summary><div class='details-grid'><div class='sub-card'><h4>ozow</h4><p class='muted'>Total: 334</p><ul class='stat-list'><li>Successful — 16</li><li>Failed — 137</li><li>Abandoned — 106</li><li>Cancelled — 75</li></ul><h5 class='subtle-heading'>provider message highlights</h5><ul class='mini-list'><li>No provider message (blank) — 16</li></ul><ul class='mini-list'><li>No provider message (blank) — 137</li></ul></div></div></details>
-</section>
-
-<section>
-  <div class='section-header'>
-    <div class='title-with-total'><h2>Kenya</h2><span class='badge'>Total: 127</span></div>
-  </div>
-  <div class='panel-grid two'>
-    <div class='metric-card'>
-      <h3>Status mix</h3>
-      <ul class='data-list'><li>Successful — 56</li><li>Failed — 6</li><li>Abandoned — 65</li></ul>
-      <h3>Channel breakdown</h3><ul class='data-list'><li>Mobile Money — 127</li></ul>
-    </div>
-    <div class='metric-card'>
-      <h3>Top success reasons</h3>
-      <ul class='data-list'><li>Transaction successfully found — 56</li></ul>
-      <h3>Top failure reasons</h3>
-      <ul class='data-list'><li>The request body is missing or is invalid — 5</li><li>No provider message (blank) — 1</li></ul>
-    </div>
-  </div>
-  <details class='details-panel'><summary>Provider breakdown</summary><div class='details-grid'><div class='sub-card'><h4>cellulant</h4><p class='muted'>Total: 127</p><ul class='stat-list'><li>Successful — 56</li><li>Failed — 6</li><li>Abandoned — 65</li></ul><h5 class='subtle-heading'>provider message highlights</h5><ul class='mini-list'><li>Transaction successfully found — 56</li></ul><ul class='mini-list'><li>The request body is missing or is invalid — 5</li><li>No provider message (blank) — 1</li></ul></div></div></details>
-</section>
-
-<section>
-  <div class='section-header'>
-    <div class='title-with-total'><h2>Tanzania</h2><span class='badge'>Total: 483</span></div>
-  </div>
-  <div class='panel-grid two'>
-    <div class='metric-card'>
-      <h3>Status mix</h3>
-      <ul class='data-list'><li>Successful — 146</li><li>Failed — 204</li><li>Abandoned — 133</li></ul>
-      <h3>Channel breakdown</h3><ul class='data-list'><li>Mobile Money — 483</li></ul>
-    </div>
-    <div class='metric-card'>
-      <h3>Top success reasons</h3>
-      <ul class='data-list'><li>Payment completed — 131</li><li>Payment processed — 15</li></ul>
-      <h3>Top failure reasons</h3>
-      <ul class='data-list'><li>Insufficient funds — 122</li><li>Provider failed — 65</li><li>Payment rejected — 8</li><li>Generic failure — 6</li><li>Unable to process transaction at this time — 1</li><li>Payment amount 5 is below the minimum allowed amount of 1000 for TZS — 1</li><li>No provider message (blank) — 1</li></ul>
-    </div>
-  </div>
-  <details class='details-panel'><summary>Provider breakdown</summary><div class='details-grid'><div class='sub-card'><h4>tembo_plus</h4><p class='muted'>Total: 483</p><ul class='stat-list'><li>Successful — 146</li><li>Failed — 204</li><li>Abandoned — 133</li></ul><h5 class='subtle-heading'>provider message highlights</h5><ul class='mini-list'><li>Payment completed — 131</li><li>Payment processed — 15</li></ul><ul class='mini-list'><li>Insufficient funds — 122</li><li>Provider failed — 65</li><li>Payment rejected — 8</li><li>Generic failure — 6</li><li>Unable to process transaction at this time — 1</li><li>Payment amount 5 is below the minimum allowed amount of 1000 for TZS — 1</li><li>No provider message (blank) — 1</li></ul></div></div></details>
-</section>
-
-<section>
-  <div class='section-header'>
-    <div class='title-with-total'><h2>Côte d'Ivoire</h2><span class='badge'>Total: 201</span></div>
-  </div>
-  <div class='panel-grid two'>
-    <div class='metric-card'>
-      <h3>Status mix</h3>
-      <ul class='data-list'><li>Successful — 34</li><li>Failed — 167</li></ul>
-      <h3>Channel breakdown</h3><ul class='data-list'><li>Mobile Money — 201</li></ul>
-    </div>
-    <div class='metric-card'>
-      <h3>Top success reasons</h3>
-      <ul class='data-list'><li>No provider message (blank) — 30</li><li>Authorized successful — 4</li></ul>
-      <h3>Top failure reasons</h3>
-      <ul class='data-list'><li>The customer did not authorize the payment in time or the transaction timed out at the mobile network operator — 89</li><li>The customer does not have enough funds to complete the payment — 22</li><li>Authorized successful — 18</li><li>The msisdn is too short for the identified country CIV — 18</li><li>The provider 'orange CIV' did not specify a reason for this failure — 13</li><li>The payer does not have an account with 'MTN MOMO CIV' or it is not active — 5</li><li>OTP is required when orange provider is selected — 1</li><li>Unable to process transaction at this time — 1</li></ul>
-    </div>
-  </div>
-  <details class='details-panel'><summary>Provider breakdown</summary><div class='details-grid'><div class='sub-card'><h4>hub2</h4><p class='muted'>Total: 24</p><ul class='stat-list'><li>Successful — 4</li><li>Failed — 20</li></ul><h5 class='subtle-heading'>provider message highlights</h5><ul class='mini-list'><li>Authorized successful — 4</li></ul><ul class='mini-list'><li>Authorized successful — 18</li><li>OTP is required when orange provider is selected — 1</li><li>Unable to process transaction at this time — 1</li></ul></div><div class='sub-card'><h4>pawapay</h4><p class='muted'>Total: 177</p><ul class='stat-list'><li>Successful — 30</li><li>Failed — 147</li></ul><h5 class='subtle-heading'>provider message highlights</h5><ul class='mini-list'><li>No provider message (blank) — 30</li></ul><ul class='mini-list'><li>The customer did not authorize the payment in time or the transaction timed out at the mobile network operator — 89</li><li>The customer does not have enough funds to complete the payment — 22</li><li>The msisdn is too short for the identified country CIV — 18</li><li>The provider 'orange CIV' did not specify a reason for this failure — 13</li><li>The payer does not have an account with 'MTN MOMO CIV' or it is not active — 5</li></ul></div></div></details>
-</section>
-
-<section>
-  <div class='section-header'>
-    <div class='title-with-total'><h2>Benin</h2><span class='badge'>Total: 73</span></div>
-  </div>
-  <div class='panel-grid two'>
-    <div class='metric-card'>
-      <h3>Status mix</h3>
-      <ul class='data-list'><li>Successful — 16</li><li>Failed — 57</li></ul>
-      <h3>Channel breakdown</h3><ul class='data-list'><li>Mobile Money — 73</li></ul>
-    </div>
-    <div class='metric-card'>
-      <h3>Top success reasons</h3>
-      <ul class='data-list'><li>No provider message (blank) — 15</li><li>Authorized successful — 1</li></ul>
-      <h3>Top failure reasons</h3>
-      <ul class='data-list'><li>The customer does not have enough funds to complete the payment — 19</li><li>No provider message (blank) — 9</li><li>Authorized successful — 7</li><li>The customers mobile money wallet is locked — 6</li><li>The customer did not authorize the payment in time or the transaction timed out at the mobile network operator — 4</li><li>The payer does not have an account with 'MTN MOMO BEN' or it is not active — 4</li><li>The provider 'MOOV BEN' did not specify a reason for this failure — 4</li><li>The msisdn is too short for the identified country BEN — 1</li><li>Unable to process transaction at this time — 1</li><li>The provider 'MTN MOMO BEN' is currently not able to process payments. please consult our status page for downtime information on all providers. programmatic access is also available — 1</li><li>The amount needs to be more than '1' and less than '2000000' for provider 'MTN MOMO BEN' — 1</li></ul>
-    </div>
-  </div>
-  <details class='details-panel'><summary>Provider breakdown</summary><div class='details-grid'><div class='sub-card'><h4>hub2</h4><p class='muted'>Total: 9</p><ul class='stat-list'><li>Successful — 1</li><li>Failed — 8</li></ul><h5 class='subtle-heading'>provider message highlights</h5><ul class='mini-list'><li>Authorized successful — 1</li></ul><ul class='mini-list'><li>Authorized successful — 7</li><li>Unable to process transaction at this time — 1</li></ul></div><div class='sub-card'><h4>pawapay</h4><p class='muted'>Total: 64</p><ul class='stat-list'><li>Successful — 15</li><li>Failed — 49</li></ul><h5 class='subtle-heading'>provider message highlights</h5><ul class='mini-list'><li>No provider message (blank) — 15</li></ul><ul class='mini-list'><li>The customer does not have enough funds to complete the payment — 19</li><li>No provider message (blank) — 9</li><li>The customers mobile money wallet is locked — 6</li><li>The customer did not authorize the payment in time or the transaction timed out at the mobile network operator — 4</li><li>The payer does not have an account with 'MTN MOMO BEN' or it is not active — 4</li><li>The provider 'MOOV BEN' did not specify a reason for this failure — 4</li><li>The msisdn is too short for the identified country BEN — 1</li><li>The provider 'MTN MOMO BEN' is currently not able to process payments. please consult our status page for downtime information on all providers. programmatic access is also available — 1</li><li>The amount needs to be more than '1' and less than '2000000' for provider 'MTN MOMO BEN' — 1</li></ul></div></div></details>
-</section>
-
-<section>
-  <div class='section-header'>
-    <div class='title-with-total'><h2>Togo</h2><span class='badge'>Total: 23</span></div>
-  </div>
-  <div class='panel-grid two'>
-    <div class='metric-card'>
-      <h3>Status mix</h3>
-      <ul class='data-list'><li>Failed — 23</li></ul>
-      <h3>Channel breakdown</h3><ul class='data-list'><li>Mobile Money — 23</li></ul>
-    </div>
-    <div class='metric-card'>
-      <h3>Top success reasons</h3>
-      <ul class='data-list'><li>—</li></ul>
-      <h3>Top failure reasons</h3>
-      <ul class='data-list'><li>Votre compte a été suspendu en raison d'inactivité ou de vérifications complémentaires — 22</li><li>Votre compte a ��t�� suspendu en raison d'inactivit�� ou de v��rifications compl��mentaires — 1</li></ul>
-    </div>
-  </div>
-  <details class='details-panel'><summary>Provider breakdown</summary><div class='details-grid'><div class='sub-card'><h4>hub2</h4><p class='muted'>Total: 23</p><ul class='stat-list'><li>Failed — 23</li></ul><h5 class='subtle-heading'>provider message highlights</h5><ul class='mini-list'><li>Votre compte a été suspendu en raison d'inactivité ou de vérifications complémentaires — 22</li><li>Votre compte a ��t�� suspendu en raison d'inactivit�� ou de v��rifications compl��mentaires — 1</li></ul></div></div></details>
-</section>
-
-<section>
-  <div class='section-header'>
-    <div class='title-with-total'><h2>Cameroon</h2><span class='badge'>Total: 9048</span></div>
-  </div>
-  <div class='panel-grid two'>
-    <div class='metric-card'>
-      <h3>Status mix</h3>
-      <ul class='data-list'><li>Successful — 1971</li><li>Failed — 7075</li><li>Abandoned — 2</li></ul>
-      <h3>Channel breakdown</h3><ul class='data-list'><li>Mobile Money — 9048</li></ul>
-    </div>
-    <div class='metric-card'>
-      <h3>Top success reasons</h3>
-      <ul class='data-list'><li>No provider message (blank) — 1961</li><li>Complete payment process — 10</li></ul>
-      <h3>Top failure reasons</h3>
-      <ul class='data-list'><li>The customer does not have enough funds to complete the payment — 4971</li><li>The customer did not authorize the payment in time or the transaction timed out at the mobile network operator — 1041</li><li>No provider message (blank) — 738</li><li>The payer does not have an account with 'MTN MOMO CMR' or it is not active — 112</li><li>Payment failed. the service is temporarily disabled due to an ongoing incident. our technical service is aware and is working on its resolution — 104</li><li>The customers mobile money wallet is locked — 51</li><li>The provider 'MTN MOMO CMR' is currently not able to process payments. please consult our status page for downtime information on all providers. programmatic access is also available — 33</li><li>The provider 'MTN MOMO CMR' did not specify a reason for this failure — 15</li><li>Payment failed. the payment was forbidden by the provider — 5</li><li>Payment failed. no reason was provided by the provider — 2</li><li>OTP is required when orange provider is selected — 2</li><li>Payment failed. internal error. our technical team has been notified — 1</li></ul>
-    </div>
-  </div>
-  <details class='details-panel'><summary>Provider breakdown</summary><div class='details-grid'><div class='sub-card'><h4>hub2</h4><p class='muted'>Total: 124</p><ul class='stat-list'><li>Successful — 10</li><li>Failed — 114</li></ul><h5 class='subtle-heading'>provider message highlights</h5><ul class='mini-list'><li>Complete payment process — 10</li></ul><ul class='mini-list'><li>Payment failed. the service is temporarily disabled due to an ongoing incident. our technical service is aware and is working on its resolution — 104</li><li>Payment failed. the payment was forbidden by the provider — 5</li><li>Payment failed. no reason was provided by the provider — 2</li><li>OTP is required when orange provider is selected — 2</li><li>Payment failed. internal error. our technical team has been notified — 1</li></ul></div><div class='sub-card'><h4>pawapay</h4><p class='muted'>Total: 8924</p><ul class='stat-list'><li>Successful — 1961</li><li>Failed — 6961</li><li>Abandoned — 2</li></ul><h5 class='subtle-heading'>provider message highlights</h5><ul class='mini-list'><li>No provider message (blank) — 1961</li></ul><ul class='mini-list'><li>The customer does not have enough funds to complete the payment — 4971</li><li>The customer did not authorize the payment in time or the transaction timed out at the mobile network operator — 1041</li><li>No provider message (blank) — 738</li><li>The payer does not have an account with 'MTN MOMO CMR' or it is not active — 112</li><li>The customers mobile money wallet is locked — 51</li><li>The provider 'MTN MOMO CMR' is currently not able to process payments. please consult our status page for downtime information on all providers. programmatic access is also available — 33</li><li>The provider 'MTN MOMO CMR' did not specify a reason for this failure — 15</li></ul></div></div></details>
-</section>
-
-<section>
-  <div class='section-header'>
-    <div class='title-with-total'><h2>Uganda</h2><span class='badge'>Total: 2633</span></div>
-  </div>
-  <div class='panel-grid two'>
-    <div class='metric-card'>
-      <h3>Status mix</h3>
-      <ul class='data-list'><li>Successful — 602</li><li>Failed — 2031</li></ul>
-      <h3>Channel breakdown</h3><ul class='data-list'><li>Mobile Money — 2633</li></ul>
-    </div>
-    <div class='metric-card'>
-      <h3>Top success reasons</h3>
-      <ul class='data-list'><li>No provider message (blank) — 601</li><li>The customer does not have enough funds to complete the payment or has reached a payment limit — 1</li></ul>
-      <h3>Top failure reasons</h3>
-      <ul class='data-list'><li>The customer does not have enough funds to complete the payment or has reached a payment limit — 1066</li><li>The customer does not have enough funds to complete the payment — 331</li><li>The provider 'airtel OAPI UGA' did not specify a reason for this failure — 320</li><li>No payment methods configured for service — 128</li><li>The customer did not authorize the payment in time or the transaction timed out at the mobile network operator — 110</li><li>The payer does not have an account with 'MTN MOMO UGA' or it is not active — 31</li><li>No provider message (blank) — 26</li><li>The customers mobile money wallet is locked — 5</li><li>The provider 'MTN MOMO UGA' did not specify a reason for this failure — 5</li><li>The msisdn is too short for the identified country UGA — 4</li><li>The payer does not have an account with 'airtel OAPI UGA' or it is not active — 3</li><li>The provider 'MTN MOMO UGA' is currently not able to process payments. please consult our status page for downtime information on all providers. programmatic access is also available — 1</li><li>The provider 'airtel OAPI UGA' is currently not able to process payments. please consult our status page for downtime information on all providers. programmatic access is also available — 1</li></ul>
-    </div>
-  </div>
-  <details class='details-panel'><summary>Provider breakdown</summary><div class='details-grid'><div class='sub-card'><h4>cellulant</h4><p class='muted'>Total: 128</p><ul class='stat-list'><li>Failed — 128</li></ul><h5 class='subtle-heading'>provider message highlights</h5><ul class='mini-list'><li>No payment methods configured for service — 128</li></ul></div><div class='sub-card'><h4>pawapay</h4><p class='muted'>Total: 2505</p><ul class='stat-list'><li>Successful — 602</li><li>Failed — 1903</li></ul><h5 class='subtle-heading'>provider message highlights</h5><ul class='mini-list'><li>No provider message (blank) — 601</li><li>The customer does not have enough funds to complete the payment or has reached a payment limit — 1</li></ul><ul class='mini-list'><li>The customer does not have enough funds to complete the payment or has reached a payment limit — 1066</li><li>The customer does not have enough funds to complete the payment — 331</li><li>The provider 'airtel OAPI UGA' did not specify a reason for this failure — 320</li><li>The customer did not authorize the payment in time or the transaction timed out at the mobile network operator — 110</li><li>The payer does not have an account with 'MTN MOMO UGA' or it is not active — 31</li><li>No provider message (blank) — 26</li><li>The customers mobile money wallet is locked — 5</li><li>The provider 'MTN MOMO UGA' did not specify a reason for this failure — 5</li><li>The msisdn is too short for the identified country UGA — 4</li><li>The payer does not have an account with 'airtel OAPI UGA' or it is not active — 3</li><li>The provider 'MTN MOMO UGA' is currently not able to process payments. please consult our status page for downtime information on all providers. programmatic access is also available — 1</li><li>The provider 'airtel OAPI UGA' is currently not able to process payments. please consult our status page for downtime information on all providers. programmatic access is also available — 1</li></ul></div></div></details>
-</section>
-
-<section>
-  <div class='section-header'>
-    <div class='title-with-total'><h2>RWANDA</h2><span class='badge'>Total: 60</span></div>
-  </div>
-  <div class='panel-grid two'>
-    <div class='metric-card'>
-      <h3>Status mix</h3>
-      <ul class='data-list'><li>Successful — 12</li><li>Failed — 48</li></ul>
-      <h3>Channel breakdown</h3><ul class='data-list'><li>Mobile Money — 60</li></ul>
-    </div>
-    <div class='metric-card'>
-      <h3>Top success reasons</h3>
-      <ul class='data-list'><li>No provider message (blank) — 12</li></ul>
-      <h3>Top failure reasons</h3>
-      <ul class='data-list'><li>The provider 'MTN MOMO RWA' did not specify a reason for this failure — 22</li><li>The customer did not authorize the payment in time or the transaction timed out at the mobile network operator — 8</li><li>The provider 'airtel RWA' did not specify a reason for this failure — 7</li><li>The customer does not have enough funds to complete the payment — 3</li><li>The amount needs to be more than '5' and less than '2000000' for provider 'MTN MOMO RWA' — 3</li><li>The payer does not have an account with 'airtel RWA' or it is not active — 2</li><li>The msisdn is too short for the identified country RWA — 1</li><li>The payer does not have an account with 'MTN MOMO RWA' or it is not active — 1</li><li>The customer did not approve the payment. either the customer did not enter their PIN in time or incorrect PIN was entered — 1</li></ul>
-    </div>
-  </div>
-  <details class='details-panel'><summary>Provider breakdown</summary><div class='details-grid'><div class='sub-card'><h4>pawapay</h4><p class='muted'>Total: 60</p><ul class='stat-list'><li>Successful — 12</li><li>Failed — 48</li></ul><h5 class='subtle-heading'>provider message highlights</h5><ul class='mini-list'><li>No provider message (blank) — 12</li></ul><ul class='mini-list'><li>The provider 'MTN MOMO RWA' did not specify a reason for this failure — 22</li><li>The customer did not authorize the payment in time or the transaction timed out at the mobile network operator — 8</li><li>The provider 'airtel RWA' did not specify a reason for this failure — 7</li><li>The customer does not have enough funds to complete the payment — 3</li><li>The amount needs to be more than '5' and less than '2000000' for provider 'MTN MOMO RWA' — 3</li><li>The payer does not have an account with 'airtel RWA' or it is not active — 2</li><li>The msisdn is too short for the identified country RWA — 1</li><li>The payer does not have an account with 'MTN MOMO RWA' or it is not active — 1</li><li>The customer did not approve the payment. either the customer did not enter their PIN in time or incorrect PIN was entered — 1</li></ul></div></div></details>
-</section>
-
-<section>
-  <div class='section-header'>
-    <div class='title-with-total'><h2>Congo</h2><span class='badge'>Total: 31</span></div>
-  </div>
-  <div class='panel-grid two'>
-    <div class='metric-card'>
-      <h3>Status mix</h3>
-      <ul class='data-list'><li>Failed — 31</li></ul>
-      <h3>Channel breakdown</h3><ul class='data-list'><li>Mobile Money — 31</li></ul>
-    </div>
-    <div class='metric-card'>
-      <h3>Top success reasons</h3>
-      <ul class='data-list'><li>—</li></ul>
-      <h3>Top failure reasons</h3>
-      <ul class='data-list'><li>The msisdn is too short for the identified country COG — 17</li><li>The customer does not have enough funds to complete the payment — 8</li><li>The payer does not have an account with 'MTN MOMO COG' or it is not active — 6</li></ul>
-    </div>
-  </div>
-  <details class='details-panel'><summary>Provider breakdown</summary><div class='details-grid'><div class='sub-card'><h4>pawapay</h4><p class='muted'>Total: 31</p><ul class='stat-list'><li>Failed — 31</li></ul><h5 class='subtle-heading'>provider message highlights</h5><ul class='mini-list'><li>The msisdn is too short for the identified country COG — 17</li><li>The customer does not have enough funds to complete the payment — 8</li><li>The payer does not have an account with 'MTN MOMO COG' or it is not active — 6</li></ul></div></div></details>
-</section>
-
-<section>
-  <div class='section-header'>
-    <div class='title-with-total'><h2>Sierra Leone</h2><span class='badge'>Total: 35</span></div>
-  </div>
-  <div class='panel-grid two'>
-    <div class='metric-card'>
-      <h3>Status mix</h3>
-      <ul class='data-list'><li>Successful — 1</li><li>Failed — 34</li></ul>
-      <h3>Channel breakdown</h3><ul class='data-list'><li>Mobile Money — 35</li></ul>
-    </div>
-    <div class='metric-card'>
-      <h3>Top success reasons</h3>
-      <ul class='data-list'><li>No provider message (blank) — 1</li></ul>
-      <h3>Top failure reasons</h3>
-      <ul class='data-list'><li>The provider 'orange SLE' did not specify a reason for this failure — 34</li></ul>
-    </div>
-  </div>
-  <details class='details-panel'><summary>Provider breakdown</summary><div class='details-grid'><div class='sub-card'><h4>pawapay</h4><p class='muted'>Total: 35</p><ul class='stat-list'><li>Successful — 1</li><li>Failed — 34</li></ul><h5 class='subtle-heading'>provider message highlights</h5><ul class='mini-list'><li>No provider message (blank) — 1</li></ul><ul class='mini-list'><li>The provider 'orange SLE' did not specify a reason for this failure — 34</li></ul></div></div></details>
-</section>
-
-<section>
-  <div class='section-header'>
-    <div class='title-with-total'><h2>Democratic Republic of the Congo</h2><span class='badge'>Total: 20</span></div>
-  </div>
-  <div class='panel-grid two'>
-    <div class='metric-card'>
-      <h3>Status mix</h3>
-      <ul class='data-list'><li>Failed — 20</li></ul>
-      <h3>Channel breakdown</h3><ul class='data-list'><li>Mobile Money — 20</li></ul>
-    </div>
-    <div class='metric-card'>
-      <h3>Top success reasons</h3>
-      <ul class='data-list'><li>—</li></ul>
-      <h3>Top failure reasons</h3>
-      <ul class='data-list'><li>Authorization not approved in time — 11</li><li>The provider 'airtel COD' did not specify a reason for this failure — 7</li><li>The payer does not have an account with 'orange COD' or it is not active — 2</li></ul>
-    </div>
-  </div>
-  <details class='details-panel'><summary>Provider breakdown</summary><div class='details-grid'><div class='sub-card'><h4>pawapay</h4><p class='muted'>Total: 20</p><ul class='stat-list'><li>Failed — 20</li></ul><h5 class='subtle-heading'>provider message highlights</h5><ul class='mini-list'><li>Authorization not approved in time — 11</li><li>The provider 'airtel COD' did not specify a reason for this failure — 7</li><li>The payer does not have an account with 'orange COD' or it is not active — 2</li></ul></div></div></details>
-</section>
-
-    <section>
-      <div class='section-header'>
-        <div class='title-with-total'><h2>Highest failure causes by region</h2><span class='badge'>Across the month</span></div>
+    <section class="card anim3">
+      <div class="section-header">
+        <div class="title-with-total"><h2>Nigeria</h2><span class="badge">16,832 txns · <span class='vol-pill'>$22,739.84</span></span></div>
       </div>
-      <div class='panel-grid two'>
-        
-<div class='sub-card'>
+      <div class="panel-grid two">
+        <div class="metric-card">
+          <h3>Status mix</h3>
+          <ul class='data-list'><li>Successful — 4090</li><li>Failed — 677</li><li>Abandoned — 11968</li><li>Cancelled — 97</li></ul>
+          <h3>Channel distribution</h3>
+          <ul class='data-list'><li>Card — 1482</li><li>Bank Transfer — 15350</li></ul>
+        </div>
+        <div class="metric-card">
+          <h3>Top success reasons</h3>
+          <ul class='data-list'><li>Successful — 3665</li><li>No provider message (blank) — 290</li><li>Approved by financial institution — 135</li></ul>
+          <h3>Top failure reasons</h3>
+          <ul class='data-list'><li>Unable to process transaction — 179</li><li>No provider message (blank) — 165</li><li>Merchant is not enabled for international transactions — 85</li><li>OTP verification required — 80</li><li>Request to generate token is successful — 72</li><li>Please enter your pin — 26</li><li>Insufficient funds — 15</li><li>Token authentication failed. incorrect token supplied — 12</li><li>Fellback-bnf — 12</li><li>Refer to card issuer — 5</li><li>Payment authorization timed out — 5</li><li>Negative CAM — 4</li><li>Payer account not found or inactive — 3</li><li>No card record — 3</li><li>Payment rejected by provider — 3</li><li>Unable to retrieve customer details — 2</li><li>Invalid card number — 2</li><li>Account closed — 2</li><li>Incorrect PIN — 1</li><li>Lost card — 1</li></ul>
+        </div>
+      </div>
+      <details class='details-panel'><summary>Provider breakdown</summary><div class='details-grid'><div class='sub-card'>
+              <h4>interswitch</h4>
+              <p class='muted-text'>Total: 619 · <span class='vol-pill'>$579.99</span></p>
+              <ul class='stat-list'><li>Successful — 135</li><li>Failed — 275</li><li>Abandoned — 160</li><li>Cancelled — 49</li></ul><h5 class='subtle-heading'>Provider message highlights</h5><ul class='mini-list'><li>Approved by financial institution — 135</li></ul><ul class='mini-list'><li>Unable to process transaction — 160</li><li>No provider message (blank) — 88</li><li>Please enter your pin — 26</li><li>OTP verification required — 1</li></ul></div><div class='sub-card'>
+              <h4>paystack</h4>
+              <p class='muted-text'>Total: 864 · <span class='vol-pill'>$1,677.19</span></p>
+              <ul class='stat-list'><li>Successful — 290</li><li>Failed — 401</li><li>Abandoned — 125</li><li>Cancelled — 48</li></ul><h5 class='subtle-heading'>Provider message highlights</h5><ul class='mini-list'><li>No provider message (blank) — 288</li><li>Successful — 2</li></ul><ul class='mini-list'><li>Merchant is not enabled for international transactions — 85</li><li>OTP verification required — 79</li><li>No provider message (blank) — 77</li><li>Request to generate token is successful — 72</li><li>Unable to process transaction — 18</li><li>Insufficient funds — 15</li><li>Token authentication failed. incorrect token supplied — 12</li><li>Fellback-bnf — 12</li><li>Refer to card issuer — 5</li><li>Payment authorization timed out — 5</li><li>Negative CAM — 4</li><li>Payer account not found or inactive — 3</li><li>No card record — 3</li><li>Payment rejected by provider — 3</li><li>Unable to retrieve customer details — 2</li><li>Invalid card number — 2</li><li>Account closed — 2</li><li>Incorrect PIN — 1</li><li>Lost card — 1</li></ul></div><div class='sub-card'>
+              <h4>spotflow_accounts</h4>
+              <p class='muted-text'>Total: 15,349 · <span class='vol-pill'>$20,482.67</span></p>
+              <ul class='stat-list'><li>Successful — 3665</li><li>Failed — 1</li><li>Abandoned — 11683</li></ul><h5 class='subtle-heading'>Provider message highlights</h5><ul class='mini-list'><li>Successful — 3663</li><li>No provider message (blank) — 2</li></ul><ul class='mini-list'><li>Unable to process transaction — 1</li></ul></div></div></details>
+      <details class='details-panel'><summary>Merchant breakdown</summary><div class='details-grid'><div class='sub-card'>
+              <h4>Audiomack Inc.</h4>
+              <p class='muted-text'>15,485 txns · <span class='vol-pill'>$17,691.20</span> · Success: 22.9% · Top channel: Bank Transfer</p>
+              <ul class='stat-list'><li>Successful — 3550</li><li>Failed — 637</li><li>Abandoned — 11202</li><li>Cancelled — 96</li></ul>
+            </div><div class='sub-card'>
+              <h4>MiMo Global</h4>
+              <p class='muted-text'>877 txns · <span class='vol-pill'>$4,024.03</span> · Success: 45.7% · Top channel: Bank Transfer</p>
+              <ul class='stat-list'><li>Successful — 401</li><li>Failed — 19</li><li>Abandoned — 456</li><li>Cancelled — 1</li></ul>
+            </div><div class='sub-card'>
+              <h4>Gadsfy</h4>
+              <p class='muted-text'>443 txns · <span class='vol-pill'>$788.90</span> · Success: 28.2% · Top channel: Bank Transfer</p>
+              <ul class='stat-list'><li>Successful — 125</li><li>Failed — 14</li><li>Abandoned — 304</li></ul>
+            </div><div class='sub-card'>
+              <h4>UduTech</h4>
+              <p class='muted-text'>16 txns · <span class='vol-pill'>$225.50</span> · Success: 43.8% · Top channel: Card</p>
+              <ul class='stat-list'><li>Successful — 7</li><li>Failed — 6</li><li>Abandoned — 3</li></ul>
+            </div><div class='sub-card'>
+              <h4>Chune.xyz</h4>
+              <p class='muted-text'>1 txns · <span class='vol-pill'>$7.00</span> · Success: 100.0% · Top channel: Bank Transfer</p>
+              <ul class='stat-list'><li>Successful — 1</li></ul>
+            </div><div class='sub-card'>
+              <h4>Spotflow Demo</h4>
+              <p class='muted-text'>5 txns · <span class='vol-pill'>$0.07</span> · Success: 20.0% · Top channel: Bank Transfer</p>
+              <ul class='stat-list'><li>Successful — 1</li><li>Failed — 1</li><li>Abandoned — 3</li></ul>
+            </div><div class='sub-card'>
+              <h4>Stranerd</h4>
+              <p class='muted-text'>5 txns · <span class='vol-pill'>$3.13</span> · Success: 100.0% · Top channel: Bank Transfer</p>
+              <ul class='stat-list'><li>Successful — 5</li></ul>
+            </div></div></details>
+    </section>
+
+    <section class="card anim3">
+      <div class="section-header">
+        <div class="title-with-total"><h2>Ghana</h2><span class="badge">8,478 txns · <span class='vol-pill'>$38,654.85</span></span></div>
+      </div>
+      <div class="panel-grid two">
+        <div class="metric-card">
+          <h3>Status mix</h3>
+          <ul class='data-list'><li>Successful — 4135</li><li>Failed — 2260</li><li>Abandoned — 1563</li><li>Cancelled — 520</li></ul>
+          <h3>Channel distribution</h3>
+          <ul class='data-list'><li>Card — 315</li><li>Mobile Money — 8163</li></ul>
+        </div>
+        <div class="metric-card">
+          <h3>Top success reasons</h3>
+          <ul class='data-list'><li>Success — 4039</li><li>No provider message (blank) — 95</li><li>Successful — 1</li></ul>
+          <h3>Top failure reasons</h3>
+          <ul class='data-list'><li>Insufficient funds or payment limit reached — 956</li><li>Transaction failed — 915</li><li>Unable to process transaction — 249</li><li>Provider temporarily unavailable — 49</li><li>No provider message (blank) — 30</li><li>Transaction id is invalid — 19</li><li>Payer account not found or inactive — 8</li><li>MTN exception: KYC timeout — 7</li><li>Incorrect PIN — 6</li><li>Payment authorization timed out — 6</li><li>MTN exception: account holder with FRI not found — 6</li><li>Your PIN has been locked. likely from entering it wrongly too many times — 4</li><li>Verve cards can only pay NGN at this time — 3</li><li>Invalid card number — 1</li><li>Insufficient funds — 1</li></ul>
+        </div>
+      </div>
+      <details class='details-panel'><summary>Provider breakdown</summary><div class='details-grid'><div class='sub-card'>
+              <h4>hubtel</h4>
+              <p class='muted-text'>Total: 8,153 · <span class='vol-pill'>$36,200.94</span></p>
+              <ul class='stat-list'><li>Successful — 4040</li><li>Failed — 2215</li><li>Abandoned — 1378</li><li>Cancelled — 520</li></ul><h5 class='subtle-heading'>Provider message highlights</h5><ul class='mini-list'><li>Success — 4039</li><li>Successful — 1</li></ul><ul class='mini-list'><li>Insufficient funds or payment limit reached — 955</li><li>Transaction failed — 914</li><li>Unable to process transaction — 248</li><li>Provider temporarily unavailable — 48</li><li>Transaction id is invalid — 19</li><li>MTN exception: KYC timeout — 7</li><li>Incorrect PIN — 6</li><li>MTN exception: account holder with FRI not found — 6</li><li>Payer account not found or inactive — 6</li><li>Your PIN has been locked. likely from entering it wrongly too many times — 4</li><li>No provider message (blank) — 2</li></ul></div><div class='sub-card'>
+              <h4>pawapay</h4>
+              <p class='muted-text'>Total: 10 · <span class='vol-pill'>$0.16</span></p>
+              <ul class='stat-list'><li>Successful — 1</li><li>Failed — 9</li></ul><h5 class='subtle-heading'>Provider message highlights</h5><ul class='mini-list'><li>No provider message (blank) — 1</li></ul><ul class='mini-list'><li>Payment authorization timed out — 6</li><li>Payer account not found or inactive — 2</li><li>Insufficient funds — 1</li></ul></div><div class='sub-card'>
+              <h4>paystack</h4>
+              <p class='muted-text'>Total: 315 · <span class='vol-pill'>$2,453.76</span></p>
+              <ul class='stat-list'><li>Successful — 94</li><li>Failed — 36</li><li>Abandoned — 185</li></ul><h5 class='subtle-heading'>Provider message highlights</h5><ul class='mini-list'><li>No provider message (blank) — 94</li></ul><ul class='mini-list'><li>No provider message (blank) — 28</li><li>Verve cards can only pay NGN at this time — 3</li><li>Invalid card number — 1</li><li>Unable to process transaction — 1</li><li>Insufficient funds or payment limit reached — 1</li><li>Provider temporarily unavailable — 1</li><li>Transaction failed — 1</li></ul></div></div></details>
+      <details class='details-panel'><summary>Merchant breakdown</summary><div class='details-grid'><div class='sub-card'>
+              <h4>Nestuge</h4>
+              <p class='muted-text'>2,493 txns · <span class='vol-pill'>$20,825.68</span> · Success: 51.4% · Top channel: Mobile Money</p>
+              <ul class='stat-list'><li>Successful — 1282</li><li>Failed — 608</li><li>Abandoned — 454</li><li>Cancelled — 149</li></ul>
+            </div><div class='sub-card'>
+              <h4>Audiomack Inc.</h4>
+              <p class='muted-text'>3,492 txns · <span class='vol-pill'>$9,291.90</span> · Success: 50.2% · Top channel: Mobile Money</p>
+              <ul class='stat-list'><li>Successful — 1753</li><li>Failed — 981</li><li>Abandoned — 557</li><li>Cancelled — 201</li></ul>
+            </div><div class='sub-card'>
+              <h4>MiMo Global</h4>
+              <p class='muted-text'>2,462 txns · <span class='vol-pill'>$8,071.00</span> · Success: 44.5% · Top channel: Mobile Money</p>
+              <ul class='stat-list'><li>Successful — 1096</li><li>Failed — 653</li><li>Abandoned — 544</li><li>Cancelled — 169</li></ul>
+            </div><div class='sub-card'>
+              <h4>Accra Polo Club</h4>
+              <p class='muted-text'>1 txns · <span class='vol-pill'>$465.32</span> · Success: 100.0% · Top channel: Card</p>
+              <ul class='stat-list'><li>Successful — 1</li></ul>
+            </div><div class='sub-card'>
+              <h4>Spotflow Demo</h4>
+              <p class='muted-text'>10 txns · <span class='vol-pill'>$0.16</span> · Success: 10.0% · Top channel: Mobile Money</p>
+              <ul class='stat-list'><li>Successful — 1</li><li>Failed — 9</li></ul>
+            </div><div class='sub-card'>
+              <h4>Gadsfy</h4>
+              <p class='muted-text'>9 txns · <span class='vol-pill'>$0.00</span> · Success: 0.0% · Top channel: Mobile Money</p>
+              <ul class='stat-list'><li>Abandoned — 8</li><li>Cancelled — 1</li></ul>
+            </div><div class='sub-card'>
+              <h4>Bloper</h4>
+              <p class='muted-text'>11 txns · <span class='vol-pill'>$0.79</span> · Success: 18.2% · Top channel: Mobile Money</p>
+              <ul class='stat-list'><li>Successful — 2</li><li>Failed — 9</li></ul>
+            </div></div></details>
+    </section>
+
+    <section class="card anim3">
+      <div class="section-header">
+        <div class="title-with-total"><h2>South Africa</h2><span class="badge">334 txns · <span class='vol-pill'>$128.27</span></span></div>
+      </div>
+      <div class="panel-grid two">
+        <div class="metric-card">
+          <h3>Status mix</h3>
+          <ul class='data-list'><li>Successful — 16</li><li>Failed — 137</li><li>Abandoned — 106</li><li>Cancelled — 75</li></ul>
+          <h3>Channel distribution</h3>
+          <ul class='data-list'><li>Eft — 334</li></ul>
+        </div>
+        <div class="metric-card">
+          <h3>Top success reasons</h3>
+          <ul class='data-list'><li>No provider message (blank) — 16</li></ul>
+          <h3>Top failure reasons</h3>
+          <ul class='data-list'><li>No provider message (blank) — 137</li></ul>
+        </div>
+      </div>
+      <details class='details-panel'><summary>Provider breakdown</summary><div class='details-grid'><div class='sub-card'>
+              <h4>ozow</h4>
+              <p class='muted-text'>Total: 334 · <span class='vol-pill'>$128.27</span></p>
+              <ul class='stat-list'><li>Successful — 16</li><li>Failed — 137</li><li>Abandoned — 106</li><li>Cancelled — 75</li></ul><h5 class='subtle-heading'>Provider message highlights</h5><ul class='mini-list'><li>No provider message (blank) — 16</li></ul><ul class='mini-list'><li>No provider message (blank) — 137</li></ul></div></div></details>
+      <details class='details-panel'><summary>Merchant breakdown</summary><div class='details-grid'><div class='sub-card'>
+              <h4>Audiomack Inc.</h4>
+              <p class='muted-text'>271 txns · <span class='vol-pill'>$35.00</span> · Success: 2.6% · Top channel: Eft</p>
+              <ul class='stat-list'><li>Successful — 7</li><li>Failed — 120</li><li>Abandoned — 91</li><li>Cancelled — 53</li></ul>
+            </div><div class='sub-card'>
+              <h4>MiMo Global</h4>
+              <p class='muted-text'>63 txns · <span class='vol-pill'>$93.27</span> · Success: 14.3% · Top channel: Eft</p>
+              <ul class='stat-list'><li>Successful — 9</li><li>Failed — 17</li><li>Abandoned — 15</li><li>Cancelled — 22</li></ul>
+            </div></div></details>
+    </section>
+
+    <section class="card anim3">
+      <div class="section-header">
+        <div class="title-with-total"><h2>Kenya</h2><span class="badge">127 txns · <span class='vol-pill'>$296.97</span></span></div>
+      </div>
+      <div class="panel-grid two">
+        <div class="metric-card">
+          <h3>Status mix</h3>
+          <ul class='data-list'><li>Successful — 56</li><li>Failed — 6</li><li>Abandoned — 65</li></ul>
+          <h3>Channel distribution</h3>
+          <ul class='data-list'><li>Mobile Money — 127</li></ul>
+        </div>
+        <div class="metric-card">
+          <h3>Top success reasons</h3>
+          <ul class='data-list'><li>Transaction successfully found — 56</li></ul>
+          <h3>Top failure reasons</h3>
+          <ul class='data-list'><li>The request body is missing or is invalid — 5</li><li>No provider message (blank) — 1</li></ul>
+        </div>
+      </div>
+      <details class='details-panel'><summary>Provider breakdown</summary><div class='details-grid'><div class='sub-card'>
+              <h4>cellulant</h4>
+              <p class='muted-text'>Total: 127 · <span class='vol-pill'>$296.97</span></p>
+              <ul class='stat-list'><li>Successful — 56</li><li>Failed — 6</li><li>Abandoned — 65</li></ul><h5 class='subtle-heading'>Provider message highlights</h5><ul class='mini-list'><li>Transaction successfully found — 56</li></ul><ul class='mini-list'><li>The request body is missing or is invalid — 5</li><li>No provider message (blank) — 1</li></ul></div></div></details>
+      <details class='details-panel'><summary>Merchant breakdown</summary><div class='details-grid'><div class='sub-card'>
+              <h4>Audiomack Inc.</h4>
+              <p class='muted-text'>68 txns · <span class='vol-pill'>$105.01</span> · Success: 32.4% · Top channel: Mobile Money</p>
+              <ul class='stat-list'><li>Successful — 22</li><li>Failed — 1</li><li>Abandoned — 45</li></ul>
+            </div><div class='sub-card'>
+              <h4>MiMo Global</h4>
+              <p class='muted-text'>59 txns · <span class='vol-pill'>$191.96</span> · Success: 57.6% · Top channel: Mobile Money</p>
+              <ul class='stat-list'><li>Successful — 34</li><li>Failed — 5</li><li>Abandoned — 20</li></ul>
+            </div></div></details>
+    </section>
+
+    <section class="card anim3">
+      <div class="section-header">
+        <div class="title-with-total"><h2>Tanzania</h2><span class="badge">483 txns · <span class='vol-pill'>$4,051.78</span></span></div>
+      </div>
+      <div class="panel-grid two">
+        <div class="metric-card">
+          <h3>Status mix</h3>
+          <ul class='data-list'><li>Successful — 146</li><li>Failed — 204</li><li>Abandoned — 133</li></ul>
+          <h3>Channel distribution</h3>
+          <ul class='data-list'><li>Mobile Money — 483</li></ul>
+        </div>
+        <div class="metric-card">
+          <h3>Top success reasons</h3>
+          <ul class='data-list'><li>Payment completed — 131</li><li>Payment processed — 15</li></ul>
+          <h3>Top failure reasons</h3>
+          <ul class='data-list'><li>Insufficient funds — 122</li><li>Transaction failed — 71</li><li>Payment rejected by provider — 8</li><li>Unable to process transaction — 1</li><li>Payment amount 5 is below the minimum allowed amount of 1000 for TZS — 1</li><li>No provider message (blank) — 1</li></ul>
+        </div>
+      </div>
+      <details class='details-panel'><summary>Provider breakdown</summary><div class='details-grid'><div class='sub-card'>
+              <h4>tembo_plus</h4>
+              <p class='muted-text'>Total: 483 · <span class='vol-pill'>$4,051.78</span></p>
+              <ul class='stat-list'><li>Successful — 146</li><li>Failed — 204</li><li>Abandoned — 133</li></ul><h5 class='subtle-heading'>Provider message highlights</h5><ul class='mini-list'><li>Payment completed — 131</li><li>Payment processed — 15</li></ul><ul class='mini-list'><li>Insufficient funds — 122</li><li>Transaction failed — 71</li><li>Payment rejected by provider — 8</li><li>Unable to process transaction — 1</li><li>Payment amount 5 is below the minimum allowed amount of 1000 for TZS — 1</li><li>No provider message (blank) — 1</li></ul></div></div></details>
+      <details class='details-panel'><summary>Merchant breakdown</summary><div class='details-grid'><div class='sub-card'>
+              <h4>Audiomack Inc.</h4>
+              <p class='muted-text'>338 txns · <span class='vol-pill'>$689.02</span> · Success: 24.0% · Top channel: Mobile Money</p>
+              <ul class='stat-list'><li>Successful — 81</li><li>Failed — 167</li><li>Abandoned — 90</li></ul>
+            </div><div class='sub-card'>
+              <h4>Nestuge</h4>
+              <p class='muted-text'>143 txns · <span class='vol-pill'>$3,362.76</span> · Success: 45.5% · Top channel: Mobile Money</p>
+              <ul class='stat-list'><li>Successful — 65</li><li>Failed — 35</li><li>Abandoned — 43</li></ul>
+            </div><div class='sub-card'>
+              <h4>Spotflow Demo</h4>
+              <p class='muted-text'>2 txns · <span class='vol-pill'>$0.00</span> · Success: 0.0% · Top channel: Mobile Money</p>
+              <ul class='stat-list'><li>Failed — 2</li></ul>
+            </div></div></details>
+    </section>
+
+    <section class="card anim3">
+      <div class="section-header">
+        <div class="title-with-total"><h2>Côte d'Ivoire</h2><span class="badge">201 txns · <span class='vol-pill'>$268.09</span></span></div>
+      </div>
+      <div class="panel-grid two">
+        <div class="metric-card">
+          <h3>Status mix</h3>
+          <ul class='data-list'><li>Successful — 34</li><li>Failed — 167</li></ul>
+          <h3>Channel distribution</h3>
+          <ul class='data-list'><li>Mobile Money — 201</li></ul>
+        </div>
+        <div class="metric-card">
+          <h3>Top success reasons</h3>
+          <ul class='data-list'><li>No provider message (blank) — 30</li><li>Authorized successful — 4</li></ul>
+          <h3>Top failure reasons</h3>
+          <ul class='data-list'><li>Payment authorization timed out — 89</li><li>Insufficient funds — 22</li><li>Authorized successful — 18</li><li>Invalid phone number — 18</li><li>Provider returned no failure reason — 13</li><li>Payer account not found or inactive — 5</li><li>OTP verification required — 1</li><li>Unable to process transaction — 1</li></ul>
+        </div>
+      </div>
+      <details class='details-panel'><summary>Provider breakdown</summary><div class='details-grid'><div class='sub-card'>
+              <h4>hub2</h4>
+              <p class='muted-text'>Total: 24 · <span class='vol-pill'>$13.08</span></p>
+              <ul class='stat-list'><li>Successful — 4</li><li>Failed — 20</li></ul><h5 class='subtle-heading'>Provider message highlights</h5><ul class='mini-list'><li>Authorized successful — 4</li></ul><ul class='mini-list'><li>Authorized successful — 18</li><li>OTP verification required — 1</li><li>Unable to process transaction — 1</li></ul></div><div class='sub-card'>
+              <h4>pawapay</h4>
+              <p class='muted-text'>Total: 177 · <span class='vol-pill'>$255.01</span></p>
+              <ul class='stat-list'><li>Successful — 30</li><li>Failed — 147</li></ul><h5 class='subtle-heading'>Provider message highlights</h5><ul class='mini-list'><li>No provider message (blank) — 30</li></ul><ul class='mini-list'><li>Payment authorization timed out — 89</li><li>Insufficient funds — 22</li><li>Invalid phone number — 18</li><li>Provider returned no failure reason — 13</li><li>Payer account not found or inactive — 5</li></ul></div></div></details>
+      <details class='details-panel'><summary>Merchant breakdown</summary><div class='details-grid'><div class='sub-card'>
+              <h4>Gadsfy</h4>
+              <p class='muted-text'>122 txns · <span class='vol-pill'>$210.58</span> · Success: 18.0% · Top channel: Mobile Money</p>
+              <ul class='stat-list'><li>Successful — 22</li><li>Failed — 100</li></ul>
+            </div><div class='sub-card'>
+              <h4>Audiomack Inc.</h4>
+              <p class='muted-text'>65 txns · <span class='vol-pill'>$48.08</span> · Success: 16.9% · Top channel: Mobile Money</p>
+              <ul class='stat-list'><li>Successful — 11</li><li>Failed — 54</li></ul>
+            </div><div class='sub-card'>
+              <h4>Nestuge</h4>
+              <p class='muted-text'>11 txns · <span class='vol-pill'>$9.43</span> · Success: 9.1% · Top channel: Mobile Money</p>
+              <ul class='stat-list'><li>Successful — 1</li><li>Failed — 10</li></ul>
+            </div><div class='sub-card'>
+              <h4>Spotflow Demo</h4>
+              <p class='muted-text'>1 txns · <span class='vol-pill'>$0.00</span> · Success: 0.0% · Top channel: Mobile Money</p>
+              <ul class='stat-list'><li>Failed — 1</li></ul>
+            </div><div class='sub-card'>
+              <h4>MiMo Global</h4>
+              <p class='muted-text'>2 txns · <span class='vol-pill'>$0.00</span> · Success: 0.0% · Top channel: Mobile Money</p>
+              <ul class='stat-list'><li>Failed — 2</li></ul>
+            </div></div></details>
+    </section>
+
+    <section class="card anim3">
+      <div class="section-header">
+        <div class="title-with-total"><h2>Benin</h2><span class="badge">73 txns · <span class='vol-pill'>$100.98</span></span></div>
+      </div>
+      <div class="panel-grid two">
+        <div class="metric-card">
+          <h3>Status mix</h3>
+          <ul class='data-list'><li>Successful — 16</li><li>Failed — 57</li></ul>
+          <h3>Channel distribution</h3>
+          <ul class='data-list'><li>Mobile Money — 73</li></ul>
+        </div>
+        <div class="metric-card">
+          <h3>Top success reasons</h3>
+          <ul class='data-list'><li>No provider message (blank) — 15</li><li>Authorized successful — 1</li></ul>
+          <h3>Top failure reasons</h3>
+          <ul class='data-list'><li>Insufficient funds — 19</li><li>No provider message (blank) — 9</li><li>Authorized successful — 7</li><li>The customers mobile money wallet is locked — 6</li><li>Payment authorization timed out — 4</li><li>Payer account not found or inactive — 4</li><li>Provider returned no failure reason — 4</li><li>Invalid phone number — 1</li><li>Unable to process transaction — 1</li><li>Provider temporarily unavailable — 1</li><li>The amount needs to be more than '1' and less than '2000000' for provider 'MTN MOMO BEN' — 1</li></ul>
+        </div>
+      </div>
+      <details class='details-panel'><summary>Provider breakdown</summary><div class='details-grid'><div class='sub-card'>
+              <h4>hub2</h4>
+              <p class='muted-text'>Total: 9 · <span class='vol-pill'>$5.00</span></p>
+              <ul class='stat-list'><li>Successful — 1</li><li>Failed — 8</li></ul><h5 class='subtle-heading'>Provider message highlights</h5><ul class='mini-list'><li>Authorized successful — 1</li></ul><ul class='mini-list'><li>Authorized successful — 7</li><li>Unable to process transaction — 1</li></ul></div><div class='sub-card'>
+              <h4>pawapay</h4>
+              <p class='muted-text'>Total: 64 · <span class='vol-pill'>$95.98</span></p>
+              <ul class='stat-list'><li>Successful — 15</li><li>Failed — 49</li></ul><h5 class='subtle-heading'>Provider message highlights</h5><ul class='mini-list'><li>No provider message (blank) — 15</li></ul><ul class='mini-list'><li>Insufficient funds — 19</li><li>No provider message (blank) — 9</li><li>The customers mobile money wallet is locked — 6</li><li>Payment authorization timed out — 4</li><li>Payer account not found or inactive — 4</li><li>Provider returned no failure reason — 4</li><li>Invalid phone number — 1</li><li>Provider temporarily unavailable — 1</li><li>The amount needs to be more than '1' and less than '2000000' for provider 'MTN MOMO BEN' — 1</li></ul></div></div></details>
+      <details class='details-panel'><summary>Merchant breakdown</summary><div class='details-grid'><div class='sub-card'>
+              <h4>Audiomack Inc.</h4>
+              <p class='muted-text'>63 txns · <span class='vol-pill'>$51.84</span> · Success: 19.0% · Top channel: Mobile Money</p>
+              <ul class='stat-list'><li>Successful — 12</li><li>Failed — 51</li></ul>
+            </div><div class='sub-card'>
+              <h4>Nestuge</h4>
+              <p class='muted-text'>8 txns · <span class='vol-pill'>$49.14</span> · Success: 50.0% · Top channel: Mobile Money</p>
+              <ul class='stat-list'><li>Successful — 4</li><li>Failed — 4</li></ul>
+            </div><div class='sub-card'>
+              <h4>MiMo Global</h4>
+              <p class='muted-text'>2 txns · <span class='vol-pill'>$0.00</span> · Success: 0.0% · Top channel: Mobile Money</p>
+              <ul class='stat-list'><li>Failed — 2</li></ul>
+            </div></div></details>
+    </section>
+
+    <section class="card anim3">
+      <div class="section-header">
+        <div class="title-with-total"><h2>Togo</h2><span class="badge">23 txns · <span class='vol-pill'>$0.00</span></span></div>
+      </div>
+      <div class="panel-grid two">
+        <div class="metric-card">
+          <h3>Status mix</h3>
+          <ul class='data-list'><li>Failed — 23</li></ul>
+          <h3>Channel distribution</h3>
+          <ul class='data-list'><li>Mobile Money — 23</li></ul>
+        </div>
+        <div class="metric-card">
+          <h3>Top success reasons</h3>
+          <ul class='data-list'><li>—</li></ul>
+          <h3>Top failure reasons</h3>
+          <ul class='data-list'><li>Votre compte a été suspendu en raison d'inactivité ou de vérifications complémentaires — 22</li><li>Votre compte a ��t�� suspendu en raison d'inactivit�� ou de v��rifications compl��mentaires — 1</li></ul>
+        </div>
+      </div>
+      <details class='details-panel'><summary>Provider breakdown</summary><div class='details-grid'><div class='sub-card'>
+              <h4>hub2</h4>
+              <p class='muted-text'>Total: 23 · <span class='vol-pill'>$0.00</span></p>
+              <ul class='stat-list'><li>Failed — 23</li></ul><h5 class='subtle-heading'>Provider message highlights</h5><ul class='mini-list'><li>Votre compte a été suspendu en raison d'inactivité ou de vérifications complémentaires — 22</li><li>Votre compte a ��t�� suspendu en raison d'inactivit�� ou de v��rifications compl��mentaires — 1</li></ul></div></div></details>
+      <details class='details-panel'><summary>Merchant breakdown</summary><div class='details-grid'><div class='sub-card'>
+              <h4>Audiomack Inc.</h4>
+              <p class='muted-text'>18 txns · <span class='vol-pill'>$0.00</span> · Success: 0.0% · Top channel: Mobile Money</p>
+              <ul class='stat-list'><li>Failed — 18</li></ul>
+            </div><div class='sub-card'>
+              <h4>Nestuge</h4>
+              <p class='muted-text'>5 txns · <span class='vol-pill'>$0.00</span> · Success: 0.0% · Top channel: Mobile Money</p>
+              <ul class='stat-list'><li>Failed — 5</li></ul>
+            </div></div></details>
+    </section>
+
+    <section class="card anim3">
+      <div class="section-header">
+        <div class="title-with-total"><h2>Cameroon</h2><span class="badge">9,048 txns · <span class='vol-pill'>$20,776.01</span></span></div>
+      </div>
+      <div class="panel-grid two">
+        <div class="metric-card">
+          <h3>Status mix</h3>
+          <ul class='data-list'><li>Successful — 1971</li><li>Failed — 7075</li><li>Abandoned — 2</li></ul>
+          <h3>Channel distribution</h3>
+          <ul class='data-list'><li>Mobile Money — 9048</li></ul>
+        </div>
+        <div class="metric-card">
+          <h3>Top success reasons</h3>
+          <ul class='data-list'><li>No provider message (blank) — 1961</li><li>Complete payment process — 10</li></ul>
+          <h3>Top failure reasons</h3>
+          <ul class='data-list'><li>Insufficient funds — 4971</li><li>Payment authorization timed out — 1041</li><li>No provider message (blank) — 738</li><li>Provider temporarily unavailable — 137</li><li>Payer account not found or inactive — 112</li><li>The customers mobile money wallet is locked — 51</li><li>Provider returned no failure reason — 17</li><li>Payment rejected by provider — 5</li><li>OTP verification required — 2</li><li>Payment failed. internal error. our technical team has been notified — 1</li></ul>
+        </div>
+      </div>
+      <details class='details-panel'><summary>Provider breakdown</summary><div class='details-grid'><div class='sub-card'>
+              <h4>hub2</h4>
+              <p class='muted-text'>Total: 124 · <span class='vol-pill'>$70.06</span></p>
+              <ul class='stat-list'><li>Successful — 10</li><li>Failed — 114</li></ul><h5 class='subtle-heading'>Provider message highlights</h5><ul class='mini-list'><li>Complete payment process — 10</li></ul><ul class='mini-list'><li>Provider temporarily unavailable — 104</li><li>Payment rejected by provider — 5</li><li>Provider returned no failure reason — 2</li><li>OTP verification required — 2</li><li>Payment failed. internal error. our technical team has been notified — 1</li></ul></div><div class='sub-card'>
+              <h4>pawapay</h4>
+              <p class='muted-text'>Total: 8,924 · <span class='vol-pill'>$20,705.94</span></p>
+              <ul class='stat-list'><li>Successful — 1961</li><li>Failed — 6961</li><li>Abandoned — 2</li></ul><h5 class='subtle-heading'>Provider message highlights</h5><ul class='mini-list'><li>No provider message (blank) — 1961</li></ul><ul class='mini-list'><li>Insufficient funds — 4971</li><li>Payment authorization timed out — 1041</li><li>No provider message (blank) — 738</li><li>Payer account not found or inactive — 112</li><li>The customers mobile money wallet is locked — 51</li><li>Provider temporarily unavailable — 33</li><li>Provider returned no failure reason — 15</li></ul></div></div></details>
+      <details class='details-panel'><summary>Merchant breakdown</summary><div class='details-grid'><div class='sub-card'>
+              <h4>Gadsfy</h4>
+              <p class='muted-text'>8,637 txns · <span class='vol-pill'>$16,061.38</span> · Success: 19.9% · Top channel: Mobile Money</p>
+              <ul class='stat-list'><li>Successful — 1721</li><li>Failed — 6915</li><li>Abandoned — 1</li></ul>
+            </div><div class='sub-card'>
+              <h4>Nestuge</h4>
+              <p class='muted-text'>341 txns · <span class='vol-pill'>$4,614.62</span> · Success: 68.9% · Top channel: Mobile Money</p>
+              <ul class='stat-list'><li>Successful — 235</li><li>Failed — 105</li><li>Abandoned — 1</li></ul>
+            </div><div class='sub-card'>
+              <h4>Audiomack Inc.</h4>
+              <p class='muted-text'>70 txns · <span class='vol-pill'>$100.00</span> · Success: 21.4% · Top channel: Mobile Money</p>
+              <ul class='stat-list'><li>Successful — 15</li><li>Failed — 55</li></ul>
+            </div></div></details>
+    </section>
+
+    <section class="card anim3">
+      <div class="section-header">
+        <div class="title-with-total"><h2>Uganda</h2><span class="badge">2,633 txns · <span class='vol-pill'>$6,014.94</span></span></div>
+      </div>
+      <div class="panel-grid two">
+        <div class="metric-card">
+          <h3>Status mix</h3>
+          <ul class='data-list'><li>Successful — 602</li><li>Failed — 2031</li></ul>
+          <h3>Channel distribution</h3>
+          <ul class='data-list'><li>Mobile Money — 2633</li></ul>
+        </div>
+        <div class="metric-card">
+          <h3>Top success reasons</h3>
+          <ul class='data-list'><li>No provider message (blank) — 601</li><li>Insufficient funds or payment limit reached — 1</li></ul>
+          <h3>Top failure reasons</h3>
+          <ul class='data-list'><li>Insufficient funds or payment limit reached — 1066</li><li>Insufficient funds — 331</li><li>Provider returned no failure reason — 325</li><li>No payment methods configured for service — 128</li><li>Payment authorization timed out — 110</li><li>Payer account not found or inactive — 34</li><li>No provider message (blank) — 26</li><li>The customers mobile money wallet is locked — 5</li><li>Invalid phone number — 4</li><li>Provider temporarily unavailable — 2</li></ul>
+        </div>
+      </div>
+      <details class='details-panel'><summary>Provider breakdown</summary><div class='details-grid'><div class='sub-card'>
+              <h4>cellulant</h4>
+              <p class='muted-text'>Total: 128 · <span class='vol-pill'>$0.00</span></p>
+              <ul class='stat-list'><li>Failed — 128</li></ul><h5 class='subtle-heading'>Provider message highlights</h5><ul class='mini-list'><li>No payment methods configured for service — 128</li></ul></div><div class='sub-card'>
+              <h4>pawapay</h4>
+              <p class='muted-text'>Total: 2,505 · <span class='vol-pill'>$6,014.94</span></p>
+              <ul class='stat-list'><li>Successful — 602</li><li>Failed — 1903</li></ul><h5 class='subtle-heading'>Provider message highlights</h5><ul class='mini-list'><li>No provider message (blank) — 601</li><li>Insufficient funds or payment limit reached — 1</li></ul><ul class='mini-list'><li>Insufficient funds or payment limit reached — 1066</li><li>Insufficient funds — 331</li><li>Provider returned no failure reason — 325</li><li>Payment authorization timed out — 110</li><li>Payer account not found or inactive — 34</li><li>No provider message (blank) — 26</li><li>The customers mobile money wallet is locked — 5</li><li>Invalid phone number — 4</li><li>Provider temporarily unavailable — 2</li></ul></div></div></details>
+      <details class='details-panel'><summary>Merchant breakdown</summary><div class='details-grid'><div class='sub-card'>
+              <h4>Gadsfy</h4>
+              <p class='muted-text'>2,545 txns · <span class='vol-pill'>$5,900.69</span> · Success: 22.9% · Top channel: Mobile Money</p>
+              <ul class='stat-list'><li>Successful — 583</li><li>Failed — 1962</li></ul>
+            </div><div class='sub-card'>
+              <h4>Audiomack Inc.</h4>
+              <p class='muted-text'>88 txns · <span class='vol-pill'>$114.25</span> · Success: 21.6% · Top channel: Mobile Money</p>
+              <ul class='stat-list'><li>Successful — 19</li><li>Failed — 69</li></ul>
+            </div></div></details>
+    </section>
+
+    <section class="card anim3">
+      <div class="section-header">
+        <div class="title-with-total"><h2>RWANDA</h2><span class="badge">60 txns · <span class='vol-pill'>$146.69</span></span></div>
+      </div>
+      <div class="panel-grid two">
+        <div class="metric-card">
+          <h3>Status mix</h3>
+          <ul class='data-list'><li>Successful — 12</li><li>Failed — 48</li></ul>
+          <h3>Channel distribution</h3>
+          <ul class='data-list'><li>Mobile Money — 60</li></ul>
+        </div>
+        <div class="metric-card">
+          <h3>Top success reasons</h3>
+          <ul class='data-list'><li>No provider message (blank) — 12</li></ul>
+          <h3>Top failure reasons</h3>
+          <ul class='data-list'><li>Provider returned no failure reason — 29</li><li>Payment authorization timed out — 8</li><li>Payer account not found or inactive — 3</li><li>Insufficient funds — 3</li><li>The amount needs to be more than '5' and less than '2000000' for provider 'MTN MOMO RWA' — 3</li><li>Invalid phone number — 1</li><li>The customer did not approve the payment. either the customer did not enter their PIN in time or incorrect PIN was entered — 1</li></ul>
+        </div>
+      </div>
+      <details class='details-panel'><summary>Provider breakdown</summary><div class='details-grid'><div class='sub-card'>
+              <h4>pawapay</h4>
+              <p class='muted-text'>Total: 60 · <span class='vol-pill'>$146.69</span></p>
+              <ul class='stat-list'><li>Successful — 12</li><li>Failed — 48</li></ul><h5 class='subtle-heading'>Provider message highlights</h5><ul class='mini-list'><li>No provider message (blank) — 12</li></ul><ul class='mini-list'><li>Provider returned no failure reason — 29</li><li>Payment authorization timed out — 8</li><li>Payer account not found or inactive — 3</li><li>Insufficient funds — 3</li><li>The amount needs to be more than '5' and less than '2000000' for provider 'MTN MOMO RWA' — 3</li><li>Invalid phone number — 1</li><li>The customer did not approve the payment. either the customer did not enter their PIN in time or incorrect PIN was entered — 1</li></ul></div></div></details>
+      <details class='details-panel'><summary>Merchant breakdown</summary><div class='details-grid'><div class='sub-card'>
+              <h4>Audiomack Inc.</h4>
+              <p class='muted-text'>60 txns · <span class='vol-pill'>$146.69</span> · Success: 20.0% · Top channel: Mobile Money</p>
+              <ul class='stat-list'><li>Successful — 12</li><li>Failed — 48</li></ul>
+            </div></div></details>
+    </section>
+
+    <section class="card anim3">
+      <div class="section-header">
+        <div class="title-with-total"><h2>Congo</h2><span class="badge">31 txns · <span class='vol-pill'>$0.00</span></span></div>
+      </div>
+      <div class="panel-grid two">
+        <div class="metric-card">
+          <h3>Status mix</h3>
+          <ul class='data-list'><li>Failed — 31</li></ul>
+          <h3>Channel distribution</h3>
+          <ul class='data-list'><li>Mobile Money — 31</li></ul>
+        </div>
+        <div class="metric-card">
+          <h3>Top success reasons</h3>
+          <ul class='data-list'><li>—</li></ul>
+          <h3>Top failure reasons</h3>
+          <ul class='data-list'><li>Invalid phone number — 17</li><li>Insufficient funds — 8</li><li>Payer account not found or inactive — 6</li></ul>
+        </div>
+      </div>
+      <details class='details-panel'><summary>Provider breakdown</summary><div class='details-grid'><div class='sub-card'>
+              <h4>pawapay</h4>
+              <p class='muted-text'>Total: 31 · <span class='vol-pill'>$0.00</span></p>
+              <ul class='stat-list'><li>Failed — 31</li></ul><h5 class='subtle-heading'>Provider message highlights</h5><ul class='mini-list'><li>Invalid phone number — 17</li><li>Insufficient funds — 8</li><li>Payer account not found or inactive — 6</li></ul></div></div></details>
+      <details class='details-panel'><summary>Merchant breakdown</summary><div class='details-grid'><div class='sub-card'>
+              <h4>Audiomack Inc.</h4>
+              <p class='muted-text'>31 txns · <span class='vol-pill'>$0.00</span> · Success: 0.0% · Top channel: Mobile Money</p>
+              <ul class='stat-list'><li>Failed — 31</li></ul>
+            </div></div></details>
+    </section>
+
+    <section class="card anim3">
+      <div class="section-header">
+        <div class="title-with-total"><h2>Sierra Leone</h2><span class="badge">35 txns · <span class='vol-pill'>$5.00</span></span></div>
+      </div>
+      <div class="panel-grid two">
+        <div class="metric-card">
+          <h3>Status mix</h3>
+          <ul class='data-list'><li>Successful — 1</li><li>Failed — 34</li></ul>
+          <h3>Channel distribution</h3>
+          <ul class='data-list'><li>Mobile Money — 35</li></ul>
+        </div>
+        <div class="metric-card">
+          <h3>Top success reasons</h3>
+          <ul class='data-list'><li>No provider message (blank) — 1</li></ul>
+          <h3>Top failure reasons</h3>
+          <ul class='data-list'><li>Provider returned no failure reason — 34</li></ul>
+        </div>
+      </div>
+      <details class='details-panel'><summary>Provider breakdown</summary><div class='details-grid'><div class='sub-card'>
+              <h4>pawapay</h4>
+              <p class='muted-text'>Total: 35 · <span class='vol-pill'>$5.00</span></p>
+              <ul class='stat-list'><li>Successful — 1</li><li>Failed — 34</li></ul><h5 class='subtle-heading'>Provider message highlights</h5><ul class='mini-list'><li>No provider message (blank) — 1</li></ul><ul class='mini-list'><li>Provider returned no failure reason — 34</li></ul></div></div></details>
+      <details class='details-panel'><summary>Merchant breakdown</summary><div class='details-grid'><div class='sub-card'>
+              <h4>Audiomack Inc.</h4>
+              <p class='muted-text'>30 txns · <span class='vol-pill'>$5.00</span> · Success: 3.3% · Top channel: Mobile Money</p>
+              <ul class='stat-list'><li>Successful — 1</li><li>Failed — 29</li></ul>
+            </div><div class='sub-card'>
+              <h4>Spotflow Demo</h4>
+              <p class='muted-text'>5 txns · <span class='vol-pill'>$0.00</span> · Success: 0.0% · Top channel: Mobile Money</p>
+              <ul class='stat-list'><li>Failed — 5</li></ul>
+            </div></div></details>
+    </section>
+
+    <section class="card anim3">
+      <div class="section-header">
+        <div class="title-with-total"><h2>Democratic Republic of the Congo</h2><span class="badge">20 txns · <span class='vol-pill'>$0.00</span></span></div>
+      </div>
+      <div class="panel-grid two">
+        <div class="metric-card">
+          <h3>Status mix</h3>
+          <ul class='data-list'><li>Failed — 20</li></ul>
+          <h3>Channel distribution</h3>
+          <ul class='data-list'><li>Mobile Money — 20</li></ul>
+        </div>
+        <div class="metric-card">
+          <h3>Top success reasons</h3>
+          <ul class='data-list'><li>—</li></ul>
+          <h3>Top failure reasons</h3>
+          <ul class='data-list'><li>Payment authorization timed out — 11</li><li>Provider returned no failure reason — 7</li><li>Payer account not found or inactive — 2</li></ul>
+        </div>
+      </div>
+      <details class='details-panel'><summary>Provider breakdown</summary><div class='details-grid'><div class='sub-card'>
+              <h4>pawapay</h4>
+              <p class='muted-text'>Total: 20 · <span class='vol-pill'>$0.00</span></p>
+              <ul class='stat-list'><li>Failed — 20</li></ul><h5 class='subtle-heading'>Provider message highlights</h5><ul class='mini-list'><li>Payment authorization timed out — 11</li><li>Provider returned no failure reason — 7</li><li>Payer account not found or inactive — 2</li></ul></div></div></details>
+      <details class='details-panel'><summary>Merchant breakdown</summary><div class='details-grid'><div class='sub-card'>
+              <h4>Audiomack Inc.</h4>
+              <p class='muted-text'>20 txns · <span class='vol-pill'>$0.00</span> · Success: 0.0% · Top channel: Mobile Money</p>
+              <ul class='stat-list'><li>Failed — 20</li></ul>
+            </div></div></details>
+    </section>
+
+
+
+
+    <section class="card anim4">
+      <div class="section-header">
+        <div class="title-with-total"><h2>Failure causes by region</h2><span class="badge">Customer pain points</span></div>
+      </div>
+      <div class="panel-grid two">
+        <div class='sub-card'>
   <h3>Nigeria</h3>
-  <p class='muted'>Total failed: 677</p>
-  <ul class='mini-list'><li>No provider message (blank) — 165 (24.4% of failures)</li><li>Error processing payment — 160 (23.6% of failures)</li><li>Merchant is not enabled for international transactions — 85 (12.6% of failures)</li><li>OTP verification required — 80 (11.8% of failures)</li><li>Request to generate token is successful — 72 (10.6% of failures)</li><li>Please enter your pin — 26 (3.8% of failures)</li><li>Insufficient funds — 15 (2.2% of failures)</li><li>Token authentication failed. incorrect token supplied — 12 (1.8% of failures)</li><li>Fellback-bnf — 12 (1.8% of failures)</li><li>Unable to process transaction — 11 (1.6% of failures)</li><li>Transaction error — 6 (0.9% of failures)</li><li>Refer to card issuer — 5 (0.7% of failures)</li><li>Your payment has exceeded the time required to pay — 4 (0.6% of failures)</li><li>Negative CAM — 4 (0.6% of failures)</li><li>Inactive or dormant account. please contact issuer — 3 (0.4% of failures)</li><li>No card record — 3 (0.4% of failures)</li><li>Transaction declined — 3 (0.4% of failures)</li><li>Unable to retrieve customer details — 2 (0.3% of failures)</li><li>Invalid card number — 2 (0.3% of failures)</li><li>Account closed — 2 (0.3% of failures)</li><li>Card could not be processed at this time — 1 (0.1% of failures)</li><li>Incorrect PIN — 1 (0.1% of failures)</li><li>Lost card — 1 (0.1% of failures)</li><li>Timed out — 1 (0.1% of failures)</li><li>Unable to process transaction at this time — 1 (0.1% of failures)</li></ul>
-</div>
-
-<div class='sub-card'>
+  <p class='muted-text'>Total failed: 677</p>
+  <ul class='mini-list'><li>Unable to process transaction — 179 (26.4%)</li><li>No provider message (blank) — 165 (24.4%)</li><li>Merchant is not enabled for international transactions — 85 (12.6%)</li><li>OTP verification required — 80 (11.8%)</li><li>Request to generate token is successful — 72 (10.6%)</li><li>Please enter your pin — 26 (3.8%)</li><li>Insufficient funds — 15 (2.2%)</li><li>Token authentication failed. incorrect token supplied — 12 (1.8%)</li><li>Fellback-bnf — 12 (1.8%)</li><li>Refer to card issuer — 5 (0.7%)</li><li>Payment authorization timed out — 5 (0.7%)</li><li>Negative CAM — 4 (0.6%)</li><li>Payer account not found or inactive — 3 (0.4%)</li><li>No card record — 3 (0.4%)</li><li>Payment rejected by provider — 3 (0.4%)</li><li>Unable to retrieve customer details — 2 (0.3%)</li><li>Invalid card number — 2 (0.3%)</li><li>Account closed — 2 (0.3%)</li><li>Incorrect PIN — 1 (0.1%)</li><li>Lost card — 1 (0.1%)</li></ul>
+</div><div class='sub-card'>
   <h3>Ghana</h3>
-  <p class='muted'>Total failed: 2260</p>
-  <ul class='mini-list'><li>The MTN mobile money user has reached counter or balance limits — 956 (42.3% of failures)</li><li>Transaction failed — 680 (30.1% of failures)</li><li>Error processing payment — 219 (9.7% of failures)</li><li>Failed — 121 (5.4% of failures)</li><li>The vodafone cash failed — 114 (5.0% of failures)</li><li>Exception happened with upstream provider — 49 (2.2% of failures)</li><li>No provider message (blank) — 30 (1.3% of failures)</li><li>Unable to process transaction at this time — 30 (1.3% of failures)</li><li>Transaction id is invalid — 19 (0.8% of failures)</li><li>MTN exception: KYC timeout — 7 (0.3% of failures)</li><li>You entered the wrong PIN. please try again — 6 (0.3% of failures)</li><li>The customer did not authorize the payment in time or the transaction timed out at the mobile network operator — 6 (0.3% of failures)</li><li>MTN exception: account holder with FRI not found — 6 (0.3% of failures)</li><li>Your account is not a valid vodafone cash account — 6 (0.3% of failures)</li><li>Your PIN has been locked. likely from entering it wrongly too many times — 4 (0.2% of failures)</li><li>Verve cards can only pay NGN at this time — 3 (0.1% of failures)</li><li>The payer does not have an account with 'MTN MOMO GHA' or it is not active — 2 (0.1% of failures)</li><li>Invalid card number — 1 (0.0% of failures)</li><li>The customer does not have enough funds to complete the payment — 1 (0.0% of failures)</li></ul>
-</div>
-
-<div class='sub-card'>
+  <p class='muted-text'>Total failed: 2,260</p>
+  <ul class='mini-list'><li>Insufficient funds or payment limit reached — 956 (42.3%)</li><li>Transaction failed — 915 (40.5%)</li><li>Unable to process transaction — 249 (11.0%)</li><li>Provider temporarily unavailable — 49 (2.2%)</li><li>No provider message (blank) — 30 (1.3%)</li><li>Transaction id is invalid — 19 (0.8%)</li><li>Payer account not found or inactive — 8 (0.4%)</li><li>MTN exception: KYC timeout — 7 (0.3%)</li><li>Incorrect PIN — 6 (0.3%)</li><li>Payment authorization timed out — 6 (0.3%)</li><li>MTN exception: account holder with FRI not found — 6 (0.3%)</li><li>Your PIN has been locked. likely from entering it wrongly too many times — 4 (0.2%)</li><li>Verve cards can only pay NGN at this time — 3 (0.1%)</li><li>Invalid card number — 1 (0.0%)</li><li>Insufficient funds — 1 (0.0%)</li></ul>
+</div><div class='sub-card'>
   <h3>South Africa</h3>
-  <p class='muted'>Total failed: 137</p>
-  <ul class='mini-list'><li>No provider message (blank) — 137 (100.0% of failures)</li></ul>
-</div>
-
-<div class='sub-card'>
+  <p class='muted-text'>Total failed: 137</p>
+  <ul class='mini-list'><li>No provider message (blank) — 137 (100.0%)</li></ul>
+</div><div class='sub-card'>
   <h3>Kenya</h3>
-  <p class='muted'>Total failed: 6</p>
-  <ul class='mini-list'><li>The request body is missing or is invalid — 5 (83.3% of failures)</li><li>No provider message (blank) — 1 (16.7% of failures)</li></ul>
-</div>
-
-<div class='sub-card'>
+  <p class='muted-text'>Total failed: 6</p>
+  <ul class='mini-list'><li>The request body is missing or is invalid — 5 (83.3%)</li><li>No provider message (blank) — 1 (16.7%)</li></ul>
+</div><div class='sub-card'>
   <h3>Tanzania</h3>
-  <p class='muted'>Total failed: 204</p>
-  <ul class='mini-list'><li>Insufficient funds — 122 (59.8% of failures)</li><li>Provider failed — 65 (31.9% of failures)</li><li>Payment rejected — 8 (3.9% of failures)</li><li>Generic failure — 6 (2.9% of failures)</li><li>Unable to process transaction at this time — 1 (0.5% of failures)</li><li>Payment amount 5 is below the minimum allowed amount of 1000 for TZS — 1 (0.5% of failures)</li><li>No provider message (blank) — 1 (0.5% of failures)</li></ul>
-</div>
-
-<div class='sub-card'>
+  <p class='muted-text'>Total failed: 204</p>
+  <ul class='mini-list'><li>Insufficient funds — 122 (59.8%)</li><li>Transaction failed — 71 (34.8%)</li><li>Payment rejected by provider — 8 (3.9%)</li><li>Unable to process transaction — 1 (0.5%)</li><li>Payment amount 5 is below the minimum allowed amount of 1000 for TZS — 1 (0.5%)</li><li>No provider message (blank) — 1 (0.5%)</li></ul>
+</div><div class='sub-card'>
   <h3>Côte d'Ivoire</h3>
-  <p class='muted'>Total failed: 167</p>
-  <ul class='mini-list'><li>The customer did not authorize the payment in time or the transaction timed out at the mobile network operator — 89 (53.3% of failures)</li><li>The customer does not have enough funds to complete the payment — 22 (13.2% of failures)</li><li>Authorized successful — 18 (10.8% of failures)</li><li>The msisdn is too short for the identified country CIV — 18 (10.8% of failures)</li><li>The provider 'orange CIV' did not specify a reason for this failure — 13 (7.8% of failures)</li><li>The payer does not have an account with 'MTN MOMO CIV' or it is not active — 5 (3.0% of failures)</li><li>OTP is required when orange provider is selected — 1 (0.6% of failures)</li><li>Unable to process transaction at this time — 1 (0.6% of failures)</li></ul>
-</div>
-
-<div class='sub-card'>
+  <p class='muted-text'>Total failed: 167</p>
+  <ul class='mini-list'><li>Payment authorization timed out — 89 (53.3%)</li><li>Insufficient funds — 22 (13.2%)</li><li>Authorized successful — 18 (10.8%)</li><li>Invalid phone number — 18 (10.8%)</li><li>Provider returned no failure reason — 13 (7.8%)</li><li>Payer account not found or inactive — 5 (3.0%)</li><li>OTP verification required — 1 (0.6%)</li><li>Unable to process transaction — 1 (0.6%)</li></ul>
+</div><div class='sub-card'>
   <h3>Benin</h3>
-  <p class='muted'>Total failed: 57</p>
-  <ul class='mini-list'><li>The customer does not have enough funds to complete the payment — 19 (33.3% of failures)</li><li>No provider message (blank) — 9 (15.8% of failures)</li><li>Authorized successful — 7 (12.3% of failures)</li><li>The customers mobile money wallet is locked — 6 (10.5% of failures)</li><li>The customer did not authorize the payment in time or the transaction timed out at the mobile network operator — 4 (7.0% of failures)</li><li>The payer does not have an account with 'MTN MOMO BEN' or it is not active — 4 (7.0% of failures)</li><li>The provider 'MOOV BEN' did not specify a reason for this failure — 4 (7.0% of failures)</li><li>The msisdn is too short for the identified country BEN — 1 (1.8% of failures)</li><li>Unable to process transaction at this time — 1 (1.8% of failures)</li><li>The provider 'MTN MOMO BEN' is currently not able to process payments. please consult our status page for downtime information on all providers. programmatic access is also available — 1 (1.8% of failures)</li><li>The amount needs to be more than '1' and less than '2000000' for provider 'MTN MOMO BEN' — 1 (1.8% of failures)</li></ul>
-</div>
-
-<div class='sub-card'>
+  <p class='muted-text'>Total failed: 57</p>
+  <ul class='mini-list'><li>Insufficient funds — 19 (33.3%)</li><li>No provider message (blank) — 9 (15.8%)</li><li>Authorized successful — 7 (12.3%)</li><li>The customers mobile money wallet is locked — 6 (10.5%)</li><li>Payment authorization timed out — 4 (7.0%)</li><li>Payer account not found or inactive — 4 (7.0%)</li><li>Provider returned no failure reason — 4 (7.0%)</li><li>Invalid phone number — 1 (1.8%)</li><li>Unable to process transaction — 1 (1.8%)</li><li>Provider temporarily unavailable — 1 (1.8%)</li><li>The amount needs to be more than '1' and less than '2000000' for provider 'MTN MOMO BEN' — 1 (1.8%)</li></ul>
+</div><div class='sub-card'>
   <h3>Togo</h3>
-  <p class='muted'>Total failed: 23</p>
-  <ul class='mini-list'><li>Votre compte a été suspendu en raison d'inactivité ou de vérifications complémentaires — 22 (95.7% of failures)</li><li>Votre compte a ��t�� suspendu en raison d'inactivit�� ou de v��rifications compl��mentaires — 1 (4.3% of failures)</li></ul>
-</div>
-
-<div class='sub-card'>
+  <p class='muted-text'>Total failed: 23</p>
+  <ul class='mini-list'><li>Votre compte a été suspendu en raison d'inactivité ou de vérifications complémentaires — 22 (95.7%)</li><li>Votre compte a ��t�� suspendu en raison d'inactivit�� ou de v��rifications compl��mentaires — 1 (4.3%)</li></ul>
+</div><div class='sub-card'>
   <h3>Cameroon</h3>
-  <p class='muted'>Total failed: 7075</p>
-  <ul class='mini-list'><li>The customer does not have enough funds to complete the payment — 4971 (70.3% of failures)</li><li>The customer did not authorize the payment in time or the transaction timed out at the mobile network operator — 1041 (14.7% of failures)</li><li>No provider message (blank) — 738 (10.4% of failures)</li><li>The payer does not have an account with 'MTN MOMO CMR' or it is not active — 112 (1.6% of failures)</li><li>Payment failed. the service is temporarily disabled due to an ongoing incident. our technical service is aware and is working on its resolution — 104 (1.5% of failures)</li><li>The customers mobile money wallet is locked — 51 (0.7% of failures)</li><li>The provider 'MTN MOMO CMR' is currently not able to process payments. please consult our status page for downtime information on all providers. programmatic access is also available — 33 (0.5% of failures)</li><li>The provider 'MTN MOMO CMR' did not specify a reason for this failure — 15 (0.2% of failures)</li><li>Payment failed. the payment was forbidden by the provider — 5 (0.1% of failures)</li><li>Payment failed. no reason was provided by the provider — 2 (0.0% of failures)</li><li>OTP is required when orange provider is selected — 2 (0.0% of failures)</li><li>Payment failed. internal error. our technical team has been notified — 1 (0.0% of failures)</li></ul>
-</div>
-
-<div class='sub-card'>
+  <p class='muted-text'>Total failed: 7,075</p>
+  <ul class='mini-list'><li>Insufficient funds — 4971 (70.3%)</li><li>Payment authorization timed out — 1041 (14.7%)</li><li>No provider message (blank) — 738 (10.4%)</li><li>Provider temporarily unavailable — 137 (1.9%)</li><li>Payer account not found or inactive — 112 (1.6%)</li><li>The customers mobile money wallet is locked — 51 (0.7%)</li><li>Provider returned no failure reason — 17 (0.2%)</li><li>Payment rejected by provider — 5 (0.1%)</li><li>OTP verification required — 2 (0.0%)</li><li>Payment failed. internal error. our technical team has been notified — 1 (0.0%)</li></ul>
+</div><div class='sub-card'>
   <h3>Uganda</h3>
-  <p class='muted'>Total failed: 2031</p>
-  <ul class='mini-list'><li>The customer does not have enough funds to complete the payment or has reached a payment limit — 1066 (52.5% of failures)</li><li>The customer does not have enough funds to complete the payment — 331 (16.3% of failures)</li><li>The provider 'airtel OAPI UGA' did not specify a reason for this failure — 320 (15.8% of failures)</li><li>No payment methods configured for service — 128 (6.3% of failures)</li><li>The customer did not authorize the payment in time or the transaction timed out at the mobile network operator — 110 (5.4% of failures)</li><li>The payer does not have an account with 'MTN MOMO UGA' or it is not active — 31 (1.5% of failures)</li><li>No provider message (blank) — 26 (1.3% of failures)</li><li>The customers mobile money wallet is locked — 5 (0.2% of failures)</li><li>The provider 'MTN MOMO UGA' did not specify a reason for this failure — 5 (0.2% of failures)</li><li>The msisdn is too short for the identified country UGA — 4 (0.2% of failures)</li><li>The payer does not have an account with 'airtel OAPI UGA' or it is not active — 3 (0.1% of failures)</li><li>The provider 'MTN MOMO UGA' is currently not able to process payments. please consult our status page for downtime information on all providers. programmatic access is also available — 1 (0.0% of failures)</li><li>The provider 'airtel OAPI UGA' is currently not able to process payments. please consult our status page for downtime information on all providers. programmatic access is also available — 1 (0.0% of failures)</li></ul>
-</div>
-
-<div class='sub-card'>
+  <p class='muted-text'>Total failed: 2,031</p>
+  <ul class='mini-list'><li>Insufficient funds or payment limit reached — 1066 (52.5%)</li><li>Insufficient funds — 331 (16.3%)</li><li>Provider returned no failure reason — 325 (16.0%)</li><li>No payment methods configured for service — 128 (6.3%)</li><li>Payment authorization timed out — 110 (5.4%)</li><li>Payer account not found or inactive — 34 (1.7%)</li><li>No provider message (blank) — 26 (1.3%)</li><li>The customers mobile money wallet is locked — 5 (0.2%)</li><li>Invalid phone number — 4 (0.2%)</li><li>Provider temporarily unavailable — 2 (0.1%)</li></ul>
+</div><div class='sub-card'>
   <h3>RWANDA</h3>
-  <p class='muted'>Total failed: 48</p>
-  <ul class='mini-list'><li>The provider 'MTN MOMO RWA' did not specify a reason for this failure — 22 (45.8% of failures)</li><li>The customer did not authorize the payment in time or the transaction timed out at the mobile network operator — 8 (16.7% of failures)</li><li>The provider 'airtel RWA' did not specify a reason for this failure — 7 (14.6% of failures)</li><li>The customer does not have enough funds to complete the payment — 3 (6.2% of failures)</li><li>The amount needs to be more than '5' and less than '2000000' for provider 'MTN MOMO RWA' — 3 (6.2% of failures)</li><li>The payer does not have an account with 'airtel RWA' or it is not active — 2 (4.2% of failures)</li><li>The msisdn is too short for the identified country RWA — 1 (2.1% of failures)</li><li>The payer does not have an account with 'MTN MOMO RWA' or it is not active — 1 (2.1% of failures)</li><li>The customer did not approve the payment. either the customer did not enter their PIN in time or incorrect PIN was entered — 1 (2.1% of failures)</li></ul>
-</div>
-
-<div class='sub-card'>
+  <p class='muted-text'>Total failed: 48</p>
+  <ul class='mini-list'><li>Provider returned no failure reason — 29 (60.4%)</li><li>Payment authorization timed out — 8 (16.7%)</li><li>Payer account not found or inactive — 3 (6.2%)</li><li>Insufficient funds — 3 (6.2%)</li><li>The amount needs to be more than '5' and less than '2000000' for provider 'MTN MOMO RWA' — 3 (6.2%)</li><li>Invalid phone number — 1 (2.1%)</li><li>The customer did not approve the payment. either the customer did not enter their PIN in time or incorrect PIN was entered — 1 (2.1%)</li></ul>
+</div><div class='sub-card'>
   <h3>Congo</h3>
-  <p class='muted'>Total failed: 31</p>
-  <ul class='mini-list'><li>The msisdn is too short for the identified country COG — 17 (54.8% of failures)</li><li>The customer does not have enough funds to complete the payment — 8 (25.8% of failures)</li><li>The payer does not have an account with 'MTN MOMO COG' or it is not active — 6 (19.4% of failures)</li></ul>
-</div>
-
-<div class='sub-card'>
+  <p class='muted-text'>Total failed: 31</p>
+  <ul class='mini-list'><li>Invalid phone number — 17 (54.8%)</li><li>Insufficient funds — 8 (25.8%)</li><li>Payer account not found or inactive — 6 (19.4%)</li></ul>
+</div><div class='sub-card'>
   <h3>Sierra Leone</h3>
-  <p class='muted'>Total failed: 34</p>
-  <ul class='mini-list'><li>The provider 'orange SLE' did not specify a reason for this failure — 34 (100.0% of failures)</li></ul>
-</div>
-
-<div class='sub-card'>
+  <p class='muted-text'>Total failed: 34</p>
+  <ul class='mini-list'><li>Provider returned no failure reason — 34 (100.0%)</li></ul>
+</div><div class='sub-card'>
   <h3>Democratic Republic of the Congo</h3>
-  <p class='muted'>Total failed: 20</p>
-  <ul class='mini-list'><li>Authorization not approved in time — 11 (55.0% of failures)</li><li>The provider 'airtel COD' did not specify a reason for this failure — 7 (35.0% of failures)</li><li>The payer does not have an account with 'orange COD' or it is not active — 2 (10.0% of failures)</li></ul>
+  <p class='muted-text'>Total failed: 20</p>
+  <ul class='mini-list'><li>Payment authorization timed out — 11 (55.0%)</li><li>Provider returned no failure reason — 7 (35.0%)</li><li>Payer account not found or inactive — 2 (10.0%)</li></ul>
 </div>
-
       </div>
     </section>
-    <section>
-      <div class='section-header'>
-        <div class='title-with-total'><h2>Regional success vs failure</h2><span class='badge'>Full-month view</span></div>
-        <button class='btn btn-secondary' id='toggleChart'>Toggle view</button>
+
+
+
+    <section class="card anim4">
+      <div class="section-header">
+        <div class="title-with-total"><h2>Regional success vs failure</h2><span class="badge">Comparison</span></div>
+        <button class="btn" id="toggleChart">Toggle view</button>
       </div>
-      <div class='chart-wrapper'>
-        <canvas id='regionChart'></canvas>
+      <div class="chart-wrapper">
+        <canvas id="regionChart"></canvas>
       </div>
     </section>
   </main>
+
+  <footer>
+    <p>◆ Spotflow &middot; Transaction Intelligence</p>
+  </footer>
+
   <script>
-    const regionData = {"labels": ["Nigeria", "Ghana", "South Africa", "Kenya", "Tanzania", "C\u00f4te d'Ivoire", "Benin", "Togo", "Cameroon", "Uganda", "RWANDA", "Congo", "Sierra Leone", "Democratic Republic of the Congo"], "success": [4090, 4135, 16, 56, 146, 34, 16, 0, 1971, 602, 12, 0, 1, 0], "failed": [677, 2260, 137, 6, 204, 167, 57, 23, 7075, 2031, 48, 31, 34, 20]};
-    const ctx = document.getElementById('regionChart').getContext('2d');
-    let chartType = 'bar';
-    const baseConfig = {
+    Chart.defaults.color = '#93A0AD';
+    Chart.defaults.borderColor = 'rgba(255,255,255,.06)';
+    Chart.defaults.font.family = "'IBM Plex Sans', sans-serif";
+
+    // Merchant chart
+    const mData = {"labels": ["Audiomack Inc.", "Gadsfy", "Nestuge", "MiMo Global", "Accra Polo Club", "UduTech", "Spotflow Demo", "Bloper"], "volume": [28278.0, 22961.55, 28861.64, 12380.26, 465.32, 225.5, 0.23, 0.79], "success": [5483, 2451, 1587, 1540, 1, 7, 2, 2], "failed": [2281, 8991, 767, 698, 0, 6, 18, 9]};
+    new Chart(document.getElementById('merchantChart'), {
+      type: 'bar',
       data: {
-        labels: regionData.labels,
+        labels: mData.labels,
         datasets: [
-          { label: 'Successful', data: regionData.success, backgroundColor: '#10b981', borderColor: '#10b981', borderWidth: 2, borderRadius: 8 },
-          { label: 'Failed', data: regionData.failed, backgroundColor: '#ef4444', borderColor: '#ef4444', borderWidth: 2, borderRadius: 8 }
+          { label: 'Volume (USD)', data: mData.volume, backgroundColor: 'rgba(77,182,255,.5)', borderColor: '#4DB6FF', borderWidth: 1, borderRadius: 6, yAxisID: 'y' },
         ]
       },
       options: {
+        indexAxis: 'y',
         responsive: true,
         maintainAspectRatio: false,
-        plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, padding: 14 } } },
+        plugins: { legend: { display: false } },
         scales: {
-          x: { stacked: false, ticks: { color: '#1f2937' }, grid: { color: '#e2e8f0' } },
-          y: { beginAtZero: true, grid: { color: '#e2e8f0' }, ticks: { color: '#1f2937' } }
+          x: { grid: { color: 'rgba(255,255,255,.04)' }, ticks: { callback: v => '$' + v.toLocaleString() } },
+          y: { grid: { display: false } }
         }
       }
-    };
+    });
 
-    function createChart(type) {
-      const config = Object.assign({ type }, JSON.parse(JSON.stringify(baseConfig)));
-      config.data.datasets.forEach(ds => {
-        ds.fill = type !== 'line';
-        ds.borderWidth = type === 'line' ? 3 : 2;
-        ds.tension = type === 'line' ? 0.35 : 0;
+
+
+
+
+    // Region chart
+    const rData = {"labels": ["Nigeria", "Ghana", "South Africa", "Kenya", "Tanzania", "C\u00f4te d'Ivoire", "Benin", "Togo", "Cameroon", "Uganda", "RWANDA", "Congo", "Sierra Leone", "Democratic Republic of the Congo"], "success": [4090, 4135, 16, 56, 146, 34, 16, 0, 1971, 602, 12, 0, 1, 0], "failed": [677, 2260, 137, 6, 204, 167, 57, 23, 7075, 2031, 48, 31, 34, 20], "volume": [396644.18, 90688.11, 7616.14, 924.37, 39451.07, 2059.94, 7053.65, 1242.93, 96847.13, 30149.22, 11465.45, 175.0, 259.48, 86.69]};
+    const rCtx = document.getElementById('regionChart').getContext('2d');
+    let rType = 'bar';
+    function createRegionChart(type) {
+      return new Chart(rCtx, {
+        type,
+        data: {
+          labels: rData.labels,
+          datasets: [
+            { label: 'Successful', data: rData.success, backgroundColor: '#5FD08A', borderColor: '#5FD08A', borderWidth: 2, borderRadius: 6, tension: .35 },
+            { label: 'Failed', data: rData.failed, backgroundColor: '#FF7A7A', borderColor: '#FF7A7A', borderWidth: 2, borderRadius: 6, tension: .35 }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, padding: 14 } } },
+          scales: {
+            x: { grid: { color: 'rgba(255,255,255,.04)' } },
+            y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,.04)' } }
+          }
+        }
       });
-      return new Chart(ctx, config);
     }
-
-    let regionChart = createChart(chartType);
+    let regionChart = createRegionChart(rType);
     document.getElementById('toggleChart').addEventListener('click', () => {
-      chartType = chartType === 'bar' ? 'line' : 'bar';
+      rType = rType === 'bar' ? 'line' : 'bar';
       regionChart.destroy();
-      regionChart = createChart(chartType);
+      regionChart = createRegionChart(rType);
     });
   </script>
 </body>
