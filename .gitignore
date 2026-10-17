@@ -14,3 +14,4 @@ web/SETUP-auth.md
 .env.*
 !.env.example
 analysis/repeat-customers-*
+.vercel
