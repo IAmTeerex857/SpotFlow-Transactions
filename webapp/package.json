@@ -1,0 +1,46 @@
+{
+  "name": "webapp",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit -p .",
+    "golden": "python3 scripts/golden/dump_python.py",
+    "import:history": "tsx --conditions=react-server --env-file-if-exists=.env.local --tsconfig tsconfig.json scripts/import-history.ts",
+    "screenshots": "node scripts/screenshots.mjs"
+  },
+  "dependencies": {
+    "@supabase/ssr": "^0.12.7",
+    "@supabase/supabase-js": "^2.118.0",
+    "ai": "^7.0.143",
+    "border-beam": "^1.4.1",
+    "clsx": "^2.1.1",
+    "generative-loaders": "^0.1.1",
+    "lucide-react": "^1.59.0",
+    "motion": "^14.3.0",
+    "next": "16.4.2",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "server-only": "^0.0.1",
+    "tailwind-merge": "^3.7.0",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "^0.5.10",
+    "@tailwindcss/turbopack": "^4",
+    "@types/node": "^24.19.2",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.4.2",
+    "playwright-core": "^1.64.1",
+    "tailwindcss": "^4",
+    "tsx": "^4.23.15",
+    "typescript": "^5",
+    "vitest": "^5.0.5"
+  }
+}

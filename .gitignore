@@ -6,3 +6,11 @@ __pycache__/
 Spotflow transactions data/
 Logo.svg
 node_modules/
+
+# Local-only docs that contain secrets
+web/SETUP-auth.md
+*.private.*
+.env
+.env.*
+!.env.example
+analysis/repeat-customers-*
