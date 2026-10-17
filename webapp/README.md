@@ -11,7 +11,7 @@ Spotflow members sign in with Google (`@spotflow.one` only), upload a transactio
 | `/app/reports` | Explorer: any date range and filters (shareable by URL), merchants/providers/regions tables with detail drawers, failures, retries, peak times |
 | `/app/upload` | Node-flow canvas: parse in the browser → review → save |
 | `/app/uploads` | Upload history, per-upload report, reprocess, delete |
-| `/app/ask` | Questions answered by Claude using read-only queries |
+| `/app/ask` | Questions answered by an LLM on the Vercel AI Gateway, using read-only queries |
 
 Press ⌘K anywhere in the app to search pages and report views or ask a question; ⌘B collapses the sidebar. Report tabs are linkable (`/app/reports#providers`).
 
@@ -72,18 +72,16 @@ Reports ◄── report_cube() (one SQL call per view) ◄── transactions
 ## Setup
 
 ### 1. Supabase
-1. Create a project. In **SQL Editor**, run `supabase/migrations/20261017000000_init.sql` (or `supabase db push` with the CLI).
-2. **Authentication → Providers → Google**: enable it and paste a Google OAuth client ID and secret. In Google Cloud the client's authorised redirect URI is `https://YOUR-PROJECT.supabase.co/auth/v1/callback`.
-3. **Authentication → URL Configuration**: set the Site URL to your Vercel URL and add `https://YOUR-DOMAIN/auth/callback` (and `http://localhost:3000/auth/callback`) to the redirect allow list.
-4. The migration creates a private `exports` storage bucket. If it didn't (Storage disabled), create a private bucket named `exports`. Without it, uploads still work but can't be reprocessed.
+1. Apply `supabase/migrations/20261017000000_init.sql` (SQL Editor, `supabase db push`, or the Management API's `database/query`). It creates the tables, row-level security, the domain trigger, the report functions and the private `exports` bucket.
+2. **Authentication → Providers → Google**: enable it with the same Google OAuth client ID and secret as `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET`. Supabase only verifies the ID token's audience; no Supabase redirect URI is registered in Google.
 
-Non-`@spotflow.one` Google accounts are rejected by a database trigger before a user row is created, and every table policy re-checks the domain.
+Non-`@spotflow.one` Google accounts are refused three times over: Google's `hd` hint, the check in `/api/auth/callback`, and a database trigger that blocks the user row. Every table policy re-checks the domain.
 
-### 2. Environment
-Copy `.env.example` to `.env.local` and fill it in. In Vercel set `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `PSEUDONYM_SECRET` and `ANTHROPIC_API_KEY`. Do not put the service-role key in Vercel.
+### 2. Google sign-in
+Sign-in reuses the reports site's existing OAuth client and its registered redirect URI, `https://<domain>/api/auth/callback`. `/api/auth/login` sends the member to Google; the callback exchanges the code for an ID token, checks the domain and calls `supabase.auth.signInWithIdToken`. Nothing changes in Google Cloud. Preview deployments have other domains, so sign in on production (or add their callback URL to the client).
 
-### 3. Vercel
-Set the project's **Root Directory** to `webapp` and the framework preset to **Next.js**. The old `web/` static site and its auth functions are no longer needed once this is live.
+### 3. Environment and Vercel
+`.env.example` lists every variable. In Vercel (Root Directory `webapp`, framework Next.js) set `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `PSEUDONYM_SECRET`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` and optionally `ASK_MODEL`. Never put the service-role key in Vercel. Ask needs no key on Vercel: the AI Gateway authenticates with the deployment's OIDC token.
 
 ### 4. Import history (once)
 ```bash
@@ -104,4 +102,4 @@ npm run screenshots -- http://localhost:3000   # light/dark, desktop/phone, flag
 The parity test needs the local `../data` folder and `.golden/python.json`; it is skipped elsewhere.
 
 ## Ask
-`/api/ask` streams answers from `claude-opus-5-5` (adaptive thinking, effort `high`) with six read-only tools that call the same SQL as the dashboard, using the signed-in member's session so row-level security applies. Server-side refusal fallback is enabled (`fallbacks: "default"`).
+`/api/ask` streams answers through the Vercel AI Gateway (`deepseek/deepseek-v4.1-flash` by default; any tool-calling model via `ASK_MODEL`) with the AI SDK's `streamText`. Six read-only tools call the same SQL as the dashboard using the signed-in member's session, so row-level security applies, and the loop stops after ten steps.
